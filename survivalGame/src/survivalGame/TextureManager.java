@@ -1,0 +1,31 @@
+package survivalGame;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+
+public class TextureManager {
+
+	private Map<String, BufferedImage> textures;
+	
+	public TextureManager() {
+        textures = new HashMap<>();
+    }
+	
+    public void loadTexture(String filename, String textureName) {
+        try {
+            BufferedImage img = ImageIO.read(new File(filename));
+            textures.put(textureName, img);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public BufferedImage getTexture(String filename) {
+        return textures.get(filename);
+    }
+}
