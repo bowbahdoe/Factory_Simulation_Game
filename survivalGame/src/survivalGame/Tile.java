@@ -51,7 +51,9 @@ public class Tile implements RenderComponent{
 			int width = graphics.getWidth();
 			int height = graphics.getHeight();
 
-			g.drawImage(texture, pixelX, pixelY, null); 
+			//g.drawImage(texture, pixelX, pixelY, null); 
+			g.setColor(new Color(70,110,76));
+			g.fillRect(pixelX, pixelY, tileSize, tileSize);
 			if (selected) {
 				g.setColor(new Color(0,0,111));
 				g.drawRect(pixelX + tileSize / 4, pixelY + tileSize / 4, tileSize - tileSize / 2, tileSize - tileSize / 2);
