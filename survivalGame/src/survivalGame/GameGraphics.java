@@ -132,19 +132,9 @@ public final class GameGraphics extends JPanel implements Updatable {
      				
      				
      		}
-     			/*
-     			if (dynamicRenderLayers.containsKey(y + 1)) {
-     				for (RenderComponent toRender : dynamicRenderLayers.get(y+1)) {
-     					toRender.render(g, this);
-     				}
-     			}
-     			*/
-     		}
-    		 
+     		} 
     	}
-    	//dynamicRenderLayers.clear();
-    	//((originOffset[0] / 100) - 6 * 100) / 100 -------THIS IS CORRECT :D
-    	//for (int y = ((originOffset[1] / 100) - 6 * 100) / 100; y < ((originOffset[1] / 100) + 30 * 100) / 100; y++) {
+    	
     
     }
    

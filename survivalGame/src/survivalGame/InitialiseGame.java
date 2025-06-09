@@ -56,7 +56,7 @@ public class InitialiseGame {
 				tiles++;
 				tile.addTexture("Grass",textureM);
 				
-				int rNum = (int) (Math.random() * 10) + 1; // Generates a number between 1 and 10
+				int rNum = (int) (Math.random() * 13) + 1; // Generates a number between 1 and 10
 				if (rNum <= 1) {
 					TileObject tree = new TileTree(tile);
 					tree.addTexture("Tree",textureM);

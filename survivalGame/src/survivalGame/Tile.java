@@ -36,15 +36,7 @@ public class Tile implements RenderComponent{
 		chunkParent = parent;
 	}
 	
-	public void setObject(TileObject object) {
-		tileObject = object;
-	}
-	public TileObject getObject() {
-		return tileObject;
-	}
-	public void addTexture(String Texture, TextureManager textureM) {
-		texture = textureM.getTexture(Texture);
-	}
+	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
 		if (active) {
@@ -52,7 +44,7 @@ public class Tile implements RenderComponent{
 			int height = graphics.getHeight();
 
 			//g.drawImage(texture, pixelX, pixelY, null); 
-			g.setColor(new Color(70,110,76));
+			g.setColor(new Color(65,105,72));
 			g.fillRect(pixelX, pixelY, tileSize, tileSize);
 			if (selected) {
 				g.setColor(new Color(0,0,111));
@@ -65,11 +57,7 @@ public class Tile implements RenderComponent{
 			if (tileObject != null) {
 				tileObject.render(g, graphics);
 			}
-		}
-		
-		
-		
-		
+		}	
 	}
 
 	@Override
@@ -89,5 +77,15 @@ public class Tile implements RenderComponent{
 	}
 	public boolean isSelected() {
 		return selected;
+	}
+	
+	public void setObject(TileObject object) {
+		tileObject = object;
+	}
+	public TileObject getObject() {
+		return tileObject;
+	}
+	public void addTexture(String Texture, TextureManager textureM) {
+		texture = textureM.getTexture(Texture);
 	}
 }
