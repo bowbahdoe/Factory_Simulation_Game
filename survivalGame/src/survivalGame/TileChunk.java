@@ -10,7 +10,7 @@ public class TileChunk {
 
 	List<Tile> tiles = new ArrayList<>();
 	
-	
+
 	private int size;
 	final int x;
 	final int y;

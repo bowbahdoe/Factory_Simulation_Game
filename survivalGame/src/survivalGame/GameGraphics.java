@@ -19,6 +19,12 @@ import javax.swing.JPanel;
 
 
 public final class GameGraphics extends JPanel implements Updatable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static GameGraphics graphicsInstance;
 	private static TextureManager textureManage;
 	private static TreeMap<Integer, List<RenderComponent>> renderLayers = new TreeMap<>();

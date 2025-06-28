@@ -70,6 +70,7 @@ public class InputListener implements KeyListener, MouseListener {
 		return clickedTile;
 	}
 	
+	boolean first = true;
 	private Tile getClickedTile() {
 		int x = (clickedCoords[0] + GameGraphics.getInstance().getOriginOffset()[0]) / GameGraphics.getInstance().tileSize;
 		int y = (clickedCoords[1] + GameGraphics.getInstance().getOriginOffset()[1]) / GameGraphics.getInstance().tileSize;
@@ -85,6 +86,15 @@ public class InputListener implements KeyListener, MouseListener {
 		System.out.println("Chunk coords: " + chunk.x + ", " + chunk.y + "    ||||||||      Coords in chunk: " + chunkX + ", " + chunkY + " |||   pos in list: " + (chunkX * chunkSize + chunkY));
 		Tile tile = chunk.tiles.get(chunkX * chunkSize + chunkY);
 		System.out.println("Tile Coords: " + tile.x + ", " + tile.y + " is Selected? " + tile.isSelected());
+		
+		//-------------------------
+		Conveyor conv = new Conveyor(tile,1);
+		tile.setObject(conv);
+		if (first) {
+			conv.recieveItem(new TestItem(conv.parentTile.pixelX, conv.parentTile.pixelY));
+			first = false;
+		}
+		
 		return tile;
 	}
 	

@@ -22,9 +22,12 @@ public final class Updater implements Runnable {
 
 
     public static void register(Updatable updatable) {
+    	 if (updatable == null) {
+    	        throw new IllegalArgumentException("Trying to register null!");
+    	    }
         updatables.add(updatable);
     }
-
+    
     @Override
     public void run() {
        

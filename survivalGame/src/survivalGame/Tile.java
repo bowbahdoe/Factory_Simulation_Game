@@ -35,7 +35,7 @@ public class Tile implements RenderComponent{
 		GameGraphics.register(this, 1);
 		chunkParent = parent;
 	}
-	
+
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {

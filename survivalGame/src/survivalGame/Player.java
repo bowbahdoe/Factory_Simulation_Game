@@ -18,7 +18,7 @@ public class Player implements Updatable, RenderComponent{
 		Updater.getInstance();
 		Updater.register(this);
 		GameGraphics.register(this, 2);
-		
+	
 	}
 	@Override
 	public void update() {

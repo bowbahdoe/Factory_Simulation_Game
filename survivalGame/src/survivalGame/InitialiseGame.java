@@ -19,8 +19,12 @@ public class InitialiseGame {
 		Thread updaterThread = new Thread(Updater.getInstance());
 
 		
-		textureM.loadTexture("src/grasy.png", "Grass");
-		textureM.loadTexture("src/Tree.png", "Tree");
+		textureM.loadTexture("src/images/grasy.png", "Grass");
+		textureM.loadTexture("src/images/Tree.png", "Tree");
+		textureM.loadTexture("src/images/ConveyorN.png", "ConveyorN");
+		textureM.loadTexture("src/images/ConveyorE.png", "ConveyorE");
+		textureM.loadTexture("src/images/ConveyorS.png", "ConveyorS");
+		textureM.loadTexture("src/images/ConveyorW.png", "ConveyorW");
 		
 		int worldSize = 36 * 10;
 		//world size is length or width of world, so if world size 2, 4 tiles total
@@ -28,7 +32,7 @@ public class InitialiseGame {
 		int chunkSize = 6;
 		int chunkAmount = worldSize / chunkSize;
 		tileSize = 100;
-		
+	
 		chunks = new TileChunk[chunkAmount * chunkAmount ];	
 		
 		for (int x = 0; x < chunkAmount; x++) {
