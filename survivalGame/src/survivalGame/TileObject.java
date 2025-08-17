@@ -4,7 +4,11 @@ package survivalGame;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public abstract class TileObject implements RenderComponent{
+import graphics.GameGraphics;
+import graphics.TextureManager;
+import graphics.WorldRenderable;
+
+public abstract class TileObject implements WorldRenderable{
 	
 	protected BufferedImage texture; 
 	protected Tile parentTile;

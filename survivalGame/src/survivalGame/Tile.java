@@ -10,7 +10,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Tile implements RenderComponent{
+import graphics.GameGraphics;
+import graphics.TextureManager;
+import graphics.WorldRenderable;
+
+public class Tile implements WorldRenderable{
 	final int x;
 	final int y;
 	final int tileSize;

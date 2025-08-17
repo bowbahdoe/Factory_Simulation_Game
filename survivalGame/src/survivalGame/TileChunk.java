@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import graphics.GameGraphics;
+
 public class TileChunk {
 
 	List<Tile> tiles = new ArrayList<>();

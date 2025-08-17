@@ -4,6 +4,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 
+import graphics.GameGraphics;
+
 
 public class MainScreen {
 	

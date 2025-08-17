@@ -3,9 +3,12 @@ package survivalGame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public class Player implements Updatable, RenderComponent{
+import graphics.GameGraphics;
+import graphics.WorldRenderable;
+
+public class Player implements Updatable, WorldRenderable{
 	
-	InputListener input = new InputListener();
+	public InputListener input = new InputListener();
 	private double x = 0;
 	private double y = 0;
 	private int velocity = 360;
@@ -77,7 +80,7 @@ public class Player implements Updatable, RenderComponent{
 		
 		int pixelX = (int)x;
 		int pixelY = (int)y;
-		g.setColor(new Color(255,0,0));
+		g.setColor(new Color(250,0,90));
 		g.fillRect(-pixelX + width / 2 - 25,-pixelY + height / 2 - 25, 50, 50); 
 	}
 	public Tile getSelectedTile() {

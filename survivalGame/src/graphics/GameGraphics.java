@@ -1,4 +1,4 @@
-package survivalGame;
+package graphics;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -17,6 +17,12 @@ import java.util.TreeMap;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import survivalGame.InputListener;
+import survivalGame.Player;
+import survivalGame.TileChunk;
+import survivalGame.Updatable;
+import survivalGame.Updater;
+
 
 public final class GameGraphics extends JPanel implements Updatable {
 	
@@ -27,29 +33,29 @@ public final class GameGraphics extends JPanel implements Updatable {
 
 	private static GameGraphics graphicsInstance;
 	private static TextureManager textureManage;
-	private static TreeMap<Integer, List<RenderComponent>> renderLayers = new TreeMap<>();
-	private static Map<Integer, List<RenderComponent>> dynamicRenderLayers = new HashMap<>();//where y value is key
+	private static TreeMap<Integer, List<WorldRenderable>> renderLayers = new TreeMap<>();
+	private static Map<Integer, List<WorldRenderable>> dynamicRenderLayers = new HashMap<>();//where y value is key
 	
-	final TileChunk[] chunks;
+	public final TileChunk[] chunks;
 	
 	AffineTransform uiTransform;
 	
-	final int worldSize;
+	public final int worldSize;
     final int worldPixelSize;
-	final int tileSize;
-	final int chunkSize;
+	public final int tileSize;
+	public final int chunkSize;
 	//singleton lolololol
 	public static GameGraphics getInstance() {
         return graphicsInstance;
     }
 	
-	public static void register(RenderComponent toRender, int layer) {
+	public static void register(WorldRenderable toRender, int layer) {
 		renderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
 	}
-	public static void registerDynamic(RenderComponent toRender, int layer) {
+	public static void registerDynamic(WorldRenderable toRender, int layer) {
 		dynamicRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
 	}
-	public static void registerAll(List<RenderComponent> toRender, int layer) {
+	public static void registerAll(List<WorldRenderable> toRender, int layer) {
 		renderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).addAll(toRender);
 	}
 
@@ -75,7 +81,7 @@ public final class GameGraphics extends JPanel implements Updatable {
 		this.setFocusable(true);  // Make sure the panel can receive focus
 		renderLayers.put(0,new ArrayList<>());
 		for (int layer : renderLayers.keySet()) {
-			renderLayers.get(layer).sort(Comparator.comparing(RenderComponent::getY));
+			renderLayers.get(layer).sort(Comparator.comparing(WorldRenderable::getY));
 		}
 	
     }

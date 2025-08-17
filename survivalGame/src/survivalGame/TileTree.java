@@ -2,6 +2,8 @@ package survivalGame;
 
 import java.awt.Graphics2D;
 
+import graphics.GameGraphics;
+
 public class TileTree extends TileObject{
 
 	public TileTree(Tile parentTile) {

@@ -3,7 +3,10 @@ package survivalGame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-public abstract class Item implements RenderComponent {
+import graphics.GameGraphics;
+import graphics.WorldRenderable;
+
+public abstract class Item implements WorldRenderable {
 	
 	protected int pixelX;
 	protected int pixelY;

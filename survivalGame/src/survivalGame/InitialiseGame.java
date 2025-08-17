@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import graphics.GameGraphics;
+import graphics.TextureManager;
+
 public class InitialiseGame {
 	
 	static TileChunk[] chunks;

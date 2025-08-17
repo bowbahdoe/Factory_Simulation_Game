@@ -5,10 +5,15 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import graphics.GameGraphics;
+
 public class InputListener implements KeyListener, MouseListener {
 
 	private int horiz;
 	private int vert;
+	
+	private boolean isBuilding;
+	private int buildRotation = 0;
 	
 	private int[] clickedCoords = new int[2];
 	private Tile clickedTile;
@@ -26,21 +31,33 @@ public class InputListener implements KeyListener, MouseListener {
         // Check for WASD keys
         switch (keyCode) {
             case KeyEvent.VK_W:
-                //System.out.println("W key pressed");
                 vert = 1;
                 break;
             case KeyEvent.VK_A:
-                //System.out.println("A key pressed");
                 horiz = 1;
                 break;
             case KeyEvent.VK_S:
-                //System.out.println("S key pressed");
                 vert = -1;
                 break;
             case KeyEvent.VK_D:
-                //System.out.println("D key pressed");
                 horiz = -1;
                 break;
+            case KeyEvent.VK_B:
+            	isBuilding = !isBuilding;
+            	break;
+        }
+        if (isBuilding ) {
+        	System.out.println(buildRotation);
+        	if (keyCode == KeyEvent.VK_E) {
+        		buildRotation++;
+        		buildRotation %= 4;
+        	}
+        	else if(keyCode == KeyEvent.VK_Q) {
+        		buildRotation--;
+        		if (buildRotation == -1) {
+        			buildRotation = 3;
+        		}
+        	}
         }
     }
 	public int[] listenMovement() {
@@ -88,14 +105,23 @@ public class InputListener implements KeyListener, MouseListener {
 		System.out.println("Tile Coords: " + tile.x + ", " + tile.y + " is Selected? " + tile.isSelected());
 		
 		//-------------------------
-		Conveyor conv = new Conveyor(tile,1);
+		if (isBuilding) {
+			manageBuilding(tile);
+		}
+		
+		
+		return tile;
+	}
+	private void manageBuilding(Tile tile) {
+		if (tile.getObject() != null) {
+			return;
+		}
+		Conveyor conv = new Conveyor(tile,buildRotation);
 		tile.setObject(conv);
 		if (first) {
 			conv.recieveItem(new TestItem(conv.parentTile.pixelX, conv.parentTile.pixelY));
 			first = false;
 		}
-		
-		return tile;
 	}
 	
 	@Override
@@ -104,7 +130,11 @@ public class InputListener implements KeyListener, MouseListener {
 		System.out.println("Clicked at " + e.getX() + ", " + e.getY());
 		clickedCoords[0] = e.getX();
 		clickedCoords[1] = e.getY();
+		Tile pastClickedTile = clickedTile;
 		clickedTile = getClickedTile();
+		if (clickedTile == pastClickedTile) {
+			clickedTile = null;
+		}
 	}
 	
 	@Override

@@ -22,10 +22,12 @@ public final class TickManager implements Updatable{
 	public static void TickAll() {
 		for (ITickable tick : toTick) {
 			tick.onTick();
+			 
 		}
+		
 	}
 
-	public static void addToTick(ITickable obj) {
+	public static void register(ITickable obj) {
 		toTick.add(obj);
 	}
 
