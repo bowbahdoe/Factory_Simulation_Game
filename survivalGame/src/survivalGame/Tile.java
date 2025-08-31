@@ -22,7 +22,7 @@ public class Tile implements WorldRenderable{
 	final int pixelX;
 	final int pixelY;
 	
-	private boolean active = false;
+	private boolean toRender = false;
 	private boolean selected = false;
 	private TileObject tileObject; 
 	public final TileChunk chunkParent;
@@ -36,19 +36,20 @@ public class Tile implements WorldRenderable{
 		pixelY = y * tileSize;
 		
 		GameGraphics.getInstance();
-		GameGraphics.register(this, 1);
+		GameGraphics.registerWorldObj(this, 1);
 		chunkParent = parent;
 	}
 
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		if (active) {
+		if (toRender) {
 			int width = graphics.getWidth();
 			int height = graphics.getHeight();
 
 			//g.drawImage(texture, pixelX, pixelY, null); 
 			g.setColor(new Color(65,105,72));
+			//g.setColor(new Color(0,0,0,66));
 			g.fillRect(pixelX, pixelY, tileSize, tileSize);
 			if (selected) {
 				g.setColor(new Color(0,0,111));
@@ -56,11 +57,8 @@ public class Tile implements WorldRenderable{
 				g.setColor(new Color(0,0,50,35));
 				g.fillRect(pixelX, pixelY, tileSize, tileSize);
 			}
-			//g.drawRect(pixelX, pixelY, tileSize, tileSize);
+
 			
-			if (tileObject != null) {
-				tileObject.render(g, graphics);
-			}
 		}	
 	}
 
@@ -70,7 +68,10 @@ public class Tile implements WorldRenderable{
 	}
 	
 	public void setActive(boolean state) {
-		active = state;
+		toRender = state;
+		if (tileObject != null) {
+			tileObject.setActive(state);
+		}
 	}
 	@Override
 	public boolean isActive() {

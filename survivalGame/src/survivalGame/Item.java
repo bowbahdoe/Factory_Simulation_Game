@@ -2,41 +2,28 @@ package survivalGame;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import graphics.GameGraphics;
+import graphics.UIRenderable;
 import graphics.WorldRenderable;
 
-public abstract class Item implements WorldRenderable {
+public class Item  {
 	
-	protected int pixelX;
-	protected int pixelY;
-	protected boolean active = true;
-	public Item(int pixelX, int pixelY) {
-		this.pixelX = pixelX;
-		this.pixelY = pixelY;
-		GameGraphics.getInstance();
-		GameGraphics.register(this, 4);
-	}
-
-	@Override
-	public int getY() {
-		return pixelY;
+	private String id;
+	private BufferedImage texture;
+	
+	public Item(String id) {
+		this.id = id;
+		texture = GameGraphics.getTextureManager().getTexture(id);
 	}
 	
-	@Override
-	public boolean isActive() {
-		return active;
+	public BufferedImage getTexture() {
+		return texture;
 	}
 	
-	@Override
-	public void render(Graphics2D g, GameGraphics graphics) {
-		if (active) {
-			g.setColor(Color.RED);
-			g.fillRect(pixelX, pixelY, 40, 40);
-		}
-	}
-	public void fixToTile(Tile tile) {
-		this.pixelX = tile.pixelX - 20 + tile.tileSize / 2;
-		this.pixelY = tile.pixelY - 20 + tile.tileSize / 2;
+	public String getItemID()
+	{
+		return id;
 	}
 }

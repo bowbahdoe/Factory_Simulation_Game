@@ -2,25 +2,33 @@ package survivalGame;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
 
 public class Player implements Updatable, WorldRenderable{
 	
-	public InputListener input = new InputListener();
-	private double x = 0;
-	private double y = 0;
-	private int velocity = 360;
+	private PlayerUI playerUI = new PlayerUI();
+	public InputListener input = new InputListener(playerUI, this);
+	
+	private double pixelX = 50;
+	private double pixelY = 0;
+	private int velocity = 360 * 7;
 	
 	private int[] movement;
 	
 	private Tile selectedTile;
 	
+	BufferedImage character;
 	public Player() {
 		Updater.getInstance();
 		Updater.register(this);
-		GameGraphics.register(this, 2);
+		GameGraphics.registerWorldObj(this, 3);
+
 	
 	}
 	@Override
@@ -46,26 +54,26 @@ public class Player implements Updatable, WorldRenderable{
 		if (movement[0] != 0 && movement[1] != 0) {
 			double move = Math.sqrt(movement[0] * movement[0] + movement[1] * movement[1]);
 			//(movement[0] / move) to restore direction, since move just gives magnitude. 
-		    x += (movement[0] / move) * velocity * delta / 1000f;
-		    y += (movement[1] / move) * velocity * delta / 1000f;
+		    pixelX += (movement[0] / move) * velocity * delta / 1000f;
+		    pixelY += (movement[1] / move) * velocity * delta / 1000f;
 			
 		}
 		else {
-			x += movement[0] * velocity * delta / 1000f;
-			y += movement[1] * velocity * delta / 1000f;
+			pixelX += movement[0] * velocity * delta / 1000f;
+			pixelY += movement[1] * velocity * delta / 1000f;
 		}
 		
 		
 	}
 	public double getYCoord() {
-		return y;
+		return pixelY;
 	}
 	public double getXCoord() {
-		return x;
+		return pixelX;
 	}
 	@Override
 	public int getY() {
-		return (int) y;
+		return (int) pixelY;
 	}
 	@Override
 	public boolean isActive() {
@@ -74,20 +82,64 @@ public class Player implements Updatable, WorldRenderable{
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		int width = graphics.getWidth();
-		int height = graphics.getHeight();
+		int width = (int) (graphics.getWidth() / graphics.getCameraZoom());
+		int height = (int) (graphics.getHeight() / graphics.getCameraZoom());
 
-		
-		int pixelX = (int)x;
-		int pixelY = (int)y;
+		int playerSize = 25;
 		g.setColor(new Color(250,0,90));
-		g.fillRect(-pixelX + width / 2 - 25,-pixelY + height / 2 - 25, 50, 50); 
+		g.fillRect(-(int)pixelX,-(int)pixelY, 50, 50); 
+		
+		//g.drawImage(character, -(int)pixelX, -(int)pixelY, graphics);
+		//g.fillRect((int)-pixelX + (int)(width / (2 * graphics.getCameraZoom())) - playerSize,(int)-pixelY + (int)(height / (2 * graphics.getCameraZoom())) - playerSize, 50, 50); 
 	}
 	public Tile getSelectedTile() {
 		return selectedTile;
 	}
 	public void selectTile(Tile selectedTile) {
 		this.selectedTile = selectedTile;
+	}
+	
+	public void collectItems() {
+		Tile[] tiles = new Tile[4];
+		tiles[0] = getTile(0,0);
+		tiles[1] = getTile(0,100);
+		tiles[2] = getTile(100,0);
+		tiles[3] = getTile(100,100);
+		
+		Map<Item, Integer> tempInventory = new HashMap<>();
+		for (Tile tile : tiles) {
+			if (tile.getObject() instanceof Conveyor) {
+				Conveyor conv = (Conveyor) tile.getObject();
+				if (!conv.isEmpty()) {
+					WorldItem worldItem = conv.collectItem();
+					tempInventory.merge(worldItem.getItem(), 1, Integer::sum); 
+					// same as tempInventory.put(item,tempInventory.get(item) + 1)
+				}
+			}
+		}
+		playerUI.mergeInventory(tempInventory);
+	}
+	private Tile getTile(int xOffset, int yOffset) {
+		GameGraphics graphics = GameGraphics.getInstance();
+		
+		
+		int x = (int) ((graphics.getOriginOffset()[0] + xOffset )/ graphics.tileSize);
+		int y = (int) ((graphics.getOriginOffset()[1] + yOffset ) / graphics.tileSize);
+		
+		int chunkSize = graphics.chunkSize;
+		int chunkAmount = graphics.worldSize / chunkSize;
+		int positionInArray = chunkAmount * (x / chunkSize) + (y / chunkSize);		
+		if (positionInArray < 0) return null;
+		TileChunk chunk = (TileChunk) graphics.chunks[positionInArray];
+		
+		int chunkX = x - (chunk.x * chunkSize);
+		int chunkY = y - (chunk.y * chunkSize);
+		
+		if (chunkX * chunkSize + chunkY < 0 ) return null; //Out of bounds
+		Tile tile = chunk.tiles.get(chunkX * chunkSize + chunkY);
+
+		
+		return tile;
 	}
 
 }

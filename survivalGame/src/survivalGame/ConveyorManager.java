@@ -31,7 +31,7 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 		TickManager.register(this); 
 		
 		GameGraphics.getInstance();
-		GameGraphics.register(this, 4);
+		GameGraphics.registerWorldObj(this, 4);
 	}
 	 
 
@@ -44,7 +44,6 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 	}
 	
 	public static void asignLeaf(int key, Conveyor conv) {
-		System.out.println("Put!!!!");
 		keyToLeaf.put(key, conv);
 	}
 	@Override
@@ -60,7 +59,7 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 	private void traverse(Conveyor c, Conveyor root) {
 		
 		c.onTick();
-		System.out.println("Traversed through " +  c.parentTile.x + ", " + c.parentTile.y);
+		//System.out.println("Traversed through " +  c.parentTile.x + ", " + c.parentTile.y);
 		
 		//Massive possibility for stack overflow, gotta cover all the edge cases haha
 		//if (c.getInputConveyor() == null) System.out.println("--- Null input conveyor");

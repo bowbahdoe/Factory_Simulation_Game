@@ -14,7 +14,7 @@ import graphics.TextureManager;
 public class InitialiseGame {
 	
 	static TileChunk[] chunks;
-	static TextureManager textureM = new TextureManager();
+	static TextureManager textureManager = new TextureManager();
 	private static int tiles = 0;
 	private static int tileSize;
 	public static void main(String[] args) {
@@ -22,35 +22,39 @@ public class InitialiseGame {
 		Thread updaterThread = new Thread(Updater.getInstance());
 
 		
-		textureM.loadTexture("src/images/grasy.png", "Grass");
-		textureM.loadTexture("src/images/Tree.png", "Tree");
-		textureM.loadTexture("src/images/ConveyorN.png", "ConveyorN");
-		textureM.loadTexture("src/images/ConveyorE.png", "ConveyorE");
-		textureM.loadTexture("src/images/ConveyorS.png", "ConveyorS");
-		textureM.loadTexture("src/images/ConveyorW.png", "ConveyorW");
+		textureManager.loadTexture("src/images/grasy.png", "Grass");
+		textureManager.loadTexture("src/images/Tree.png", "Tree");
+		textureManager.loadTexture("src/images/ConveyorN.png", "ConveyorN");
+		textureManager.loadTexture("src/images/ConveyorE.png", "ConveyorE");
+		textureManager.loadTexture("src/images/ConveyorS.png", "ConveyorS");
+		textureManager.loadTexture("src/images/ConveyorW.png", "ConveyorW");
+		textureManager.loadTexture("src/images/PlayerUI.png", "PlayerUI");
+		textureManager.loadTexture("src/images/InventorySquare.png", "InventorySlot");
+		textureManager.loadTexture("src/images/WoodItem.png", "WoodItem");
 		
-		int worldSize = 36 * 10;
+		int worldSize = 36 * 9;
 		//world size is length or width of world, so if world size 2, 4 tiles total
 		//chunk size reccommended: 6
 		int chunkSize = 6;
 		int chunkAmount = worldSize / chunkSize;
 		tileSize = 100;
 	
-		chunks = new TileChunk[chunkAmount * chunkAmount ];	
+		chunks = new TileChunk[chunkAmount * chunkAmount];	
 		
 		for (int x = 0; x < chunkAmount; x++) {
 			for (int y = 0; y < chunkAmount; y++ ) {
 				createChunk(x,y,chunkSize, chunkAmount);
 			}
 		}
-		
 
 		System.out.println(chunks.length + " chunks and " + tiles + " tiles") ;
 		
+		
+		GameGraphics gameGraphics = new GameGraphics(chunks, worldSize, chunkSize, tileSize );
+		gameGraphics.addOnTextureManager(textureManager);
 		Player player = new Player();
-		GameGraphics gameGraphics = new GameGraphics(chunks, player, worldSize, chunkSize, tileSize );
-		gameGraphics.addOnTextureManager(textureM);
-
+		gameGraphics.attachPlayer(player);
+		
 		new MainScreen(gameGraphics, player.input);
         updaterThread.start();  // Start the game loop in a separate thread
 		
@@ -61,12 +65,12 @@ public class InitialiseGame {
 			for (int Ty = 0; Ty < chunkSize; Ty++ ) {
 				Tile tile = new Tile(Tx  + (x * chunkSize),Ty  + (y * chunkSize),chunk, tileSize);
 				tiles++;
-				tile.addTexture("Grass",textureM);
+				tile.addTexture("Grass",textureManager);
 				
-				int rNum = (int) (Math.random() * 13) + 1; // Generates a number between 1 and 10
+				int rNum = (int) (Math.random() * 60) + 1; 
 				if (rNum <= 1) {
 					TileObject tree = new TileTree(tile);
-					tree.addTexture("Tree",textureM);
+					tree.addTexture("Tree",textureManager);
 					tile.setObject(tree);
 				}
 				chunk.add(tile);

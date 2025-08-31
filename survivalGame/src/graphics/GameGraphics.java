@@ -33,8 +33,9 @@ public final class GameGraphics extends JPanel implements Updatable {
 
 	private static GameGraphics graphicsInstance;
 	private static TextureManager textureManage;
-	private static TreeMap<Integer, List<WorldRenderable>> renderLayers = new TreeMap<>();
-	private static Map<Integer, List<WorldRenderable>> dynamicRenderLayers = new HashMap<>();//where y value is key
+	private static TreeMap<Integer, List<WorldRenderable>> WorldRenderLayers = new TreeMap<>();
+	private static List<UIRenderable> UIRenderLayers = new ArrayList<>();
+	
 	
 	public final TileChunk[] chunks;
 	
@@ -42,30 +43,45 @@ public final class GameGraphics extends JPanel implements Updatable {
 	
 	public final int worldSize;
     final int worldPixelSize;
+
 	public final int tileSize;
 	public final int chunkSize;
+	
+	private float cameraZoom = 1;
+	
+	public float getCameraZoom() {
+		return cameraZoom;
+	}
+
+
+	public void setCameraZoom(float cameraZoom) {
+		this.cameraZoom = cameraZoom;
+	}
+	
 	//singleton lolololol
 	public static GameGraphics getInstance() {
         return graphicsInstance;
     }
 	
-	public static void register(WorldRenderable toRender, int layer) {
-		renderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
+	
+	public static void registerWorldObj(WorldRenderable toRender, int layer) {
+		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
 	}
-	public static void registerDynamic(WorldRenderable toRender, int layer) {
-		dynamicRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
+	
+	public static void registerUI(UIRenderable toRender) {
+		UIRenderLayers.add(toRender);
 	}
+	
 	public static void registerAll(List<WorldRenderable> toRender, int layer) {
-		renderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).addAll(toRender);
+		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).addAll(toRender);
 	}
 
 	private Player player;
 	private int[] originOffset = new int[2];
 	
-	public GameGraphics(TileChunk[] chunks, Player player, int worldSize, int chunkSize , int tilePixelSize)
+	public GameGraphics(TileChunk[] chunks, int worldSize, int chunkSize , int tilePixelSize)
     {		
 		graphicsInstance = this;
-		this.player = player;
 		this.chunks = chunks;
 		this.worldSize = worldSize;
 		this.tileSize = tilePixelSize;
@@ -73,19 +89,23 @@ public final class GameGraphics extends JPanel implements Updatable {
 		worldPixelSize = (worldSize * tilePixelSize) - 2600;
 		//rough estimate
 		
-		
     	Updater.getInstance();
 		Updater.register(this);
+		
+		this.setFocusable(true);  // Make sure the panel can receive focus
+		WorldRenderLayers.put(0,new ArrayList<>());
+		for (int layer : WorldRenderLayers.keySet()) {
+			WorldRenderLayers.get(layer).sort(Comparator.comparing(WorldRenderable::getY));
+		}
+		
+    }
+	public void attachPlayer(Player player) {
+		this.player = player;
 		InputListener input = player.input;
 		this.addKeyListener(input);  // Adds key listener to the panel
-		this.setFocusable(true);  // Make sure the panel can receive focus
-		renderLayers.put(0,new ArrayList<>());
-		for (int layer : renderLayers.keySet()) {
-			renderLayers.get(layer).sort(Comparator.comparing(WorldRenderable::getY));
-		}
-	
-    }
-	
+		this.addMouseListener(input);
+		this.addMouseWheelListener(input);
+	}
     @Override
     protected void paintComponent(Graphics g) {
     	super.paintComponent(g);
@@ -95,61 +115,76 @@ public final class GameGraphics extends JPanel implements Updatable {
             uiTransform = g2d.getTransform();
         }
         
+        
         g2d.setStroke(new BasicStroke(4));
-        
-        
-        if (-player.getXCoord() >= 0 && -player.getXCoord() < worldPixelSize ) {
-        	 originOffset[0] = (int) -player.getXCoord();
-        }
-        if (-player.getYCoord() >= 0 && -player.getYCoord() < worldPixelSize ) {
-        	 originOffset[1] = (int) -player.getYCoord();
-        }
-        g2d.translate(-originOffset[0], -originOffset[1]);
-       
-        
         g2d.setColor(new Color(0,0,0));
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
         
-        renderAll(g2d);
+        translateByPlayerView(g2d);
+        g2d.scale(cameraZoom,cameraZoom); //Needs to be other way around, therefore apply zoom to origin offset for player :/
         
+        
+        
+        renderWorld(g2d);
         
         g2d.setTransform(uiTransform);
-        Font largeFont = new Font("Arial", Font.BOLD, 50);
+        
+        renderUI(g2d);
+        
+        Font largeFont = new Font("Arial", Font.BOLD, 45);
         g2d.setFont(largeFont);
         g2d.setColor(Color.BLUE);
-        g2d.drawString(originOffset[0] + ", " + originOffset[1], 250, 250);
+        g2d.drawString(originOffset[0] + ", " + originOffset[1] + "  Z: " + cameraZoom, 222, 222);
         //g2d.fillRect(this.getWidth() / 2 - 5, this.getHeight() / 2 - 5, 10, 10);
         
        
     }
-    private void renderAll(Graphics2D g) {
-    	//for dynamic layers:
-    	//render all layers, but also check their y axis,
-    	//check if that y axis is one of the keys to the dynamic render layers map
-    	//render it after the y axis of static elements been rendered. 
+    private void translateByPlayerView(Graphics2D g2d) {
+    	 if (-player.getXCoord() >= 0 && -player.getXCoord() < worldPixelSize || true) {
+        	 originOffset[0] = (int) (-player.getXCoord() );
+        }
+        if (-player.getYCoord() >= 0 && -player.getYCoord() < worldPixelSize) {
+        	 originOffset[1] =  (int) (-player.getYCoord());
+        }
+        originOffset[0] = (int) (-player.getXCoord() );
+        originOffset[1] =  (int) (-player.getYCoord());
+        
+        g2d.translate(-originOffset[0] * cameraZoom + this.getWidth() / 2, -originOffset[1]  * cameraZoom + this.getHeight() / 2 );
+    }
+    private void renderWorld(Graphics2D g) {
+
     	for (TileChunk chunk : chunks) {
-    		chunk.activateChunk(g,this);
+    		chunk.renderChunk(g,this);
 		}
     	
     	
-    	for (int layer : renderLayers.keySet()) {
-    		//btw the 6 is the chunksize, needs to be variable next time, also 100 is tilesize
+    	for (int layer : WorldRenderLayers.keySet()) {
     	
+    		//Loops through every tile in your view
     		 for (int y = ((originOffset[1] / tileSize) - chunkSize * tileSize) / tileSize; y < worldSize; y++) {
      			for (int x = ((originOffset[0] / tileSize) - chunkSize * tileSize) / tileSize ; x < worldSize; x++) {
 
-     				if (((y * worldSize) + x - 1) > renderLayers.get(layer).size()  - 1|| (y * worldSize) + x <= 0 ){
+     				if (((y * worldSize) + x - 1) > WorldRenderLayers.get(layer).size()  - 1|| (y * worldSize) + x <= 0 ){
      					continue;
      				}
-     				renderLayers.get(layer).get((y * worldSize) + x - 1).render(g, this);
-     				
-     				
+     				WorldRenderLayers.get(layer).get((y * worldSize) + x - 1).render(g, this);	
      		}
      		} 
     	}
-    	
-    
     }
-   
+    
+    private void renderUI(Graphics2D g) {
+    	
+    	for (UIRenderable ui : UIRenderLayers) {
+	    	if (ui.isActive()) {
+	    		ui.renderUI(g, this);
+	    	}
+	    }
+   	}
+    
+    public List<UIRenderable> getUILayers() {
+    	return UIRenderLayers;
+    }
 	@Override
 	public void update() {
 		this.repaint();

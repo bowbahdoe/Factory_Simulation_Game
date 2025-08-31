@@ -19,7 +19,7 @@ public class TileChunk {
 	
 	final int pixelX;
 	final int pixelY;
-	final int chunkPSize;
+	final int chunkPixelSize;
 	
 	private boolean activatedTiles = false;
 	public TileChunk(int x, int y, int size, int tileSize) {
@@ -29,32 +29,34 @@ public class TileChunk {
 
 		pixelX = x * size * tileSize;
 		pixelY = y * size * tileSize;
-		chunkPSize = size * tileSize;
+		chunkPixelSize = size * tileSize;
 	}
 	
 	public void add(Tile tile) {
 		tiles.add(tile);
 	}
-	
-	
 
-	public void activateChunk(Graphics2D g, GameGraphics graphics) {
+	public void renderChunk(Graphics2D g, GameGraphics graphics) {
 		//tile chunk works like gamegraphics, but groups tiles together avoiding repeated checks
-		int width = graphics.getWidth();
-		int height = graphics.getHeight();
-		if (pixelX > graphics.getOriginOffset()[0] - chunkPSize && pixelX < graphics.getOriginOffset()[0] + width
-				&& pixelY > graphics.getOriginOffset()[1] - chunkPSize && pixelY < graphics.getOriginOffset()[1] + height) {
+		int width = (int) (graphics.getWidth() / graphics.getCameraZoom()); 
+		int height = (int) (graphics.getHeight() / graphics.getCameraZoom() ); 
+		//Renders tiles if within range
+		if (pixelX > graphics.getOriginOffset()[0] - chunkPixelSize - width / 2 && pixelX < graphics.getOriginOffset()[0] + width / 2 
+				&& pixelY > graphics.getOriginOffset()[1] - chunkPixelSize - height / 2 && pixelY < graphics.getOriginOffset()[1] + height / 2 ) {
 			
-			toggleTiles();
+			for (Tile tile : tiles) {
+				tile.setActive(true);
+				activatedTiles = true;
+			}
 			
 		}
 		else if (activatedTiles){
-			toggleTiles();
+			for (Tile tile : tiles) {
+				tile.setActive(false);
+				activatedTiles = false;
+			}
 		}
 	}
-	private void toggleTiles() {
-		for (Tile tile : tiles) {
-			tile.setActive(!activatedTiles);
-		}
-	}
+
+	
 }

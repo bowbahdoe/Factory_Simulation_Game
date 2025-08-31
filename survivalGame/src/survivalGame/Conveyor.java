@@ -12,9 +12,9 @@ public class Conveyor extends TileObject implements ITickable{
 
 	private Conveyor inputConveyor;
 	private Conveyor targetConveyor;
-	private Item heldItem;
+	private WorldItem heldItem;
 	private Tile targetTile;
-	private boolean isRoot;
+	private boolean isRoot; //Purely for visual purposes
 	private int beltKey = -1;
 	/** 
 	@param rotation where 0,1,2,3 North, East, South, West are the rotation choices.
@@ -24,7 +24,7 @@ public class Conveyor extends TileObject implements ITickable{
 		super.parentTile = parentTile;
 
 		GameGraphics.getInstance();
-		GameGraphics.register(this, 1);
+		GameGraphics.registerWorldObj(this, 2);
 		
 		ConveyorManager.getInstance();
 		ConveyorManager.registerConveyor(this);
@@ -59,7 +59,7 @@ public class Conveyor extends TileObject implements ITickable{
 			//And therefore that parent must be the leaf, so make this new leaf.
 			ConveyorManager.asignLeaf(beltKey, this);
 		}	
-		else if (targetTile.getObject() instanceof Conveyor) {
+		else if (targetTile.getObject() instanceof Conveyor && !((Conveyor) targetTile.getObject()).hasInputConveyor() ) {
 			//if conveyor infront, attach to conveyor and update beltkey
 			System.out.println("Successfully found targetConveyor! ");
 			targetConveyor = (Conveyor) targetTile.getObject();
@@ -73,6 +73,7 @@ public class Conveyor extends TileObject implements ITickable{
 			System.out.println("New beltkey made!");
 			beltKey = ConveyorManager.generateConveyorKey(this);
 			isRoot = true;
+			ConveyorManager.asignLeaf(beltKey, this);
 		}
 		
 	}
@@ -115,19 +116,16 @@ public class Conveyor extends TileObject implements ITickable{
 
 	    if (targetConveyor != null && targetConveyor.isEmpty() && targetConveyor != null) {
 			if (heldItem != null) {
-				System.out.println("Passed");
 				passToTarget(heldItem);
 			}
 			else {
-				System.out.println("no held item");
 			}
 
 		}
 		
 	}
-	public void passToTarget(Item item) {
+	public void passToTarget(WorldItem item) {
 		if (item == null) {
-			System.out.println("nothing to pass");
 			return;
 		}
 		if ( ! targetConveyor.isEmpty()) return;
@@ -148,7 +146,7 @@ public class Conveyor extends TileObject implements ITickable{
 		return tile;
 	}
 	
-	public void recieveItem(Item item) {
+	public void recieveItem(WorldItem item) {
 		item.fixToTile(this.parentTile);
 		heldItem = item;
 		System.out.println("!!! Recieved Item !!! ");
@@ -181,26 +179,40 @@ public class Conveyor extends TileObject implements ITickable{
 	public Conveyor getInputConveyor() {
 		return inputConveyor;
 	}
+	public boolean hasInputConveyor() {
+		return inputConveyor != null;
+	}
 	public boolean isPointingAt(Tile tile) {
 		return targetTile == tile;
 	}
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		int pixelX = parentTile.pixelX;
-		int pixelY = parentTile.pixelY;
-		g.drawImage(texture, pixelX, pixelY + verticalOffset, null); 
-		
-		int fontSize = 19;
-		Font largeFont = new Font("Arial", Font.BOLD, fontSize);
-	    g.setFont(largeFont);
-	    g.setColor(Color.blue);
-		g.drawString("" + beltKey ,  pixelX, pixelY + verticalOffset + fontSize);
-		if (isRoot) {
-			g.setColor(Color.MAGENTA);
-			g.fillRect(pixelX + 70, pixelY, 30, 30);
+		if (toRender) {
+			int pixelX = parentTile.pixelX;
+			int pixelY = parentTile.pixelY;
+			g.drawImage(texture, pixelX, pixelY + verticalOffset, null); 
 			
-			g.setColor(Color.BLACK);
-			g.drawString(beltKey + "", pixelX + 73, pixelY + 24);
+			int fontSize = 19;
+			Font largeFont = new Font("Arial", Font.BOLD, fontSize);
+		    g.setFont(largeFont);
+		    g.setColor(Color.blue);
+			g.drawString("" + beltKey ,  pixelX, pixelY + verticalOffset + fontSize);
+			if (isRoot) {
+				g.setColor(Color.MAGENTA);
+				g.fillRect(pixelX + 70, pixelY, 30, 30);
+				
+				g.setColor(Color.BLACK);
+				g.drawString(beltKey + "", pixelX + 73, pixelY + 24);
+			}
 		}
+		
+	}
+	public WorldItem collectItem() {
+		
+		WorldItem item = heldItem;
+		heldItem.setActive(false);
+		heldItem = null;
+		return item;
+		
 	}
 }

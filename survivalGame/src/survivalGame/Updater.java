@@ -55,7 +55,7 @@ public final class Updater implements Runnable {
 
     public void updateAll() {
         
-
+    	//Exception in thread "Thread-0" java.util.ConcurrentModificationException 
         for (Updatable updatable : updatables) {
             updatable.update();  
         }
