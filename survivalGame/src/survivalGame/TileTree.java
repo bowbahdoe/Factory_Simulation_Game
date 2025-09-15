@@ -10,8 +10,8 @@ public class TileTree extends TileObject{
 		super();
 		super.parentTile = parentTile;
 		super.verticalOffset = (int) -(50 + Math.random() * 25);
-		GameGraphics.getInstance();
-		GameGraphics.registerWorldObj(this, 2);
+
+		GameGraphics.getInstance().registerWorldObj(this, 2);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.userInterface;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import graphics.GameGraphics;
 import graphics.UIRenderable;
+import survivalGame.ItemManagement.ItemStack;
 
 public class UIItem implements UIRenderable{
 

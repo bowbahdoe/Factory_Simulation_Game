@@ -9,11 +9,15 @@ import java.util.Map;
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
+import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.WorldItem;
+import survivalGame.userInterface.PlayerUI;
 
 public class Player implements Updatable, WorldRenderable{
 	
+	private InputListener input = new InputListener( this);
 	private PlayerUI playerUI = new PlayerUI();
-	public InputListener input = new InputListener(playerUI, this);
+	
 	
 	private double pixelX = 50;
 	private double pixelY = 0;
@@ -27,7 +31,7 @@ public class Player implements Updatable, WorldRenderable{
 	public Player() {
 		Updater.getInstance();
 		Updater.register(this);
-		GameGraphics.registerWorldObj(this, 3);
+		GameGraphics.getInstance().registerWorldObj(this, 3);
 
 	
 	}
@@ -123,8 +127,8 @@ public class Player implements Updatable, WorldRenderable{
 		GameGraphics graphics = GameGraphics.getInstance();
 		
 		
-		int x = (int) ((graphics.getOriginOffset()[0] + xOffset )/ graphics.tileSize);
-		int y = (int) ((graphics.getOriginOffset()[1] + yOffset ) / graphics.tileSize);
+		int x = (int) ((graphics.getOriginOffset()[0] + xOffset )/ GameGraphics.TILESIZE);
+		int y = (int) ((graphics.getOriginOffset()[1] + yOffset ) / GameGraphics.TILESIZE);
 		
 		int chunkSize = graphics.chunkSize;
 		int chunkAmount = graphics.worldSize / chunkSize;

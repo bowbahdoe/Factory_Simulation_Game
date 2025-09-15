@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import graphics.GameGraphics;
+import survivalGame.ItemManagement.WorldItem;
 
 public class Conveyor extends TileObject implements ITickable{
 
@@ -23,8 +24,7 @@ public class Conveyor extends TileObject implements ITickable{
 		super();
 		super.parentTile = parentTile;
 
-		GameGraphics.getInstance();
-		GameGraphics.registerWorldObj(this, 2);
+		GameGraphics.getInstance().registerWorldObj(this, 2);
 		
 		ConveyorManager.getInstance();
 		ConveyorManager.registerConveyor(this);
@@ -149,7 +149,6 @@ public class Conveyor extends TileObject implements ITickable{
 	public void recieveItem(WorldItem item) {
 		item.fixToTile(this.parentTile);
 		heldItem = item;
-		System.out.println("!!! Recieved Item !!! ");
 		
 	}
 	public boolean isEmpty() {

@@ -17,10 +17,10 @@ import graphics.WorldRenderable;
 public class Tile implements WorldRenderable{
 	final int x;
 	final int y;
-	final int tileSize;
+	public final int tileSize;
 	
-	final int pixelX;
-	final int pixelY;
+	final public int pixelX;
+	final public int pixelY;
 	
 	private boolean toRender = false;
 	private boolean selected = false;
@@ -35,21 +35,18 @@ public class Tile implements WorldRenderable{
 		pixelX = x * tileSize;
 		pixelY = y * tileSize;
 		
-		GameGraphics.getInstance();
-		GameGraphics.registerWorldObj(this, 1);
+
+		GameGraphics.getInstance().registerWorldObj(this, 1);
 		chunkParent = parent;
 	}
 
-	
+
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
 		if (toRender) {
-			int width = graphics.getWidth();
-			int height = graphics.getHeight();
 
 			//g.drawImage(texture, pixelX, pixelY, null); 
 			g.setColor(new Color(65,105,72));
-			//g.setColor(new Color(0,0,0,66));
 			g.fillRect(pixelX, pixelY, tileSize, tileSize);
 			if (selected) {
 				g.setColor(new Color(0,0,111));

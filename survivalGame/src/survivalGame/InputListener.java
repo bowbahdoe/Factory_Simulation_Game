@@ -8,15 +8,24 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import graphics.GameGraphics;
 import graphics.UIClickable;
-import graphics.UIRenderable;
+import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.WorldItem;
 
 public class InputListener implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
 
+	//Singleton reference
+	private static InputListener InputListenerInstance;
+	
+	public static InputListener getInstance() {
+        return InputListenerInstance;
+    }
+	
+	
 	private int horiz;
 	private int vert;
 	
@@ -25,15 +34,25 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	
 	private int[] clickedCoords = new int[2];
 	private Tile clickedTile;
-	
-	PlayerUI playerUI;
+
 	Player player;
 	public boolean leftButtonHeld = false;
 	public int mouseX = 0, mouseY = 0;
 	 
-	public InputListener(PlayerUI playerUI,Player player) {
-		this.playerUI = playerUI;
+	public InputListener(Player player) {
+		InputListenerInstance = this;
 		this.player = player;
+	}
+	
+	List<UIClickable> clickableInterfaces = new ArrayList<>();
+	List<GameKeyListener> keyListeners = new ArrayList<>();
+	
+	public void registerClickable(UIClickable clickableInterface) {
+		clickableInterfaces.add(clickableInterface);
+	}
+	
+	public void registerKeyListener(GameKeyListener keyListener) {
+		keyListeners.add(keyListener);
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -64,10 +83,13 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
             	isBuilding = !isBuilding;
             	break;
             case KeyEvent.VK_I:
-            	playerUI.toggle();
+            	//playerUI.toggle();
             case KeyEvent.VK_F:
             	player.collectItems();
-            	
+
+        }
+        for (GameKeyListener keyListener : keyListeners) {
+        	keyListener.keyPressed(keyCode);
         }
         
         if (isBuilding) {
@@ -116,8 +138,8 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 		
 		int pixelX = (int) ( (clickedCoords[0] - graphics.getSize().width / 2) / graphics.getCameraZoom() + graphics.getOriginOffset()[0]);
 		int pixelY = (int) ((clickedCoords[1] - graphics.getSize().height / 2) / graphics.getCameraZoom() + graphics.getOriginOffset()[1]);
-		int x = (pixelX / graphics.tileSize);
-		int y = (pixelY / graphics.tileSize);
+		int x = (pixelX / GameGraphics.TILESIZE);
+		int y = (pixelY / GameGraphics.TILESIZE);
 		
 		int chunkSize = graphics.chunkSize;
 		int chunkAmount = graphics.worldSize / chunkSize;
@@ -170,12 +192,11 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
     }
 	
 	private void handleClick(MouseEvent e) {
-		List<UIRenderable> UILayers = GameGraphics.getInstance().getUILayers();
-		
-		for (UIRenderable UI : UILayers) {
+
+		for (UIClickable UI : clickableInterfaces) {
 			//If the UI is an instance of Interactable UI, and the mouse click coordinates are within the bounds of that UI.. 
-			if (UI instanceof UIClickable && UI.isActive() && ((UIClickable) UI).getBounds().contains(new Point(e.getX(),e.getY()))  ) {
-				((UIClickable) UI).onClick();
+			if (UI.isActive() && UI.getBounds().contains(new Point(e.getX(),e.getY()))) {
+				UI.onClick();
 				return;
 			}
 		}

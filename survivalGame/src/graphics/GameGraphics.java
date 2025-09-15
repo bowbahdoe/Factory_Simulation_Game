@@ -2,19 +2,16 @@ package graphics;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import survivalGame.InputListener;
@@ -44,11 +41,13 @@ public final class GameGraphics extends JPanel implements Updatable {
 	public final int worldSize;
     final int worldPixelSize;
 
-	public final int tileSize;
+	public final static int TILESIZE = 100;
 	public final int chunkSize;
 	
 	private float cameraZoom = 1;
 	
+	public final int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+	public final int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 	public float getCameraZoom() {
 		return cameraZoom;
 	}
@@ -64,29 +63,28 @@ public final class GameGraphics extends JPanel implements Updatable {
     }
 	
 	
-	public static void registerWorldObj(WorldRenderable toRender, int layer) {
+	public void registerWorldObj(WorldRenderable toRender, int layer) {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
 	}
 	
-	public static void registerUI(UIRenderable toRender) {
+	public void registerUI(UIRenderable toRender) {
 		UIRenderLayers.add(toRender);
 	}
 	
-	public static void registerAll(List<WorldRenderable> toRender, int layer) {
+	public void registerAll(List<WorldRenderable> toRender, int layer) {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).addAll(toRender);
 	}
 
 	private Player player;
 	private int[] originOffset = new int[2];
 	
-	public GameGraphics(TileChunk[] chunks, int worldSize, int chunkSize , int tilePixelSize)
+	public GameGraphics(TileChunk[] chunks, int worldSize, int chunkSize)
     {		
 		graphicsInstance = this;
 		this.chunks = chunks;
 		this.worldSize = worldSize;
-		this.tileSize = tilePixelSize;
 		this.chunkSize = chunkSize;
-		worldPixelSize = (worldSize * tilePixelSize) - 2600;
+		worldPixelSize = (worldSize * GameGraphics.TILESIZE) - 2600;
 		//rough estimate
 		
     	Updater.getInstance();
@@ -101,7 +99,7 @@ public final class GameGraphics extends JPanel implements Updatable {
     }
 	public void attachPlayer(Player player) {
 		this.player = player;
-		InputListener input = player.input;
+		InputListener input = InputListener.getInstance();
 		this.addKeyListener(input);  // Adds key listener to the panel
 		this.addMouseListener(input);
 		this.addMouseWheelListener(input);
@@ -119,15 +117,15 @@ public final class GameGraphics extends JPanel implements Updatable {
         g2d.setStroke(new BasicStroke(4));
         g2d.setColor(new Color(0,0,0));
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
         
         translateByPlayerView(g2d);
         g2d.scale(cameraZoom,cameraZoom); //Needs to be other way around, therefore apply zoom to origin offset for player :/
-        
-        
-        
+
         renderWorld(g2d);
         
         g2d.setTransform(uiTransform);
+        //g2d.setClip(0,0,200,500);
         
         renderUI(g2d);
         
@@ -161,8 +159,8 @@ public final class GameGraphics extends JPanel implements Updatable {
     	for (int layer : WorldRenderLayers.keySet()) {
     	
     		//Loops through every tile in your view
-    		 for (int y = ((originOffset[1] / tileSize) - chunkSize * tileSize) / tileSize; y < worldSize; y++) {
-     			for (int x = ((originOffset[0] / tileSize) - chunkSize * tileSize) / tileSize ; x < worldSize; x++) {
+    		 for (int y = ((originOffset[1] / TILESIZE) - chunkSize * TILESIZE) / TILESIZE; y < worldSize; y++) {
+     			for (int x = ((originOffset[0] / TILESIZE ) - chunkSize * TILESIZE) / TILESIZE ; x < worldSize; x++) {
 
      				if (((y * worldSize) + x - 1) > WorldRenderLayers.get(layer).size()  - 1|| (y * worldSize) + x <= 0 ){
      					continue;
@@ -207,5 +205,6 @@ public final class GameGraphics extends JPanel implements Updatable {
 	public int[] getOriginOffset() {
 		return originOffset;
 	}
+	
 
 }

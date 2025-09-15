@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.ItemManagement;
 
 public class ItemStack {
 	private Item item;

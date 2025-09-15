@@ -1,0 +1,70 @@
+package survivalGame.userInterface;
+
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+
+import graphics.GameGraphics;
+import graphics.UIClickable;
+import survivalGame.InputListener;
+import survivalGame.InventoryListener;
+import survivalGame.ItemManagement.CraftingRecipe;
+
+public class CraftButton implements UIClickable, InventoryListener{
+
+	private int pixelX;
+	private int pixelY;
+	private int itemPixelY; 
+	private CraftingUI craftingUI;
+	private CraftingRecipe recipe;
+	
+	//active meaning craftable
+	private BufferedImage buttonActive;
+	private BufferedImage buttonInactive;
+	private boolean craftable = false;
+	
+	public CraftButton(int pixelX, int pixelY, CraftingUI craftingUI, CraftingRecipe recipe) {
+		this.pixelX = pixelX;
+		this.pixelY = pixelY;
+		this.craftingUI = craftingUI;
+		this.recipe = recipe;
+		InputListener.getInstance().registerClickable(this);
+		
+		buttonActive = GameGraphics.getTextureManager().getTexture("ButtonActive");
+		buttonInactive = GameGraphics.getTextureManager().getTexture("ButtonInactive");
+		itemPixelY = pixelY + buttonActive.getHeight() / 2 - recipe.getOutputItem().getTexture().getHeight() / 2; 
+	}
+	@Override
+	public boolean isActive() {
+		return craftingUI.isActive();
+	}
+	@Override
+	public void renderUI(Graphics2D g, GameGraphics graphics) {
+		g.drawImage(craftable ? buttonActive : buttonInactive, pixelX, pixelY, null);
+		g.drawImage(recipe.getOutputItem().getTexture(), pixelX, itemPixelY , null);
+	}
+
+	private boolean canCraft() {
+		return recipe.canCraft(craftingUI.getInventory());
+	}
+	@Override
+	public void onInventoryChanged() {
+		craftable = canCraft();
+		System.out.println("Craftable? "  + craftable);
+	}
+	
+	@Override
+	public Rectangle getBounds() {
+		System.out.println("////////////////////////////////////// Bounds: " + pixelX + ", " + pixelY + ", " + buttonActive.getWidth() + ", " + buttonActive.getHeight());
+		return new Rectangle(pixelX,pixelY,buttonActive.getWidth(),buttonActive.getHeight());
+	}
+	@Override
+	public void onClick() {
+		if (!craftable)	return;
+		
+		recipe.craftItem(craftingUI.getInventory());
+		craftingUI.getPlayerUI().onInventoryChanged();
+		craftingUI.printInventory();
+		
+	}
+}

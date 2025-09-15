@@ -30,8 +30,8 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 		TickManager.getInstance();
 		TickManager.register(this); 
 		
-		GameGraphics.getInstance();
-		GameGraphics.registerWorldObj(this, 4);
+		
+		GameGraphics.getInstance().registerWorldObj(this, 4);
 	}
 	 
 
@@ -51,7 +51,7 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 		
 		List<Conveyor> leaves = new ArrayList<>(keyToLeaf.values());
 		
-		for (Conveyor c : leaves) {
+		for (Conveyor c : leaves.reversed()) {
 			traverse(c, c);
 		}
 	}
@@ -62,7 +62,7 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 		//System.out.println("Traversed through " +  c.parentTile.x + ", " + c.parentTile.y);
 		
 		//Massive possibility for stack overflow, gotta cover all the edge cases haha
-		//if (c.getInputConveyor() == null) System.out.println("--- Null input conveyor");
+		
 		if (c.getInputConveyor() == null || c.getInputConveyor().getBeltKey() != root.getBeltKey()) return;
 		
 		traverse(c.getInputConveyor(), root);
