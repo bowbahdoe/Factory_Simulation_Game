@@ -1,16 +1,15 @@
 package survivalGame;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import survivalGame.ItemManagement.CraftingRecipe;
-import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 
 public enum Recipes {
 	CONVEYOR(new CraftingRecipe(
-			Map.of(new Item(ItemID.WOOD.getId()), 3),
-			new Item(ItemID.CONVEYOR.getId())
+			Map.of(ItemFactory.createItem(ItemID.WOOD), 3),
+			ItemFactory.createItem(ItemID.CONVEYOR)
 			));
 
 	private final CraftingRecipe recipe;

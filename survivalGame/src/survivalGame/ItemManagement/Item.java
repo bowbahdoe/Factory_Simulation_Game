@@ -3,13 +3,18 @@ package survivalGame.ItemManagement;
 import java.awt.image.BufferedImage;
 import graphics.GameGraphics;
 
-public class Item  {
+public abstract class Item  {
 	
 	private String id;
 	private BufferedImage texture;
 	
 	public Item(String id) {
 		this.id = id;
+		texture = GameGraphics.getTextureManager().getTexture(id);
+	}
+	
+	public Item(ItemID itemID) {
+		id = itemID.getId();
 		texture = GameGraphics.getTextureManager().getTexture(id);
 	}
 	

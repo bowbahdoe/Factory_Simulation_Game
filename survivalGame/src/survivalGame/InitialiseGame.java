@@ -23,6 +23,7 @@ public class InitialiseGame {
 		textureManager.loadTexture("src/images/ConveyorW.png", "ConveyorW");
 		textureManager.loadTexture("src/images/PlayerUI.png", "PlayerUI");
 		textureManager.loadTexture("src/images/InventorySquare.png", "InventorySlot");
+		textureManager.loadTexture("src/images/itemSelection.png", "SelectedSlot");
 		textureManager.loadTexture("src/images/CraftingSquareActive.png", "ButtonActive");
 		textureManager.loadTexture("src/images/CraftingSquareInactive.png", "ButtonInactive");
 		textureManager.loadTexture("src/images/Hotbar.png", "Hotbar");

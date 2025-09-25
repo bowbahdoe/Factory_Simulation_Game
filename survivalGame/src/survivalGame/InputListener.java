@@ -13,7 +13,8 @@ import java.util.List;
 
 import graphics.GameGraphics;
 import graphics.UIClickable;
-import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.ItemFactory;
+import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 
 public class InputListener implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
@@ -171,17 +172,14 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 		Conveyor conv = new Conveyor(tile,buildRotation);
 		tile.setObject(conv);
 		if (first || !first) {
-			conv.recieveItem(new WorldItem(new Item("WoodItem"), conv.parentTile.pixelX, conv.parentTile.pixelY));
+			conv.recieveItem(new WorldItem(ItemFactory.createItem(ItemID.WOOD), conv.parentTile.pixelX, conv.parentTile.pixelY));
 			first = false;
 		}
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 	}
-	
-	
 	
 	@Override
     public void mousePressed(MouseEvent e) {
@@ -224,14 +222,10 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
@@ -250,12 +244,9 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 		mouseX = e.getX();
         mouseY = e.getY();
 	}

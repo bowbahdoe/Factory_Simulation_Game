@@ -56,6 +56,8 @@ public final class Updater implements Runnable {
     public void updateAll() {
         
     	//Exception in thread "Thread-0" java.util.ConcurrentModificationException 
+    	//list is modified during the foreach loop, commonly occurs when placing conveyor belts with item on it :(
+    	// fuck this shit
         for (Updatable updatable : updatables) {
             updatable.update();  
         }

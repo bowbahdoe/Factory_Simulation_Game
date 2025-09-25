@@ -28,6 +28,8 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	Map<Item, Integer> inventory = new HashMap<>();
 	List<UIRenderable> allUI = new ArrayList<>();
 	
+	private InventorySlot lastSelectedSlot;
+	
 	List<InventoryListener> listeners = new ArrayList<>();
 	public PlayerUI() {
 		GameGraphics.getInstance().registerUI(this);
@@ -72,7 +74,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	
 	public void organiseToSlots() {
 	    for (InventorySlot slot : slots) {
-	    	slot.setItem(null);
+	    	slot.clearItem();
 	    }
 
 	    int invCounter = 0;
@@ -103,7 +105,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	            
 	            int toPlace = Math.min(quantity, ItemStack.MAX_STACK); 
                 ItemStack newStack = new ItemStack(item, toPlace);
-                slot.setItem(new UIItem(newStack, slot.pixelX, slot.pixelY));
+                slot.setItemStack(newStack);
                 quantity -= toPlace;
                 
 	            invCounter++;
@@ -129,5 +131,19 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		organiseToSlots();
 		listeners.forEach(InventoryListener::onInventoryChanged);
 	}
-
+	
+	public void selectSlot(InventorySlot slot) {
+		
+		if (slot == lastSelectedSlot) {slot.toggleSelect(); return;}
+		
+		if (lastSelectedSlot != null) lastSelectedSlot.setSelected(false);;
+		lastSelectedSlot = slot;
+		slot.toggleSelect();
+	}
+	
+	public InventorySlot getSelectedSlot() {
+		if (! lastSelectedSlot.isSelected()) return null;
+		
+		return lastSelectedSlot;
+	}
 }
