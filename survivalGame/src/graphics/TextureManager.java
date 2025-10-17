@@ -25,6 +25,9 @@ public class TextureManager {
         }
     }
 
+    public void addTexture(BufferedImage image, String name) {
+    	textures.put(name,image);
+    }
     public BufferedImage getTexture(String filename) {
         return textures.get(filename);
     }

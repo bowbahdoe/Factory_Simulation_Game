@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 
 import graphics.GameGraphics;
 import graphics.UIRenderable;
+import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemStack;
 
 public class UIItem implements UIRenderable{
@@ -37,15 +38,16 @@ public class UIItem implements UIRenderable{
 
 	@Override
 	public void renderUI(Graphics2D g, GameGraphics graphics) {
-		renderUI(g,graphics,pixelX,pixelY);
+		if (itemStack.getQuantity() <= 0) return;
+	    renderUIItem(g, graphics, itemStack.getItem(), itemStack.getQuantity(), pixelX, pixelY);
 	}
 	
-	public void renderUI(Graphics2D g, GameGraphics graphics,int pixelX, int pixelY) {
-		if (isEmpty()) return;
-		g.drawImage(itemStack.getItem().getTexture(),pixelX,pixelY,null);
+	public static void renderUIItem(Graphics2D g, GameGraphics graphics, Item item, int quantity, int pixelX, int pixelY) {
+		if (quantity <= 0) return;
+		g.drawImage(item.getTexture(),pixelX,pixelY,null);
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", 1, 26));
-		g.drawString(itemStack.getQuantity() + "", pixelX + 42, pixelY + 50);
+		g.drawString(quantity + "", pixelX + 42, pixelY + 50);
 	}
 	
 	public ItemStack getItemStack() {

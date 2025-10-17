@@ -55,10 +55,11 @@ public class CraftButton implements UIClickable, InventoryListener{
 	
 	@Override
 	public Rectangle getBounds() {
-		System.out.println("////////////////////////////////////// Bounds: " + pixelX + ", " + pixelY + ", " + buttonActive.getWidth() + ", " + buttonActive.getHeight());
 		return new Rectangle(pixelX,pixelY,buttonActive.getWidth(),buttonActive.getHeight());
 	}
-	@Override
+	
+	//crafts item on click
+	@Override 
 	public void onClick() {
 		if (!craftable)	return;
 		

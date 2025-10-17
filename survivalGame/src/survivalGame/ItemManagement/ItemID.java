@@ -12,7 +12,7 @@ public enum ItemID {
         this.itemType = itemType;
     }
 
-    public String getId() {
+    public String getIdString() {
         return id;
     }
     

@@ -76,12 +76,6 @@ public class WorldItem implements WorldRenderable, Updatable {
 	public float lerp(float a, float b, float t) {
 	    return a + t * (b - a);
 	}
-
-	@Override
-	public void update() {
-		
-	}
-
 	@Override
 	public void fixedUpdate(long delta) {
 
@@ -94,5 +88,9 @@ public class WorldItem implements WorldRenderable, Updatable {
 			
 			if (t >= 1f) moving = false;  
 		}
+	}
+	
+	@Override
+	public void update() {
 	}
 }

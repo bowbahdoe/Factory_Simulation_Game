@@ -23,13 +23,10 @@ import survivalGame.Updater;
 
 public final class GameGraphics extends JPanel implements Updatable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private static GameGraphics graphicsInstance;
-	private static TextureManager textureManage;
+	private static TextureManager textureManager;
 	private static TreeMap<Integer, List<WorldRenderable>> WorldRenderLayers = new TreeMap<>();
 	private static List<UIRenderable> UIRenderLayers = new ArrayList<>();
 	
@@ -132,7 +129,7 @@ public final class GameGraphics extends JPanel implements Updatable {
         Font largeFont = new Font("Arial", Font.BOLD, 45);
         g2d.setFont(largeFont);
         g2d.setColor(Color.BLUE);
-        g2d.drawString(originOffset[0] + ", " + originOffset[1] + "  Z: " + cameraZoom, 222, 222);
+        g2d.drawString(originOffset[0] + ", " + originOffset[1] + "  Z: " +  cameraZoom, 222, 222);
         //g2d.fillRect(this.getWidth() / 2 - 5, this.getHeight() / 2 - 5, 10, 10);
         
        
@@ -190,11 +187,11 @@ public final class GameGraphics extends JPanel implements Updatable {
 	}
 	
 	public void addOnTextureManager(TextureManager textureM) {
-    	textureManage = textureM;
+    	textureManager = textureM;
     }
 	
 	public static TextureManager getTextureManager() {
-		return textureManage;
+		return textureManager;
 	}
 
 	@Override

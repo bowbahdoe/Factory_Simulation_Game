@@ -15,6 +15,7 @@ import graphics.GameGraphics;
 import graphics.UIClickable;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
+import survivalGame.ItemManagement.PlaceableItem;
 import survivalGame.ItemManagement.WorldItem;
 
 public class InputListener implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
@@ -30,8 +31,8 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	private int horiz;
 	private int vert;
 	
-	private boolean isBuilding;
-	private int buildRotation = 0;
+	private boolean isBuilding = true;
+	private Direction buildRotation = Direction.NORTH;
 	
 	private int[] clickedCoords = new int[2];
 	private Tile clickedTile;
@@ -57,10 +58,8 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
-
+	
 	@Override
     public void keyPressed(KeyEvent e) {
         // Get the key code of the pressed key
@@ -80,11 +79,6 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
             case KeyEvent.VK_D:
                 horiz = -1;
                 break;
-            case KeyEvent.VK_B:
-            	isBuilding = !isBuilding;
-            	break;
-            case KeyEvent.VK_I:
-            	//playerUI.toggle();
             case KeyEvent.VK_F:
             	player.collectItems();
 
@@ -96,14 +90,12 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
         if (isBuilding) {
 
         	if (keyCode == KeyEvent.VK_E) {
-        		buildRotation++;
-
+        		buildRotation = buildRotation.rotatedClockwise();
         	}
         	else if(keyCode == KeyEvent.VK_Q) {
-        		buildRotation--;
+        		buildRotation = buildRotation.rotatedAntiClockwise();
         		
         	}
-        	buildRotation = (buildRotation + 4) % 4;
         }
     }
 	public int[] listenMovement() {
@@ -135,51 +127,24 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	
 	boolean first = true;
 	private Tile getClickedTile() {
-		GameGraphics graphics = GameGraphics.getInstance();
-		
-		int pixelX = (int) ( (clickedCoords[0] - graphics.getSize().width / 2) / graphics.getCameraZoom() + graphics.getOriginOffset()[0]);
-		int pixelY = (int) ((clickedCoords[1] - graphics.getSize().height / 2) / graphics.getCameraZoom() + graphics.getOriginOffset()[1]);
-		int x = (pixelX / GameGraphics.TILESIZE);
-		int y = (pixelY / GameGraphics.TILESIZE);
-		
-		int chunkSize = graphics.chunkSize;
-		int chunkAmount = graphics.worldSize / chunkSize;
-		int positionInArray = chunkAmount * (x / chunkSize) + (y / chunkSize);		
-		TileChunk chunk = (TileChunk) graphics.chunks[positionInArray];
-		
-		int chunkX = x - (chunk.x * chunkSize);
-		int chunkY = y - (chunk.y * chunkSize);
-		
-		System.out.println("-------------------------------------------------");
-		System.out.println("Coords clicked: " + x + ", " + y);
-		System.out.println("Chunk coords: " + chunk.x + ", " + chunk.y + "    ||||||||      Coords in chunk: " + chunkX + ", " + chunkY + " |||   pos in list: " + (chunkX * chunkSize + chunkY));
-		if (chunkX * chunkSize + chunkY < 0 ) return null; //Out of bounds
-		Tile tile = chunk.tiles.get(chunkX * chunkSize + chunkY);
-		System.out.println("Tile Coords: " + tile.x + ", " + tile.y + " is Selected? " + tile.isSelected());
-		
-		//-------------------------
-		if (isBuilding) {
-			manageBuilding(tile);
-		}
-		
-		
+		Tile tile = TileProvider.pixel_AccessTile(clickedCoords[0], clickedCoords[1]);
 		return tile;
 	}
 	private void manageBuilding(Tile tile) {
 		if (tile.getObject() != null) {
 			return;
 		}
-		Conveyor conv = new Conveyor(tile,buildRotation);
-		tile.setObject(conv);
-		if (first || !first) {
+		PlaceableItem toPlace = (PlaceableItem)player.getSelectedHotbarSlot().getItem();
+		if (toPlace == null) return;
+		TileObject placedObject = toPlace.place(tile, buildRotation);
+	
+		if (placedObject instanceof Conveyor) {
+			Conveyor conv = ((Conveyor) placedObject);
 			conv.recieveItem(new WorldItem(ItemFactory.createItem(ItemID.WOOD), conv.parentTile.pixelX, conv.parentTile.pixelY));
-			first = false;
 		}
 	}
 	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
+
 	
 	@Override
     public void mousePressed(MouseEvent e) {
@@ -207,6 +172,10 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 		clickedCoords[1] = e.getY();
 		Tile pastClickedTile = clickedTile;
 		clickedTile = getClickedTile();
+		if (isBuilding) {
+			manageBuilding(clickedTile);
+		}
+		
 		if (clickedTile == pastClickedTile) {
 			clickedTile = null;
 		}
@@ -224,6 +193,10 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	public void mouseEntered(MouseEvent e) {
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+	
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}

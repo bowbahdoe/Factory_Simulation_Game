@@ -1,6 +1,8 @@
 package survivalGame;
 
 
+import java.awt.Graphics2D;
+
 import graphics.GameGraphics;
 import graphics.TextureManager;
 
@@ -14,14 +16,28 @@ public class InitialiseGame {
 		// TODO Auto-generated method stub
 		Thread updaterThread = new Thread(Updater.getInstance());
 
-		
+		textureManager.loadTexture("src/images/Stickman.png", "Player");
 		textureManager.loadTexture("src/images/grasy.png", "Grass");
 		textureManager.loadTexture("src/images/Tree.png", "Tree");
-		textureManager.loadTexture("src/images/ConveyorN.png", "ConveyorN");
-		textureManager.loadTexture("src/images/ConveyorE.png", "ConveyorE");
-		textureManager.loadTexture("src/images/ConveyorS.png", "ConveyorS");
-		textureManager.loadTexture("src/images/ConveyorW.png", "ConveyorW");
+		
+		String[] directions = {"N", "E", "S", "W"};
+		for (String direction : directions) {
+		    textureManager.loadTexture("src/images/Conveyors/Conveyor" + direction + ".png", "Conveyor" + direction);
+		}
+
+		String[] turns = {"NE", "SE", "SW", "NW", "EN", "ES", "WS", "WN"};
+		for (String turn : turns) {
+		    textureManager.loadTexture("src/images/Conveyors/ConveyorTurn" + turn + ".png", "Conveyor" + turn);
+		    textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
+		}
+		turns = new String[]{"VE", "VW", "HN", "HS"};
+		for (String turn : turns) {
+			 textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
+		}
+		
+		
 		textureManager.loadTexture("src/images/PlayerUI.png", "PlayerUI");
+
 		textureManager.loadTexture("src/images/InventorySquare.png", "InventorySlot");
 		textureManager.loadTexture("src/images/itemSelection.png", "SelectedSlot");
 		textureManager.loadTexture("src/images/CraftingSquareActive.png", "ButtonActive");
@@ -48,7 +64,7 @@ public class InitialiseGame {
 
 		System.out.println(chunks.length + " chunks and " + tiles + " tiles") ;
 		
-		
+		//textureManager.addTexture(ImageRotater.rotateImage(textureManager.getTexture("ConveyorW"),55), "ConveyorS");
 		
 		gameGraphics.addOnTextureManager(textureManager);
 		Player player = new Player();

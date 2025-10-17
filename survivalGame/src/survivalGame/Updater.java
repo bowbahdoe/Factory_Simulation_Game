@@ -1,11 +1,14 @@
 package survivalGame;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public final class Updater implements Runnable {
     private static Updater instance;
     private static List<Updatable> updatables = new ArrayList<>();
+    private static Queue<Updatable> toAdd = new LinkedList<>();
     
     final int fps = 120;
     final long frameTime = 1000 / fps; // 16 ms target
@@ -25,7 +28,7 @@ public final class Updater implements Runnable {
     	 if (updatable == null) {
     	        throw new IllegalArgumentException("Trying to register null!");
     	    }
-        updatables.add(updatable);
+        toAdd.add(updatable);
     }
     
     @Override
@@ -58,6 +61,10 @@ public final class Updater implements Runnable {
     	//Exception in thread "Thread-0" java.util.ConcurrentModificationException 
     	//list is modified during the foreach loop, commonly occurs when placing conveyor belts with item on it :(
     	// fuck this shit
+    	
+    	while (!toAdd.isEmpty()) {
+    		updatables.add(toAdd.poll());
+    	}	
         for (Updatable updatable : updatables) {
             updatable.update();  
         }

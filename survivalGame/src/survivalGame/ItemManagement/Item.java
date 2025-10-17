@@ -5,24 +5,20 @@ import graphics.GameGraphics;
 
 public abstract class Item  {
 	
-	private String id;
+	private ItemID id;
 	private BufferedImage texture;
 	
-	public Item(String id) {
-		this.id = id;
-		texture = GameGraphics.getTextureManager().getTexture(id);
-	}
 	
 	public Item(ItemID itemID) {
-		id = itemID.getId();
-		texture = GameGraphics.getTextureManager().getTexture(id);
+		id = itemID;
+		texture = GameGraphics.getTextureManager().getTexture(itemID.getIdString());
 	}
 	
 	public BufferedImage getTexture() {
 		return texture;
 	}
 	
-	public String getItemID()
+	public ItemID getItemID()
 	{
 		return id;
 	}

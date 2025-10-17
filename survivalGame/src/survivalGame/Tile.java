@@ -37,6 +37,7 @@ public class Tile implements WorldRenderable{
 		
 
 		GameGraphics.getInstance().registerWorldObj(this, 1);
+		
 		chunkParent = parent;
 	}
 
@@ -44,10 +45,10 @@ public class Tile implements WorldRenderable{
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
 		if (toRender) {
-
-			//g.drawImage(texture, pixelX, pixelY, null); 
+			
 			g.setColor(new Color(65,105,72));
 			g.fillRect(pixelX, pixelY, tileSize, tileSize);
+			
 			if (selected) {
 				g.setColor(new Color(0,0,111));
 				g.drawRect(pixelX + tileSize / 4, pixelY + tileSize / 4, tileSize - tileSize / 2, tileSize - tileSize / 2);

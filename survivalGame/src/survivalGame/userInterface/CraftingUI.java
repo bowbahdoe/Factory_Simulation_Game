@@ -19,7 +19,7 @@ public class CraftingUI implements UIRenderable, InventoryListener {
 	private List<CraftButton> craftButtons = new ArrayList<>();
 	public CraftingUI(PlayerUI playerUI,Rectangle bounds) {
 		
-		this.inventory = playerUI.inventory;
+		this.inventory = playerUI.getInventory();
 		this.playerUI = playerUI;
 	
 		//1300,470 are bounds corner

@@ -8,9 +8,12 @@ import graphics.GameGraphics;
 import graphics.UIRenderable;
 import survivalGame.GameKeyListener;
 import survivalGame.InputListener;
-import survivalGame.ItemManagement.HotbarSlot;
+import survivalGame.Player;
+import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.ItemStack;
+import survivalGame.ItemManagement.PlaceableItem;
 
-public class HotbarUI implements UIRenderable, GameKeyListener{
+public final class HotbarUI implements UIRenderable, GameKeyListener{
 
 	HotbarSlot[] slots = new HotbarSlot[8];
 	BufferedImage ui;
@@ -18,9 +21,10 @@ public class HotbarUI implements UIRenderable, GameKeyListener{
 	final private int pixelY;
 	
 	private PlayerUI playerUI;
-	public HotbarUI(PlayerUI playerUI) {
+	private Player player;
+	public HotbarUI(PlayerUI playerUI, Player player) {
 		this.playerUI = playerUI;
-		
+		this.player = player;
 		GameGraphics.getInstance().registerUI(this);
 		InputListener.getInstance().registerKeyListener(this);
 		
@@ -40,22 +44,39 @@ public class HotbarUI implements UIRenderable, GameKeyListener{
 		
 		System.out.println(keyCode + ", " + (keyCode - KeyEvent.VK_1));
 		
+		int index = keyCode - KeyEvent.VK_1;
+		if (playerUI.isActive()) {
+			setItemToSlot(slots[index]);
+			return;
+		}
+		if (player.getSelectedHotbarSlot() == null) {
+			player.setSelectedHotbarSlot(slots[index]);
+			slots[index].setSelected(true);
+			return;
+		}
+		slots[index].setSelected(true);
+		player.getSelectedHotbarSlot().setSelected(false);
+		player.setSelectedHotbarSlot(slots[index]);
 		
-		if (! playerUI.isActive()) return;
-		manageSlotSelection(slots[keyCode - KeyEvent.VK_1]);
 	}
-	
-	public void manageSlotSelection(HotbarSlot slot) {
+	//Sets item to slot
+	private void setItemToSlot(HotbarSlot slot) {
 		if (playerUI.getSelectedSlot() == null) return;
 		
 		if (playerUI.isActive()) {
-			InventorySlot selectedSlot = playerUI.getSelectedSlot();
-			if (selectedSlot != null) {
-				slot.setItem(selectedSlot.getItem());
-				return;
-			}
+			ItemStack selectedSlotItems = playerUI.getSelectedSlot().getItemStack();
+			
+			slot.setItem( selectedSlotItems.getItem() );
+			return;
 		}
 		
+	}
+	
+	public PlaceableItem getSelectedItem() {
+		if (player.getSelectedHotbarSlot() == null) return null;
+		Item item = player.getSelectedHotbarSlot().getItem();
+		if (!(item instanceof PlaceableItem)) return null;
+		return (PlaceableItem) item;
 	}
 	
 	@Override

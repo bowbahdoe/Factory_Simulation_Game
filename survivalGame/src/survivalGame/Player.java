@@ -11,12 +11,14 @@ import graphics.GameGraphics;
 import graphics.WorldRenderable;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.WorldItem;
+import survivalGame.userInterface.HotbarSlot;
+import survivalGame.userInterface.InventorySlot;
 import survivalGame.userInterface.PlayerUI;
 
 public class Player implements Updatable, WorldRenderable{
 	
 	private InputListener input = new InputListener( this);
-	private PlayerUI playerUI = new PlayerUI();
+	private PlayerUI playerUI = new PlayerUI(this);
 	
 	
 	private double pixelX = 50;
@@ -28,16 +30,18 @@ public class Player implements Updatable, WorldRenderable{
 	private Tile selectedTile;
 	
 	BufferedImage character;
+	
+	private InventorySlot selectedInventorySlot;
+	private HotbarSlot selectedHotbarSlot;
 	public Player() {
 		Updater.getInstance();
 		Updater.register(this);
 		GameGraphics.getInstance().registerWorldObj(this, 3);
-
+		character = GameGraphics.getTextureManager().getTexture("Player");
 	
 	}
 	@Override
 	public void update() {
-		//System.out.println("On tile: " + x / 100 + " , " + y /100);
 		movement = input.listenMovement();
 		if (selectedTile != null) {
 			selectedTile.setSelect(false);
@@ -46,11 +50,6 @@ public class Player implements Updatable, WorldRenderable{
 		if (selectedTile != null) {
 			selectedTile.setSelect(true);
 		}
-		
-		
-		
-		//int xCoord = selectionCoords[0] / GameGraphics.getInstance().tileSize;
-		//GameGraphics.registerDynamic(this, (int)y / 100);
 	}
 	@Override
 	public void fixedUpdate(long delta) {
@@ -90,11 +89,10 @@ public class Player implements Updatable, WorldRenderable{
 		int height = (int) (graphics.getHeight() / graphics.getCameraZoom());
 
 		int playerSize = 25;
-		g.setColor(new Color(250,0,90));
-		g.fillRect(-(int)pixelX,-(int)pixelY, 50, 50); 
+		g.setColor(new Color(250,0,90,122));
+		g.fillOval(-(int)pixelX - playerSize,-(int)pixelY - playerSize, 50, 50); 
 		
-		//g.drawImage(character, -(int)pixelX, -(int)pixelY, graphics);
-		//g.fillRect((int)-pixelX + (int)(width / (2 * graphics.getCameraZoom())) - playerSize,(int)-pixelY + (int)(height / (2 * graphics.getCameraZoom())) - playerSize, 50, 50); 
+		g.drawImage(character, -(int)pixelX - playerSize, -(int)pixelY - playerSize, graphics);
 	}
 	public Tile getSelectedTile() {
 		return selectedTile;
@@ -144,6 +142,18 @@ public class Player implements Updatable, WorldRenderable{
 
 		
 		return tile;
+	}
+	public InventorySlot getSelectedInventorySlot() {
+		return selectedInventorySlot;
+	}
+	public void setSelectedInventorySlot(InventorySlot selectedInventorySlot) {
+		this.selectedInventorySlot = selectedInventorySlot;
+	}
+	public HotbarSlot getSelectedHotbarSlot() {
+		return selectedHotbarSlot;
+	}
+	public void setSelectedHotbarSlot(HotbarSlot selectedHotbarSlot) {
+		this.selectedHotbarSlot = selectedHotbarSlot;
 	}
 
 }

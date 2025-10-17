@@ -68,7 +68,7 @@ public class InventorySlot implements UIClickable{
 		return items.isEmpty();
 	}
 	
-	public UIItem getItem() {
+	public UIItem getUIItem() {
 		return items;
 	}
 	public void setItemStack(ItemStack itemStack) {

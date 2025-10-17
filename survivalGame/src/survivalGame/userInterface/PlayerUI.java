@@ -15,8 +15,11 @@ import graphics.UIRenderable;
 import survivalGame.GameKeyListener;
 import survivalGame.InputListener;
 import survivalGame.InventoryListener;
+import survivalGame.Player;
 import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.ItemStack;
+import survivalGame.ItemManagement.PlaceableItem;
 
 public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListener{
 
@@ -25,13 +28,16 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	BufferedImage UI;
 	InventorySlot[] slots = new InventorySlot[40];
 	
-	Map<Item, Integer> inventory = new HashMap<>();
-	List<UIRenderable> allUI = new ArrayList<>();
+	private Map<Item, Integer> inventory = new HashMap<>();
+	private List<UIRenderable> allUI = new ArrayList<>();
 	
-	private InventorySlot lastSelectedSlot;
+
 	
-	List<InventoryListener> listeners = new ArrayList<>();
-	public PlayerUI() {
+	private List<InventoryListener> listeners = new ArrayList<>();
+	
+	private Player player;
+	public PlayerUI(Player player) {
+		this.player = player;
 		GameGraphics.getInstance().registerUI(this);
 		InputListener.getInstance().registerKeyListener(this);
 		UI = GameGraphics.getTextureManager().getTexture("PlayerUI");
@@ -47,9 +53,12 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 			allUI.add(slots[i]);
 		}
 		CraftingUI craftingUI = new CraftingUI(this,new Rectangle(x + 430, y + 80,UI.getWidth()/2,UI.getHeight()));
-		new HotbarUI(this);
+		new HotbarUI(this, player);
 		allUI.add(craftingUI);
 		listeners.add(craftingUI);
+		
+		inventory.put(new PlaceableItem(ItemID.CONVEYOR), 20);
+
 	}
 	public void toggle() {
 		active = !active;
@@ -132,18 +141,34 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		listeners.forEach(InventoryListener::onInventoryChanged);
 	}
 	
+	public Map<Item, Integer> getInventory(){
+		return inventory;
+	}
+	
+	public int getItemQuantity(Item item) {
+		return inventory.get(item);
+	}
+		
+	public void changeItemQuantityBy(int amount, Item item) {
+		inventory.put(item, inventory.get(item) + amount);
+	}
 	public void selectSlot(InventorySlot slot) {
 		
-		if (slot == lastSelectedSlot) {slot.toggleSelect(); return;}
+		if (slot == player.getSelectedInventorySlot()) {slot.toggleSelect(); return;}
 		
-		if (lastSelectedSlot != null) lastSelectedSlot.setSelected(false);;
-		lastSelectedSlot = slot;
+		if (player.getSelectedInventorySlot() != null) player.getSelectedInventorySlot().setSelected(false);;
+		player.setSelectedInventorySlot(slot);
 		slot.toggleSelect();
 	}
 	
 	public InventorySlot getSelectedSlot() {
-		if (! lastSelectedSlot.isSelected()) return null;
+		if(player.getSelectedInventorySlot() == null) return null;
+		if (! player.getSelectedInventorySlot().isSelected()) return null;
 		
-		return lastSelectedSlot;
+		return player.getSelectedInventorySlot();
+	}
+	
+	public Player getPlayer() {
+		return player;
 	}
 }

@@ -22,4 +22,10 @@ public class ItemStack {
 	public int getQuantity() {
 		return quantity;
 	}
+	
+	public void reduceQuantity(int num) {
+		quantity -= num;
+		if (quantity < 0) quantity = 0;
+		return;
+	}
 }

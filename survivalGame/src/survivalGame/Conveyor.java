@@ -17,72 +17,71 @@ public class Conveyor extends TileObject implements ITickable{
 	private Tile targetTile;
 	private boolean isRoot; //Purely for visual purposes
 	private int beltKey = -1;
-	/** 
-	@param rotation where 0,1,2,3 North, East, South, West are the rotation choices.
-	*/
-	public Conveyor(Tile parentTile, int rotation) {
+
+	private Direction rotation;
+	
+	int mask = 0;
+	
+	public Conveyor(Tile parentTile, Direction rotation) {
 		super();
 		super.parentTile = parentTile;
-
+		
+		this.rotation = rotation;
 		GameGraphics.getInstance().registerWorldObj(this, 2);
 		
 		ConveyorManager.getInstance();
-		ConveyorManager.registerConveyor(this);
 		switch (rotation){
-			case 0:
-				targetTile = getTile(parentTile.x,parentTile.y - 1);
+			case NORTH:
+				targetTile = TileProvider.world_AccessTile(parentTile.x,parentTile.y - 1);
 				super.addTexture("ConveyorN", GameGraphics.getTextureManager());
 				break;
-			case 1:
-				targetTile = getTile(parentTile.x + 1, parentTile.y);
+			case EAST:
+				targetTile = TileProvider.world_AccessTile(parentTile.x + 1, parentTile.y);
 				super.addTexture("ConveyorE", GameGraphics.getTextureManager());
 				break;
-			case 2:
-				targetTile = getTile(parentTile.x, parentTile.y + 1);
+			case SOUTH:
+				targetTile = TileProvider.world_AccessTile(parentTile.x, parentTile.y + 1);
 				super.addTexture("ConveyorS", GameGraphics.getTextureManager());
 				break;
-			case 3:
-				targetTile = getTile(parentTile.x - 1, parentTile.y);
+			case WEST:
+				targetTile = TileProvider.world_AccessTile(parentTile.x - 1, parentTile.y);
 				super.addTexture("ConveyorW", GameGraphics.getTextureManager());
 				break;
-			default:
-				System.err.println("ERROR: Conveyor rotation is wrong! ");
 		}
 		
 		if (findParents()) {
 			//If no target, inherit any other key
-			System.out.println("Inherited from parent");
 			beltKey = inputConveyor.getBeltKey();
 			if (targetTile.getObject() instanceof Conveyor) {
 				targetConveyor = (Conveyor) targetTile.getObject();
+				targetConveyor.changeSprite(this);
 			}
 			//And therefore that parent must be the leaf, so make this new leaf.
 			ConveyorManager.asignLeaf(beltKey, this);
 		}	
-		else if (targetTile.getObject() instanceof Conveyor && !((Conveyor) targetTile.getObject()).hasInputConveyor() ) {
+		else if (targetTile.getObject() instanceof Conveyor  ) {
 			//if conveyor infront, attach to conveyor and update beltkey
-			System.out.println("Successfully found targetConveyor! ");
 			targetConveyor = (Conveyor) targetTile.getObject();
-			targetConveyor.addInputConveyor(this);
+			targetConveyor.changeSprite(this);
 			
+			if (((Conveyor) targetTile.getObject()).hasInputConveyor()) return;
+			targetConveyor.addInputConveyor(this);
 			beltKey = targetConveyor.getBeltKey();
+			becomeConveyorLeaf();
 		}
 		
 		else {
 			//Else just make new one
-			System.out.println("New beltkey made!");
-			beltKey = ConveyorManager.generateConveyorKey(this);
-			isRoot = true;
-			ConveyorManager.asignLeaf(beltKey, this);
+			becomeConveyorLeaf();
 		}
 		
 	}
-	public boolean findParents() {
+	private boolean findParents() {
 		Tile[] surroundings = new Tile[4];
-		surroundings[0] = getTile(parentTile.x,parentTile.y - 1);
-		surroundings[1] = getTile(parentTile.x + 1, parentTile.y);
-		surroundings[2] = getTile(parentTile.x, parentTile.y + 1);
-		surroundings[3] = getTile(parentTile.x - 1, parentTile.y);
+		surroundings[0] = TileProvider.world_AccessTile(parentTile.x,parentTile.y - 1);
+		surroundings[1] = TileProvider.world_AccessTile(parentTile.x + 1, parentTile.y);
+		surroundings[2] = TileProvider.world_AccessTile(parentTile.x, parentTile.y + 1);
+		surroundings[3] = TileProvider.world_AccessTile(parentTile.x - 1, parentTile.y);
 		for (Tile tile : surroundings) {
 			//check surrounding tiles for conveyors, make them the input if they point towards you.
 			//Ignore the one you point towards too. 
@@ -90,9 +89,11 @@ public class Conveyor extends TileObject implements ITickable{
 			if (targetTile != tile && tile.getObject() instanceof Conveyor) {
 				Conveyor conv = (Conveyor) tile.getObject();
 				if (conv.isPointingAt(this.parentTile)) {
-					inputConveyor = conv;
+					//inputConveyor = conv;
+					addInputConveyor(conv);
 					inputConveyor.targetConveyor = this;
 					System.out.println("Found tile with conveyor at " + tile.x + ", " + tile.y);
+					changeSprite(inputConveyor);
 				}
 				
 				
@@ -101,6 +102,17 @@ public class Conveyor extends TileObject implements ITickable{
 		return inputConveyor != null;
 	}
 	
+	public void changeSprite(Conveyor inputConveyor) {
+		
+		Direction inputRotation = inputConveyor.getRotation();
+		mask = ConveyorManager.getInstance().directionMask(inputRotation, mask);
+		String key;
+
+		key = rotation + "_" + mask;
+		System.out.println(key);
+		if ( !ConveyorManager.getInstance().conveyorSpritemap.containsKey(key) ) return;
+		super.addTexture(ConveyorManager.getInstance().conveyorSpritemap.get(key), GameGraphics.getTextureManager());
+	}
 	@Override
 	public int getY() {
 		return super.parentTile.y;
@@ -133,18 +145,6 @@ public class Conveyor extends TileObject implements ITickable{
 		targetConveyor.recieveItem(item);
 		heldItem = null;
 	}
-	private Tile getTile(int x, int y) {
-		
-		int chunkSize = GameGraphics.getInstance().chunkSize;
-		int chunkAmount = GameGraphics.getInstance().worldSize / chunkSize;
-		TileChunk chunk = (TileChunk) GameGraphics.getInstance().chunks[chunkAmount * (x / chunkSize) + (y / chunkSize) ];
-		
-		int chunkX = x - (chunk.x * chunkSize);
-		int chunkY = y - (chunk.y * chunkSize);
-		
-		Tile tile = chunk.tiles.get(chunkX * chunkSize + chunkY);
-		return tile;
-	}
 	
 	public void recieveItem(WorldItem item) {
 		item.fixToTile(this.parentTile);
@@ -155,12 +155,10 @@ public class Conveyor extends TileObject implements ITickable{
 		return heldItem == null;
 	}
 	public void addInputConveyor(Conveyor conveyor) {
+		ConveyorManager.getInstance().directionMask(conveyor.getRotation(), mask);
+		System.out.println(mask);
 		if (inputConveyor == null) {
 			inputConveyor = conveyor;
-			if (targetConveyor == null) {
-				ConveyorManager.registerConveyor(conveyor);
-			}
-			
 		}
 	}
 	public void removeInputConveyor(Conveyor conveyor) {
@@ -184,6 +182,9 @@ public class Conveyor extends TileObject implements ITickable{
 	public boolean isPointingAt(Tile tile) {
 		return targetTile == tile;
 	}
+	public Direction getRotation() {
+		return rotation;
+	}
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
 		if (toRender) {
@@ -191,11 +192,14 @@ public class Conveyor extends TileObject implements ITickable{
 			int pixelY = parentTile.pixelY;
 			g.drawImage(texture, pixelX, pixelY + verticalOffset, null); 
 			
-			int fontSize = 19;
+			int fontSize = 12;
 			Font largeFont = new Font("Arial", Font.BOLD, fontSize);
 		    g.setFont(largeFont);
 		    g.setColor(Color.blue);
-			g.drawString("" + beltKey ,  pixelX, pixelY + verticalOffset + fontSize);
+			g.drawString("" + beltKey ,  pixelX, pixelY  + fontSize);
+			
+			g.setColor(Color.GREEN);
+			g.drawString(Integer.toBinaryString(mask),  pixelX, pixelY + 45 + fontSize);
 			if (isRoot) {
 				g.setColor(Color.MAGENTA);
 				g.fillRect(pixelX + 70, pixelY, 30, 30);
@@ -213,5 +217,11 @@ public class Conveyor extends TileObject implements ITickable{
 		heldItem = null;
 		return item;
 		
+	}
+	
+	private void becomeConveyorLeaf() {
+		beltKey = ConveyorManager.generateConveyorKey(this);
+		isRoot = true;
+		ConveyorManager.asignLeaf(beltKey, this);
 	}
 }
