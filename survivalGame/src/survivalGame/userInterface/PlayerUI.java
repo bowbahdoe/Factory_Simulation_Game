@@ -31,8 +31,6 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	private Map<Item, Integer> inventory = new HashMap<>();
 	private List<UIRenderable> allUI = new ArrayList<>();
 	
-
-	
 	private List<InventoryListener> listeners = new ArrayList<>();
 	
 	private Player player;
@@ -46,7 +44,6 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		int y = GameGraphics.getInstance().screenHeight / 2 - UI.getHeight() / 2;
 		System.out.println(GameGraphics.getInstance().screenWidth + ", " + GameGraphics.getInstance().screenHeight);
 		for (int i = 0; i < 40; i ++) {
-
 			int pixelX = x + (i % 5) * 70 + 40;
 			int pixelY = y + (i / 5) * 70 + 80;
 			slots[i] = new InventorySlot(pixelX, pixelY,this);

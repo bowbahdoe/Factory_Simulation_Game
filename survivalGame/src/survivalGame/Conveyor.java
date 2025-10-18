@@ -3,8 +3,6 @@ package survivalGame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.util.HashSet;
-import java.util.Set;
 
 import graphics.GameGraphics;
 import survivalGame.ItemManagement.WorldItem;
@@ -105,10 +103,10 @@ public class Conveyor extends TileObject implements ITickable{
 	public void changeSprite(Conveyor inputConveyor) {
 		
 		Direction inputRotation = inputConveyor.getRotation();
-		mask = ConveyorManager.getInstance().directionMask(inputRotation, mask);
-		String key;
+		mask = inputRotation.getRotationMask() | mask;
+		int key;
 
-		key = rotation + "_" + mask;
+		key = (rotation.getRotationMask() << 4) | mask;
 		System.out.println(key);
 		if ( !ConveyorManager.getInstance().conveyorSpritemap.containsKey(key) ) return;
 		super.addTexture(ConveyorManager.getInstance().conveyorSpritemap.get(key), GameGraphics.getTextureManager());
@@ -155,7 +153,7 @@ public class Conveyor extends TileObject implements ITickable{
 		return heldItem == null;
 	}
 	public void addInputConveyor(Conveyor conveyor) {
-		ConveyorManager.getInstance().directionMask(conveyor.getRotation(), mask);
+		mask |= conveyor.getRotation().getRotationMask();
 		System.out.println(mask);
 		if (inputConveyor == null) {
 			inputConveyor = conveyor;

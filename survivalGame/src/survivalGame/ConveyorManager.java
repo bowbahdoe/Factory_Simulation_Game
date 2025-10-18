@@ -12,36 +12,42 @@ import graphics.WorldRenderable;
 
 public final class ConveyorManager implements ITickable, WorldRenderable{
 	
-	public static final int NORTH = 1 << 0; // 0001
-	public static final int EAST  = 1 << 1; // 0010
-	public static final int SOUTH = 1 << 2; // 0100
-	public static final int WEST  = 1 << 3; // 1000
+	public static final int NORTH = Direction.NORTH.getRotationMask();
+	public static final int EAST  = Direction.EAST.getRotationMask();
+	public static final int SOUTH = Direction.SOUTH.getRotationMask();
+	public static final int WEST  = Direction.WEST.getRotationMask();
+	
+	final int NORTH_out = (NORTH << 4);
+	final int EAST_out = (EAST << 4);
+	final int SOUTH_out = (SOUTH << 4);
+	final int WEST_out = (WEST << 4);
 	
 	//These maps keys are formatted in: OutputDirection_InputDirections
-	
-	final Map<String, String> conveyorSpritemap = Map.ofEntries(
-		    Map.entry("EAST_" + NORTH, "ConveyorNE"),
-		    Map.entry("WEST_" + NORTH, "ConveyorNW"),
-		    Map.entry("NORTH_" + EAST, "ConveyorWN"),
-		    Map.entry("SOUTH_" + EAST, "ConveyorWS"),
-		    Map.entry("NORTH_" + WEST, "ConveyorEN"),
-		    Map.entry("SOUTH_" + WEST, "ConveyorES"),
-		    Map.entry("EAST_" + SOUTH, "ConveyorSE"),
-		    Map.entry("WEST_" + SOUTH, "ConveyorSW"),
+	final Map<Integer, String> conveyorSpritemap = (Map<Integer, String>) Map.ofEntries(
+			//Curved
+			Map.entry(EAST_out  | NORTH, "ConveyorNE"),
+		    Map.entry(WEST_out  | NORTH, "ConveyorNW"),
+		    Map.entry(NORTH_out | EAST,  "ConveyorWN"),
+		    Map.entry(SOUTH_out | EAST,  "ConveyorWS"),
+		    Map.entry(NORTH_out | WEST,  "ConveyorEN"),
+		    Map.entry(SOUTH_out | WEST,  "ConveyorES"),
+		    Map.entry(EAST_out  | SOUTH, "ConveyorSE"),
+		    Map.entry(WEST_out  | SOUTH, "ConveyorSW"),
+
+		    // T-junctions
+		    Map.entry(EAST_out  | (EAST  | NORTH),  "ConveyorT_NE"),
+		    Map.entry(WEST_out  | (NORTH | WEST),  "ConveyorT_NW"),
+		    Map.entry(NORTH_out | (NORTH | EAST),  "ConveyorT_EN"),
+		    Map.entry(SOUTH_out | (EAST  | SOUTH),  "ConveyorT_ES"),
+		    Map.entry(NORTH_out | (NORTH | WEST),  "ConveyorT_WN"),
+		    Map.entry(SOUTH_out | (WEST  | SOUTH),  "ConveyorT_WS"),
+		    Map.entry(EAST_out  | (SOUTH | EAST),  "ConveyorT_SE"),
+		    Map.entry(WEST_out  | (SOUTH | WEST),  "ConveyorT_SW"),
 		    
-		    Map.entry("EAST_" + (EAST | NORTH), "ConveyorT_NE"),
-		    Map.entry("WEST_" + (NORTH | WEST), "ConveyorT_NW"),
-		    Map.entry("NORTH_" + (NORTH | EAST), "ConveyorT_EN"),
-		    Map.entry("SOUTH_" + (EAST | SOUTH), "ConveyorT_ES"),
-		    Map.entry("NORTH_" + (NORTH | WEST), "ConveyorT_WN"),
-		    Map.entry("SOUTH_" + (WEST | SOUTH), "ConveyorT_WS"),
-		    Map.entry("EAST_" + (SOUTH | EAST), "ConveyorT_SE"),
-		    Map.entry("WEST_" + (SOUTH | WEST), "ConveyorT_SW"),
-		    
-		    Map.entry("WEST_" + (NORTH | SOUTH), "ConveyorT_VE"),
-		    Map.entry("EAST_" + (NORTH | SOUTH), "ConveyorT_VW"),
-		    Map.entry("NORTH_" + (WEST | EAST), "ConveyorT_HN"),
-		    Map.entry("SOUTH_" + (WEST | EAST), "ConveyorT_HS")
+		    Map.entry(WEST_out  | (NORTH | SOUTH), "ConveyorT_VE"),
+		    Map.entry(EAST_out  | (NORTH | SOUTH), "ConveyorT_VW"),
+		    Map.entry(NORTH_out | (WEST  | EAST),   "ConveyorT_HN"),
+		    Map.entry(SOUTH_out | (WEST  | EAST),   "ConveyorT_HS")
 		);
 			
 	private static ConveyorManager ConveyorManagerInstance;
@@ -64,10 +70,7 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 		
 		
 		GameGraphics.getInstance().registerWorldObj(this, 4);
-		
-		for (String e : conveyorSpritemap.keySet()) {
-			System.out.println(" aa " + e);
-		}
+	
 	}
 	 
 	
@@ -127,24 +130,5 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 		
 	}
 	
-	public int directionMask(Direction direction, int mask) {
-		switch (direction){
-		case NORTH:
-			mask |= NORTH;
-			break;
-		case EAST:
-			mask |= EAST;
-			break;
-		case SOUTH:
-			mask |= SOUTH;
-			break;
-		case WEST:
-			mask |= WEST;
-			break;
-		default:
-			break;
-		}
-		
-		return mask;
-	}
+
 }

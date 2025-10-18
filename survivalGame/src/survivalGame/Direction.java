@@ -1,27 +1,29 @@
 package survivalGame;
 
 public enum Direction {
-	NORTH(0),
-	EAST(1),
-	SOUTH(2),
-	WEST(3);
+	NORTH(0,1 << 0), // 0001
+	EAST(1,1 << 1),  // 0010
+	SOUTH(2,1 << 2), // 0100
+	WEST(3,1 << 3);  // 1000
 	
-	private int rotation = 0;
+	private int mask = 0;
+	private int index = 0;
 	
-	Direction(int rotation){
-		this.rotation = rotation;
+	Direction(int index, int mask){
+		this.index = index;
+		this.mask = mask;
 	}
 	
-	public int getRotation() {
-		return rotation;
+	public int getRotationMask() {
+		return mask;
 	}
 	
 	public Direction rotatedClockwise() {
-        return values()[(this.rotation + 1) % 4];
+        return values()[(this.index + 1) % 4];
     }
 
     public Direction rotatedAntiClockwise() {
-        return values()[(this.rotation + 3) % 4];
+        return values()[(this.index + 3) % 4];
     }
   
 	

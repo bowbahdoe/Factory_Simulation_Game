@@ -35,7 +35,6 @@ public class InitialiseGame {
 			 textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
 		}
 		
-		
 		textureManager.loadTexture("src/images/PlayerUI.png", "PlayerUI");
 
 		textureManager.loadTexture("src/images/InventorySquare.png", "InventorySlot");
