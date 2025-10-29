@@ -10,8 +10,12 @@ public enum Recipes {
 	CONVEYOR(new CraftingRecipe(
 			Map.of(ItemFactory.createItem(ItemID.WOOD), 3),
 			ItemFactory.createItem(ItemID.CONVEYOR)
+			)),
+	
+	TREEHARVESTER(new CraftingRecipe(
+			Map.of(ItemFactory.createItem(ItemID.WOOD), 3),
+			ItemFactory.createItem(ItemID.TREEHARVESTER)
 			));
-
 	private final CraftingRecipe recipe;
 	
 	Recipes(CraftingRecipe recipe) {

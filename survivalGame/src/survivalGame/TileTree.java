@@ -7,8 +7,7 @@ import graphics.GameGraphics;
 public class TileTree extends TileObject{
 
 	public TileTree(Tile parentTile) {
-		super();
-		super.parentTile = parentTile;
+		super(parentTile);
 		super.verticalOffset = (int) -(50 + Math.random() * 25);
 
 		GameGraphics.getInstance().registerWorldObj(this, 2);

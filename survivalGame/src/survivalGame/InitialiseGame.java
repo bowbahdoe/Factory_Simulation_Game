@@ -15,36 +15,9 @@ public class InitialiseGame {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Thread updaterThread = new Thread(Updater.getInstance());
-
-		textureManager.loadTexture("src/images/Stickman.png", "Player");
-		textureManager.loadTexture("src/images/grasy.png", "Grass");
-		textureManager.loadTexture("src/images/Tree.png", "Tree");
 		
-		String[] directions = {"N", "E", "S", "W"};
-		for (String direction : directions) {
-		    textureManager.loadTexture("src/images/Conveyors/Conveyor" + direction + ".png", "Conveyor" + direction);
-		}
-
-		String[] turns = {"NE", "SE", "SW", "NW", "EN", "ES", "WS", "WN"};
-		for (String turn : turns) {
-		    textureManager.loadTexture("src/images/Conveyors/ConveyorTurn" + turn + ".png", "Conveyor" + turn);
-		    textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
-		}
-		turns = new String[]{"VE", "VW", "HN", "HS"};
-		for (String turn : turns) {
-			 textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
-		}
+		loadTextures();
 		
-		textureManager.loadTexture("src/images/PlayerUI.png", "PlayerUI");
-
-		textureManager.loadTexture("src/images/InventorySquare.png", "InventorySlot");
-		textureManager.loadTexture("src/images/itemSelection.png", "SelectedSlot");
-		textureManager.loadTexture("src/images/CraftingSquareActive.png", "ButtonActive");
-		textureManager.loadTexture("src/images/CraftingSquareInactive.png", "ButtonInactive");
-		textureManager.loadTexture("src/images/Hotbar.png", "Hotbar");
-		
-		textureManager.loadTexture("src/images/Item_Conveyor.png", "ConveyorItem");
-		textureManager.loadTexture("src/images/Item_Wood.png", "WoodItem");
 		int worldSize = 36 * 9;
 		//world size is length or width of world, so if world size 2, 4 tiles total
 		//chunk size reccommended: 6
@@ -91,5 +64,43 @@ public class InitialiseGame {
 			}
 		}
 		chunks[x * chunkAmount + y] = chunk;
+	}
+	
+	private static void loadTextures() {
+
+		textureManager.loadTexture("src/images/Stickman.png", "Player");
+		textureManager.loadTexture("src/images/grasy.png", "Grass");
+		textureManager.loadTexture("src/images/Tree.png", "Tree");
+		
+		String[] directions = {"N", "E", "S", "W"};
+		for (String direction : directions) {
+		    textureManager.loadTexture("src/images/Conveyors/Conveyor" + direction + ".png", "Conveyor" + direction);
+		}
+
+		String[] turns = {"NE", "SE", "SW", "NW", "EN", "ES", "WS", "WN"};
+		for (String turn : turns) {
+		    textureManager.loadTexture("src/images/Conveyors/ConveyorTurn" + turn + ".png", "Conveyor" + turn);
+		    textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
+		}
+		turns = new String[]{"VE", "VW", "HN", "HS"};
+		for (String turn : turns) {
+			 textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
+		}
+		
+		textureManager.loadTexture("src/images/PlayerUI.png", "PlayerUI");
+
+		textureManager.loadTexture("src/images/InventorySquare.png", "InventorySlot");
+		textureManager.loadTexture("src/images/itemSelection.png", "SelectedSlot");
+		textureManager.loadTexture("src/images/CraftingSquareActive.png", "ButtonActive");
+		textureManager.loadTexture("src/images/CraftingSquareInactive.png", "ButtonInactive");
+		textureManager.loadTexture("src/images/Hotbar.png", "Hotbar");
+		textureManager.loadTexture("src/images/TreeHarvester.png", "TreeHarvester");
+		
+		textureManager.loadTexture("src/images/Item_Conveyor.png", "ConveyorItem");
+		textureManager.loadTexture("src/images/Item_TreeHarvester.png", "TreeHarvesterItem");
+		textureManager.loadTexture("src/images/Item_Wood.png", "WoodItem");
+		textureManager.loadTexture("src/images/Item_Log.png", "LogItem");
+		
+		textureManager.loadTexture("src/images/BlueprintDirection.png", "Blueprint");
 	}
 }

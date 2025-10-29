@@ -27,7 +27,6 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
         return InputListenerInstance;
     }
 	
-	
 	private int horiz;
 	private int vert;
 	
@@ -37,11 +36,13 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	private int[] clickedCoords = new int[2];
 	private Tile clickedTile;
 
-	Player player;
+	private Player player;
 	public boolean leftButtonHeld = false;
-	public int mouseX = 0, mouseY = 0;
+	private int mouseX = 0, mouseY = 0;
 	 
+	private boolean mouseDragging = false;
 	public InputListener(Player player) {
+		GameGraphics.getInstance().addMouseMotionListener(this);
 		InputListenerInstance = this;
 		this.player = player;
 	}
@@ -140,7 +141,7 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	
 		if (placedObject instanceof Conveyor) {
 			Conveyor conv = ((Conveyor) placedObject);
-			conv.recieveItem(new WorldItem(ItemFactory.createItem(ItemID.WOOD), conv.parentTile.pixelX, conv.parentTile.pixelY));
+			conv.recieveWorldItem(new WorldItem(ItemFactory.createItem(ItemID.WOOD), conv.parentTile.pixelX, conv.parentTile.pixelY));
 		}
 	}
 	
@@ -215,8 +216,12 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 
         }
 	}
+	public Direction getBuildRotation() {
+		return buildRotation;
+	}
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
@@ -224,4 +229,10 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
         mouseY = e.getY();
 	}
 
+	public int getMouseX() {
+		return mouseX;
+	}
+	public int getMouseY() {
+		return mouseY;
+	}
 }

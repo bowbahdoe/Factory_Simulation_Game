@@ -88,6 +88,9 @@ public class Tile implements WorldRenderable{
 	public TileObject getObject() {
 		return tileObject;
 	}
+	public boolean isEmpty() {
+		return tileObject == null;
+	}
 	public void addTexture(String Texture, TextureManager textureM) {
 		texture = textureM.getTexture(Texture);
 	}

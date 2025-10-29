@@ -1,6 +1,7 @@
 package survivalGame;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -10,6 +11,8 @@ import java.util.Map;
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
 import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.ItemID;
+import survivalGame.ItemManagement.PlaceableItem;
 import survivalGame.ItemManagement.WorldItem;
 import survivalGame.userInterface.HotbarSlot;
 import survivalGame.userInterface.InventorySlot;
@@ -17,19 +20,19 @@ import survivalGame.userInterface.PlayerUI;
 
 public class Player implements Updatable, WorldRenderable{
 	
-	private InputListener input = new InputListener( this);
+	private InputListener input = new InputListener(this);
 	private PlayerUI playerUI = new PlayerUI(this);
-	
+	BufferedImage[] blueprints = new BufferedImage[4];
 	
 	private double pixelX = 50;
 	private double pixelY = 0;
-	private int velocity = 360 * 7;
+	private int velocity = 360 * 6;
 	
 	private int[] movement;
 	
 	private Tile selectedTile;
 	
-	BufferedImage character;
+	private BufferedImage character;
 	
 	private InventorySlot selectedInventorySlot;
 	private HotbarSlot selectedHotbarSlot;
@@ -39,6 +42,13 @@ public class Player implements Updatable, WorldRenderable{
 		GameGraphics.getInstance().registerWorldObj(this, 3);
 		character = GameGraphics.getTextureManager().getTexture("Player");
 	
+		playerUI.addToInventory(ItemID.CONVEYOR,20);
+		playerUI.addToInventory(ItemID.TREEHARVESTER,20);
+		
+		blueprints[0] = GameGraphics.getTextureManager().getTexture("Blueprint");
+		blueprints[1] = ImageRotater.rotateImage(blueprints[0], 90);
+		blueprints[2] = ImageRotater.rotateImage(blueprints[0], 180);
+		blueprints[3] = ImageRotater.rotateImage(blueprints[0], -90);
 	}
 	@Override
 	public void update() {
@@ -50,6 +60,7 @@ public class Player implements Updatable, WorldRenderable{
 		if (selectedTile != null) {
 			selectedTile.setSelect(true);
 		}
+		
 	}
 	@Override
 	public void fixedUpdate(long delta) {
@@ -93,6 +104,31 @@ public class Player implements Updatable, WorldRenderable{
 		g.fillOval(-(int)pixelX - playerSize,-(int)pixelY - playerSize, 50, 50); 
 		
 		g.drawImage(character, -(int)pixelX - playerSize, -(int)pixelY - playerSize, graphics);
+		
+		if (selectedHotbarSlot == null) return;
+
+		if (!(selectedHotbarSlot.getItem() instanceof PlaceableItem)) return;
+		Tile tile = TileProvider.pixel_AccessTile(input.getMouseX(), input.getMouseY());
+		if (!tile.isEmpty()) return;
+		BufferedImage texture = null;
+		switch (input.getBuildRotation()) {
+		case NORTH:
+			texture = blueprints[0];
+			break;
+		case EAST:
+			texture = blueprints[1];
+			break;
+		case SOUTH:
+			texture = blueprints[2];
+			break;
+		case WEST:
+			texture = blueprints[3];
+			break;
+		}
+		if (texture == null) return;
+		g.drawImage(texture, (int) (tile.pixelX), (int) (tile.pixelY), graphics);
+		
+		g.drawImage(getSelectedHotbarSlot().getItem().getTexture(), tile.pixelX + 75, tile.pixelY + 75,25,25, graphics);
 	}
 	public Tile getSelectedTile() {
 		return selectedTile;

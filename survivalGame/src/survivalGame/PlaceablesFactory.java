@@ -12,6 +12,7 @@ public class PlaceablesFactory {
 	static {
 		placementMap = new HashMap<>();
 		placementMap.put(ItemID.CONVEYOR, info -> new Conveyor(info.tile,info.direction));
+		placementMap.put(ItemID.TREEHARVESTER, info -> new TreeHarvester(info.tile,info.direction));
 	}
 	
 	public static TileObject createPlaceable(ItemID itemID, PlacementInfo info) {

@@ -24,8 +24,9 @@ public class CraftingUI implements UIRenderable, InventoryListener {
 	
 		//1300,470 are bounds corner
 		
-		craftButtons.add(new CraftButton(bounds.x,bounds.y, this, Recipes.CONVEYOR.getRecipe()));
 		
+		craftButtons.add(new CraftButton(bounds.x,bounds.y, this, Recipes.CONVEYOR.getRecipe()));
+		craftButtons.add(new CraftButton(bounds.x + 100,bounds.y, this, Recipes.TREEHARVESTER.getRecipe()));
 				
 
 	}

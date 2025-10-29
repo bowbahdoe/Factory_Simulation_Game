@@ -27,21 +27,18 @@ public final class TickManager implements Updatable{
 		
 	}
 
-	public static void register(ITickable obj) {
+	public void register(ITickable obj) {
 		toTick.add(obj);
 	}
 
 	@Override
 	public void update() {
-		
-		
 	}
 
 	@Override
 	public void fixedUpdate(long delta) {
 		tick += tickrate * delta / 1000f;
 		if (tick > 250) {
-			//System.out.println("ticked +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 			TickAll();
 			tick = 0;
 		}

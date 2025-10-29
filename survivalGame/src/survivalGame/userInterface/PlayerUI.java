@@ -1,5 +1,6 @@
 package survivalGame.userInterface;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,7 @@ import survivalGame.InputListener;
 import survivalGame.InventoryListener;
 import survivalGame.Player;
 import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.ItemStack;
 import survivalGame.ItemManagement.PlaceableItem;
@@ -53,9 +55,6 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		new HotbarUI(this, player);
 		allUI.add(craftingUI);
 		listeners.add(craftingUI);
-		
-		inventory.put(new PlaceableItem(ItemID.CONVEYOR), 20);
-
 	}
 	public void toggle() {
 		active = !active;
@@ -70,7 +69,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		int x = graphics.getSize().width / 2 - UI.getWidth() / 2;
 		int y = graphics.getSize().height / 2 - UI.getHeight() / 2;
 		g.drawImage(UI, x,y, graphics);
-
+		
 		for (UIRenderable ui : allUI) {
 			ui.renderUI(g, graphics);
 		}
@@ -163,6 +162,10 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		if (! player.getSelectedInventorySlot().isSelected()) return null;
 		
 		return player.getSelectedInventorySlot();
+	}
+	
+	public void addToInventory(ItemID id, int quantity) {
+		inventory.put(ItemFactory.createItem(id), quantity);
 	}
 	
 	public Player getPlayer() {

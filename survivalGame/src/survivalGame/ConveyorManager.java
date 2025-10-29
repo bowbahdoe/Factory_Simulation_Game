@@ -24,6 +24,11 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 	
 	//These maps keys are formatted in: OutputDirection_InputDirections
 	final Map<Integer, String> conveyorSpritemap = (Map<Integer, String>) Map.ofEntries(
+			Map.entry(EAST_out, "ConveyorE"),
+			Map.entry(WEST_out, "ConveyorW"),
+			Map.entry(NORTH_out, "ConveyorN"),
+			Map.entry(SOUTH_out, "ConveyorS"),
+			
 			//Curved
 			Map.entry(EAST_out  | NORTH, "ConveyorNE"),
 		    Map.entry(WEST_out  | NORTH, "ConveyorNW"),
@@ -65,8 +70,7 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
     }
 	
 	public ConveyorManager() {
-		TickManager.getInstance();
-		TickManager.register(this); 
+		TickManager.getInstance().register(this); 
 		
 		
 		GameGraphics.getInstance().registerWorldObj(this, 4);

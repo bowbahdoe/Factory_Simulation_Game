@@ -21,7 +21,7 @@ public class WorldItem implements WorldRenderable, Updatable {
 	private boolean moving;
 	private Item item;
 	
-	protected boolean active = true;
+	private boolean active = true;
 	
 	public WorldItem(Item item, int pixelX, int pixelY) {
 		this.item = item;
@@ -40,7 +40,7 @@ public class WorldItem implements WorldRenderable, Updatable {
 
 	@Override
 	public boolean isActive() {
-		return false;
+		return active;
 	}
 	
 	public void setActive(boolean state) {
@@ -53,10 +53,8 @@ public class WorldItem implements WorldRenderable, Updatable {
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		if (active) {
-			g.drawImage(item.getTexture(),pixelX,pixelY,null);
-		}
-		
+		if (!active) return;
+		g.drawImage(item.getTexture(),pixelX,pixelY,null);
 	}
 	
 	public void fixToTile(Tile tile) {
@@ -78,7 +76,7 @@ public class WorldItem implements WorldRenderable, Updatable {
 	}
 	@Override
 	public void fixedUpdate(long delta) {
-
+		if (!active) return;
 		if (moving && elapsedTime < 0.1f) {
 			elapsedTime += delta / 1000f;
 			
