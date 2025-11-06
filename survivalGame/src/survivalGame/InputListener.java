@@ -135,6 +135,7 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 		if (tile.getObject() != null) {
 			return;
 		}
+		if (player.getSelectedHotbarSlot() == null) return;
 		PlaceableItem toPlace = (PlaceableItem)player.getSelectedHotbarSlot().getItem();
 		if (toPlace == null) return;
 		TileObject placedObject = toPlace.place(tile, buildRotation);

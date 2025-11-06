@@ -15,6 +15,10 @@ public enum Recipes {
 	TREEHARVESTER(new CraftingRecipe(
 			Map.of(ItemFactory.createItem(ItemID.WOOD), 3),
 			ItemFactory.createItem(ItemID.TREEHARVESTER)
+			)),
+	PLANKER(new CraftingRecipe(
+			Map.of(ItemFactory.createItem(ItemID.WOOD), 3),
+			ItemFactory.createItem(ItemID.PLANKER)
 			));
 	private final CraftingRecipe recipe;
 	

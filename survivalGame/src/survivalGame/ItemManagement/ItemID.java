@@ -4,6 +4,7 @@ public enum ItemID {
 	//IMPORTANT: id must be the name of the item texture
 	CONVEYOR("ConveyorItem", ItemType.PLACEABLE),
 	TREEHARVESTER("TreeHarvesterItem", ItemType.PLACEABLE),
+	PLANKER("PlankerItem", ItemType.PLACEABLE),
     WOOD("WoodItem", ItemType.RESOURCE),
 	LOG("LogItem", ItemType.RESOURCE);
 	

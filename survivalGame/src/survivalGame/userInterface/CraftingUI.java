@@ -27,7 +27,7 @@ public class CraftingUI implements UIRenderable, InventoryListener {
 		
 		craftButtons.add(new CraftButton(bounds.x,bounds.y, this, Recipes.CONVEYOR.getRecipe()));
 		craftButtons.add(new CraftButton(bounds.x + 100,bounds.y, this, Recipes.TREEHARVESTER.getRecipe()));
-				
+		craftButtons.add(new CraftButton(bounds.x + 200,bounds.y, this, Recipes.PLANKER.getRecipe()));		
 
 	}
 	@Override

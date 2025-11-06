@@ -23,10 +23,11 @@ public class InitialiseGame {
 		//chunk size reccommended: 6
 		int chunkSize = 6;
 		int chunkAmount = worldSize / chunkSize;
+		
 
-	
 		chunks = new TileChunk[chunkAmount * chunkAmount];	
-		GameGraphics gameGraphics = new GameGraphics(chunks, worldSize, chunkSize );
+		GameGraphics gameGraphics = GameGraphics.getInstance();
+		gameGraphics.init(new WorldInfo(chunks, worldSize, chunkSize));
 		
 		for (int x = 0; x < chunkAmount; x++) {
 			for (int y = 0; y < chunkAmount; y++ ) {
@@ -35,17 +36,22 @@ public class InitialiseGame {
 		}
 
 		System.out.println(chunks.length + " chunks and " + tiles + " tiles") ;
-		
-		//textureManager.addTexture(ImageRotater.rotateImage(textureManager.getTexture("ConveyorW"),55), "ConveyorS");
-		
+
 		gameGraphics.addOnTextureManager(textureManager);
 		Player player = new Player();
 		gameGraphics.attachPlayer(player);
 		
 		new MainScreen(gameGraphics);
+		
         updaterThread.start();  // Start the game loop in a separate thread
 		
 	}
+	/**
+	 * @param x coordinate of chunk
+	 * @param y coordinate of chunk
+	 * @param chunkSize is the width and height of the chunk square
+	 * @param chunkAmount is the amount of chunks there will be in the world
+	 */
 	private static void createChunk(int x, int y, int chunkSize, int chunkAmount) {
 		TileChunk chunk = new TileChunk(x,y, chunkSize, GameGraphics.TILESIZE);
 		for (int Tx = 0; Tx < chunkSize; Tx++) {
@@ -94,12 +100,15 @@ public class InitialiseGame {
 		textureManager.loadTexture("src/images/CraftingSquareActive.png", "ButtonActive");
 		textureManager.loadTexture("src/images/CraftingSquareInactive.png", "ButtonInactive");
 		textureManager.loadTexture("src/images/Hotbar.png", "Hotbar");
+		
 		textureManager.loadTexture("src/images/TreeHarvester.png", "TreeHarvester");
+		textureManager.loadTexture("src/images/Planker.png", "Planker");
 		
 		textureManager.loadTexture("src/images/Item_Conveyor.png", "ConveyorItem");
 		textureManager.loadTexture("src/images/Item_TreeHarvester.png", "TreeHarvesterItem");
 		textureManager.loadTexture("src/images/Item_Wood.png", "WoodItem");
 		textureManager.loadTexture("src/images/Item_Log.png", "LogItem");
+		textureManager.loadTexture("src/images/Item_Planker.png", "PlankerItem");
 		
 		textureManager.loadTexture("src/images/BlueprintDirection.png", "Blueprint");
 	}

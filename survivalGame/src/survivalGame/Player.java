@@ -44,6 +44,7 @@ public class Player implements Updatable, WorldRenderable{
 	
 		playerUI.addToInventory(ItemID.CONVEYOR,20);
 		playerUI.addToInventory(ItemID.TREEHARVESTER,20);
+		playerUI.addToInventory(ItemID.WOOD,20);
 		
 		blueprints[0] = GameGraphics.getTextureManager().getTexture("Blueprint");
 		blueprints[1] = ImageRotater.rotateImage(blueprints[0], 90);
@@ -138,12 +139,16 @@ public class Player implements Updatable, WorldRenderable{
 	}
 	
 	public void collectItems() {
-		Tile[] tiles = new Tile[4];
+		Tile[] tiles = new Tile[9];
 		tiles[0] = getTile(0,0);
 		tiles[1] = getTile(0,100);
 		tiles[2] = getTile(100,0);
 		tiles[3] = getTile(100,100);
-		
+		tiles[4] = getTile(-100,0);
+		tiles[5] = getTile(0,-100);
+		tiles[6] = getTile(-100,-100);
+		tiles[7] = getTile(100,-100);
+		tiles[8] = getTile(-100,100);
 		Map<Item, Integer> tempInventory = new HashMap<>();
 		for (Tile tile : tiles) {
 			if (tile.getObject() instanceof Conveyor) {

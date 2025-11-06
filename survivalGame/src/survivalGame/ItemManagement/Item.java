@@ -14,6 +14,7 @@ public abstract class Item  {
 		texture = GameGraphics.getTextureManager().getTexture(itemID.getIdString());
 	}
 	
+	
 	public BufferedImage getTexture() {
 		return texture;
 	}
@@ -21,6 +22,15 @@ public abstract class Item  {
 	public ItemID getItemID()
 	{
 		return id;
+	}
+	
+	/**
+	 * Sets the itemID and changes texture of the item
+	 * @param itemID
+	 */
+	public void changeItemInto(ItemID itemID) {
+		id = itemID;
+		texture = GameGraphics.getTextureManager().getTexture(itemID.getIdString());
 	}
 	
 	@Override

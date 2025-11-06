@@ -19,6 +19,7 @@ import survivalGame.Player;
 import survivalGame.TileChunk;
 import survivalGame.Updatable;
 import survivalGame.Updater;
+import survivalGame.WorldInfo;
 
 
 public final class GameGraphics extends JPanel implements Updatable {
@@ -31,15 +32,15 @@ public final class GameGraphics extends JPanel implements Updatable {
 	private static List<UIRenderable> UIRenderLayers = new ArrayList<>();
 	
 	
-	public final TileChunk[] chunks;
+	public TileChunk[] chunks;
 	
 	AffineTransform uiTransform;
 	
-	public final int worldSize;
-    final int worldPixelSize;
+	public int worldSize;
+    int worldPixelSize;
 
 	public final static int TILESIZE = 100;
-	public final int chunkSize;
+	public int chunkSize;
 	
 	private float cameraZoom = 1;
 	
@@ -56,6 +57,9 @@ public final class GameGraphics extends JPanel implements Updatable {
 	
 	//singleton lolololol
 	public static GameGraphics getInstance() {
+		if (graphicsInstance == null) {
+			graphicsInstance = new GameGraphics();
+		}
         return graphicsInstance;
     }
 	
@@ -75,12 +79,14 @@ public final class GameGraphics extends JPanel implements Updatable {
 	private Player player;
 	private int[] originOffset = new int[2];
 	
-	public GameGraphics(TileChunk[] chunks, int worldSize, int chunkSize)
+	private GameGraphics() {}
+
+	public void init(WorldInfo info)
     {		
 		graphicsInstance = this;
-		this.chunks = chunks;
-		this.worldSize = worldSize;
-		this.chunkSize = chunkSize;
+		this.chunks = info.chunks;
+		this.worldSize = info.worldSize;
+		this.chunkSize = info.chunkSize;
 		worldPixelSize = (worldSize * GameGraphics.TILESIZE) - 2600;
 		//rough estimate
 		
@@ -94,6 +100,7 @@ public final class GameGraphics extends JPanel implements Updatable {
 		}
 		
     }
+	
 	public void attachPlayer(Player player) {
 		this.player = player;
 		InputListener input = InputListener.getInstance();
@@ -106,23 +113,24 @@ public final class GameGraphics extends JPanel implements Updatable {
     	super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         
+        // save default transform.
         if (uiTransform == null) {
             uiTransform = g2d.getTransform();
         }
         
-        
         g2d.setStroke(new BasicStroke(4));
+        //background color
         g2d.setColor(new Color(0,0,0));
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-        
+        //translates world objects by player position.
         translateByPlayerView(g2d);
-        g2d.scale(cameraZoom,cameraZoom); //Needs to be other way around, therefore apply zoom to origin offset for player :/
+        g2d.scale(cameraZoom,cameraZoom); //must translate then scale otherwise everything will break :(
 
         renderWorld(g2d);
         
+        //sets transform back to default so that UI doesn't get affected by player position or zoom
         g2d.setTransform(uiTransform);
-        //g2d.setClip(0,0,200,500);
         
         renderUI(g2d);
         
@@ -130,19 +138,18 @@ public final class GameGraphics extends JPanel implements Updatable {
         g2d.setFont(largeFont);
         g2d.setColor(Color.BLUE);
         g2d.drawString(originOffset[0] + ", " + originOffset[1] + "  Z: " +  cameraZoom, 222, 222);
-        //g2d.fillRect(this.getWidth() / 2 - 5, this.getHeight() / 2 - 5, 10, 10);
         
        
     }
     private void translateByPlayerView(Graphics2D g2d) {
-    	 if (-player.getXCoord() >= 0 && -player.getXCoord() < worldPixelSize || true) {
+    	//discontinue displacing originOffset(player position) when out of bounds
+    	if (-player.getXCoord() >= 0 && -player.getXCoord() < worldPixelSize) {
         	 originOffset[0] = (int) (-player.getXCoord() );
         }
         if (-player.getYCoord() >= 0 && -player.getYCoord() < worldPixelSize) {
         	 originOffset[1] =  (int) (-player.getYCoord());
         }
-        originOffset[0] = (int) (-player.getXCoord() );
-        originOffset[1] =  (int) (-player.getYCoord());
+      
         
         g2d.translate(-originOffset[0] * cameraZoom + this.getWidth() / 2, -originOffset[1]  * cameraZoom + this.getHeight() / 2 );
     }
@@ -151,18 +158,18 @@ public final class GameGraphics extends JPanel implements Updatable {
     	for (TileChunk chunk : chunks) {
     		chunk.renderChunk(g,this);
 		}
-    	
-    	
+
     	for (int layer : WorldRenderLayers.keySet()) {
     	
     		//Loops through every tile in your view
-    		 for (int y = ((originOffset[1] / TILESIZE) - chunkSize * TILESIZE) / TILESIZE; y < worldSize; y++) {
-     			for (int x = ((originOffset[0] / TILESIZE ) - chunkSize * TILESIZE) / TILESIZE ; x < worldSize; x++) {
+    		 for (int y = 0; y < worldSize; y++) {
+     			for (int x = 0 ; x < worldSize; x++) {
 
-     				if (((y * worldSize) + x - 1) > WorldRenderLayers.get(layer).size()  - 1|| (y * worldSize) + x <= 0 ){
+     				int index = ((y * worldSize) + x - 1);
+     				if (index > WorldRenderLayers.get(layer).size() - 1|| index <= -1 ){
      					continue;
      				}
-     				WorldRenderLayers.get(layer).get((y * worldSize) + x - 1).render(g, this);	
+     				WorldRenderLayers.get(layer).get(index).render(g, this);	
      		}
      		} 
     	}

@@ -14,7 +14,7 @@ public abstract class TileObject implements WorldRenderable{
 	protected Tile parentTile;
 	
 	protected int verticalOffset = 0;
-	protected boolean toRender; //is 
+	protected boolean toRender; 
 	
 	public TileObject(Tile parentTile) {
 		this.parentTile = parentTile;

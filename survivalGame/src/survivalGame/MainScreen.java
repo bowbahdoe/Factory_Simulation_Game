@@ -10,7 +10,7 @@ import graphics.GameGraphics;
 public class MainScreen {
 	
 	public MainScreen(GameGraphics gameGraphics) {
-	    JFrame frame = new JFrame("Custom Screen");
+	    JFrame frame = new JFrame("Factory Game");
 
 	    frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 	    frame.setUndecorated(true); 

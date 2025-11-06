@@ -47,10 +47,11 @@ public class TreeHarvester extends FactoryComponent  {
 			targetTree = tree;
 		}
 		checkForOutput();
-		
 	}
 	
-	
+	/**
+	 * checks for any object that can recieve the item it dispenses.
+	 */
 	public void checkForOutput() {
 		if (behindTile.getObject() instanceof IItemReciever output) {
 			targetOutput = output;
