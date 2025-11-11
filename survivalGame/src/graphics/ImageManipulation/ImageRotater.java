@@ -1,4 +1,4 @@
-package survivalGame;
+package graphics.ImageManipulation;
 
 import java.awt.Graphics2D;
 

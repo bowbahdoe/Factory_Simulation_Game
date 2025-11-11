@@ -5,11 +5,11 @@ import java.util.EnumSet;
 
 import graphics.GameGraphics;
 import graphics.TextureManager;
-import survivalGame.ItemManagement.Item;
+import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 
-public class Planker extends FactoryComponent implements IItemReciever, IContainsConveyor{
+public class Planker extends FactoryComponent implements IContainsConveyor{
 	
 	private ActionTimer actionTimer;
 	private Conveyor conveyor;
@@ -67,9 +67,7 @@ public class Planker extends FactoryComponent implements IItemReciever, IContain
 	public void removeObject() {	
 	}
 
-	@Override
-	public void recieveItem(Item item) {	
-	}
+	
 
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
@@ -77,11 +75,7 @@ public class Planker extends FactoryComponent implements IItemReciever, IContain
 		int y = this.parentTile.pixelY;
 		g.drawImage(super.texture ,x ,y , graphics);
 	}
-	@Override
-	public boolean canRecieve() {
-		return false;
-	}
-
+	
 	@Override
 	public Conveyor getConveyor() {
 		return conveyor;

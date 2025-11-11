@@ -1,6 +1,5 @@
 package survivalGame;
 
-import graphics.GameGraphics;
 
 public abstract class PlacedObject extends TileObject {
 

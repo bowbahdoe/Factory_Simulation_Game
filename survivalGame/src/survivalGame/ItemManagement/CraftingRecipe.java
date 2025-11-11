@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class CraftingRecipe {
 	
-	Map<Item, Integer> recipe;
+	private Map<Item, Integer> recipe;
 	private Item outputItem;
 	
 	public CraftingRecipe(Map<Item, Integer> recipe, Item outputItem) {

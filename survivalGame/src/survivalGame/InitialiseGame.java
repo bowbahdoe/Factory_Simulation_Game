@@ -1,10 +1,8 @@
 package survivalGame;
 
-
-import java.awt.Graphics2D;
-
 import graphics.GameGraphics;
 import graphics.TextureManager;
+import graphics.ImageManipulation.ImageFlipper;
 
 public class InitialiseGame {
 	
@@ -58,9 +56,8 @@ public class InitialiseGame {
 			for (int Ty = 0; Ty < chunkSize; Ty++ ) {
 				Tile tile = new Tile(Tx  + (x * chunkSize),Ty  + (y * chunkSize),chunk,  GameGraphics.TILESIZE);
 				tiles++;
-				tile.addTexture("Grass",textureManager);
 				
-				int rNum = (int) (Math.random() * 100) + 1; 
+				int rNum = (int) (Math.random() * 115) + 1; 
 				if (rNum <= 1) {
 					TileObject tree = new TileTree(tile);
 					tree.addTexture("Tree",textureManager);
@@ -101,14 +98,18 @@ public class InitialiseGame {
 		textureManager.loadTexture("src/images/CraftingSquareInactive.png", "ButtonInactive");
 		textureManager.loadTexture("src/images/Hotbar.png", "Hotbar");
 		
-		textureManager.loadTexture("src/images/TreeHarvester.png", "TreeHarvester");
-		textureManager.loadTexture("src/images/Planker.png", "Planker");
+		textureManager.loadTexture("src/images/factoryComponents/TreeHarvester.png", "TreeHarvester");
+		textureManager.loadTexture("src/images/factoryComponents/Planker.png", "Planker");
+		textureManager.loadTexture("src/images/factoryComponents/ConveyorSplitter.png", "ConveyorSplitterR");
+		textureManager.addTexture(ImageFlipper.flipImageHorizontal(textureManager.getTexture("ConveyorSplitterR")), "ConveyorSplitterL");
 		
-		textureManager.loadTexture("src/images/Item_Conveyor.png", "ConveyorItem");
-		textureManager.loadTexture("src/images/Item_TreeHarvester.png", "TreeHarvesterItem");
-		textureManager.loadTexture("src/images/Item_Wood.png", "WoodItem");
-		textureManager.loadTexture("src/images/Item_Log.png", "LogItem");
-		textureManager.loadTexture("src/images/Item_Planker.png", "PlankerItem");
+		textureManager.loadTexture("src/images/Items/Item_Conveyor.png", "ConveyorItem");
+		textureManager.loadTexture("src/images/Items/Item_TreeHarvester.png", "TreeHarvesterItem");
+		textureManager.loadTexture("src/images/Items/Item_Wood.png", "WoodItem");
+		textureManager.loadTexture("src/images/Items/Item_Log.png", "LogItem");
+		textureManager.loadTexture("src/images/Items/Item_Planker.png", "PlankerItem");
+		textureManager.loadTexture("src/images/Items/Item_ConveyorSplitter.png", "ConveyorSplitterItemR");
+		textureManager.addTexture(ImageFlipper.flipImageHorizontal(textureManager.getTexture("ConveyorSplitterItemR")), "ConveyorSplitterItemL");
 		
 		textureManager.loadTexture("src/images/BlueprintDirection.png", "Blueprint");
 	}

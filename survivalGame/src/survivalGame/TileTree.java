@@ -1,6 +1,5 @@
 package survivalGame;
 
-import java.awt.Graphics2D;
 
 import graphics.GameGraphics;
 

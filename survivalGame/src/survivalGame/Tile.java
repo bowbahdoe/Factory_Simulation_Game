@@ -1,17 +1,8 @@
 package survivalGame;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import graphics.GameGraphics;
-import graphics.TextureManager;
 import graphics.WorldRenderable;
 
 public class Tile implements WorldRenderable{
@@ -27,7 +18,6 @@ public class Tile implements WorldRenderable{
 	private TileObject tileObject; 
 	public final TileChunk chunkParent;
 	// Declare image outside the try block
-	private BufferedImage texture; 
 	public Tile(int x, int y, TileChunk parent, int tileSize) {
 		this.x = x;
 		this.y = y;
@@ -91,7 +81,5 @@ public class Tile implements WorldRenderable{
 	public boolean isEmpty() {
 		return tileObject == null;
 	}
-	public void addTexture(String Texture, TextureManager textureM) {
-		texture = textureM.getTexture(Texture);
-	}
+	
 }

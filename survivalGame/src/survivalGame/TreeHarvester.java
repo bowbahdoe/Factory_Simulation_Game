@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 
 import graphics.GameGraphics;
 import graphics.TextureManager;
+import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;

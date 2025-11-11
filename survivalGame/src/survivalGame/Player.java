@@ -1,7 +1,6 @@
 package survivalGame;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -10,6 +9,7 @@ import java.util.Map;
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
+import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.PlaceableItem;
@@ -97,9 +97,6 @@ public class Player implements Updatable, WorldRenderable{
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		int width = (int) (graphics.getWidth() / graphics.getCameraZoom());
-		int height = (int) (graphics.getHeight() / graphics.getCameraZoom());
-
 		int playerSize = 25;
 		g.setColor(new Color(250,0,90,122));
 		g.fillOval(-(int)pixelX - playerSize,-(int)pixelY - playerSize, 50, 50); 

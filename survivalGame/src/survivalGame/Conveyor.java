@@ -17,7 +17,7 @@ public class Conveyor extends FactoryComponent implements IItemReciever, IContai
 	private FactoryComponent parentComponent;
 	private WorldItem heldItem; 
 	private Tile targetTile;
-	private boolean isRoot; //Purely for visual purposes
+	private boolean isTail; //Purely for visual purposes
 	private int beltKey = -1;
 	private boolean toRender = true;
 	private boolean locked = false;
@@ -25,46 +25,17 @@ public class Conveyor extends FactoryComponent implements IItemReciever, IContai
 	
 	public Conveyor(Tile parentTile, Direction rotation) {
 		super(parentTile,rotation);
-		
-		GameGraphics.getInstance().registerWorldObj(this, 2);
-		
-		ConveyorManager.getInstance();
-		mask |= rotation.getRotationMask() << 4;
-		super.addTexture(ConveyorManager.getInstance().conveyorSpritemap.get(mask), GameGraphics.getTextureManager());
-		targetTile = getTargetTile(rotation);
-		if (findParents(null)) {
-			//If no target, inherit any other key
-			beltKey = inputConveyor.getBeltKey();
-			if (targetTile.getObject() instanceof IContainsConveyor) {
-				targetConveyor = getConveyorFromTile(targetTile);;
-				targetConveyor.changeSprite(this.rotation);
-			}
-			//And therefore that parent must be the leaf, so make this new leaf.
-			ConveyorManager.asignLeaf(beltKey, this);
-		}	
-		else if (targetTile.getObject() instanceof IContainsConveyor  ) {
-			//if conveyor infront, attach to conveyor and update beltkey
-			targetConveyor = getConveyorFromTile(targetTile);
-			targetConveyor.changeSprite(this.rotation);
-			
-			if (targetConveyor.hasInputConveyor()) return;
-			targetConveyor.addInputConveyor(this);
-			beltKey = targetConveyor.getBeltKey();
-			becomeConveyorLeaf();
-		}
-		
-		else {
-			//Else just make new one
-			becomeConveyorLeaf();
-		}
+		initializeConveyor(parentTile,rotation,null);
 	}
-	
 	public Conveyor(Tile parentTile, Direction rotation, EnumSet<Direction> inputBlacklist) {
 		super(parentTile,rotation);
-		
-		ConveyorManager.getInstance();
+		initializeConveyor(parentTile,rotation,inputBlacklist);
+	}
+	
+	private void initializeConveyor(Tile parentTile, Direction rotation, EnumSet<Direction> inputBlacklist) {
 		mask |= rotation.getRotationMask() << 4;
 		super.addTexture(ConveyorManager.getInstance().conveyorSpritemap.get(mask), GameGraphics.getTextureManager());
+		GameGraphics.getInstance().registerWorldObj(this, 2);
 		targetTile = getTargetTile(rotation);
 		if (findParents(inputBlacklist)) {
 			//If no target, inherit any other key
@@ -74,24 +45,35 @@ public class Conveyor extends FactoryComponent implements IItemReciever, IContai
 				targetConveyor.changeSprite(this.rotation);
 			}
 			//And therefore that parent must be the leaf, so make this new leaf.
-			ConveyorManager.asignLeaf(beltKey, this);
+			ConveyorManager.asignTail(beltKey, this);
 		}	
 		else if (targetTile.getObject() instanceof IContainsConveyor  ) {
 			//if conveyor infront, attach to conveyor and update beltkey
+			
 			targetConveyor = getConveyorFromTile(targetTile);
 			targetConveyor.changeSprite(this.rotation);
 			
-			if (targetConveyor.hasInputConveyor()) return;
-			targetConveyor.addInputConveyor(this);
+			if (targetConveyor.hasInputConveyor()) {
+				becomeNewConveyorTail();
+				return;
+			}
 			beltKey = targetConveyor.getBeltKey();
-			becomeConveyorLeaf();
+			targetConveyor.addInputConveyor(this);
+			
+			
 		}
 		
 		else {
 			//Else just make new one
-			becomeConveyorLeaf();
+			becomeNewConveyorTail();
 		}
+		
 	}
+	/**
+	 * Checks surroundings for any possible input conveyors, while obeying the inputblacklist.
+	 * @param inputBlacklist is an enumset which limits the input directions of input conveyors allowing to pass on items to this conveyor
+	 * @returns boolean whether or not it found an input conveyor or not. 
+	 */
 	private boolean findParents(EnumSet<Direction> inputBlacklist) {
 		Tile[] surroundings = new Tile[4];
 		surroundings[0] = TileProvider.world_AccessTile(parentTile.x,parentTile.y - 1);
@@ -140,6 +122,10 @@ public class Conveyor extends FactoryComponent implements IItemReciever, IContai
 		return super.toRender;
 	}
 
+	/**
+	 * OnTick() makes the conveyor attempt passing the item to the next.
+	 * It also calls the function on any parentcomponent it has. 
+	 */
 	@Override
 	public void onTick() {
 
@@ -149,6 +135,10 @@ public class Conveyor extends FactoryComponent implements IItemReciever, IContai
 		}
 	}
 	
+	/**
+	 * @param tile to get conveyor from
+	 * @return any instance of conveyor on that tile. This function was made due to the interface: IContainsConveyor
+	 */
 	private Conveyor getConveyorFromTile(Tile tile) {
 		IContainsConveyor conv = ((IContainsConveyor) targetTile.getObject());
 		return conv.getConveyor();
@@ -176,8 +166,7 @@ public class Conveyor extends FactoryComponent implements IItemReciever, IContai
 		return heldItem == null;
 	}
 	public void addInputConveyor(Conveyor conveyor) {
-		mask |= conveyor.getRotation().getRotationMask();
-		System.out.println(mask);
+		//mask |= conveyor.getRotation().getRotationMask();
 		if (inputConveyor == null) {
 			inputConveyor = conveyor;
 		}
@@ -222,9 +211,7 @@ public class Conveyor extends FactoryComponent implements IItemReciever, IContai
 		    g.setColor(Color.blue);
 			g.drawString("" + beltKey ,  pixelX, pixelY  + fontSize);
 			
-			g.setColor(Color.GREEN);
-			g.drawString(Integer.toBinaryString(mask),  pixelX, pixelY + 45 + fontSize);
-			if (isRoot) {
+			if (inputConveyor == null) {
 				g.setColor(Color.MAGENTA);
 				g.fillRect(pixelX + 70, pixelY, 30, 30);
 				
@@ -250,10 +237,10 @@ public class Conveyor extends FactoryComponent implements IItemReciever, IContai
 	}
 
 	
-	private void becomeConveyorLeaf() {
+	private void becomeNewConveyorTail() {
 		beltKey = ConveyorManager.generateConveyorKey(this);
-		isRoot = true;
-		ConveyorManager.asignLeaf(beltKey, this);
+		isTail = true;
+		ConveyorManager.asignTail(beltKey, this);
 	}
 	@Override
 	public void recieveItem(Item item) {

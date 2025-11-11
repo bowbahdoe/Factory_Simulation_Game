@@ -2,18 +2,14 @@ package survivalGame;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import graphics.GameGraphics;
 
 public class TileChunk {
 
 	List<Tile> tiles = new ArrayList<>();
-	
 
-	private int size;
 	final int x;
 	final int y;
 	
@@ -25,7 +21,6 @@ public class TileChunk {
 	public TileChunk(int x, int y, int size, int tileSize) {
 		this.x = x;
 		this.y = y;
-		this.size = size;
 
 		pixelX = x * size * tileSize;
 		pixelY = y * size * tileSize;

@@ -1,6 +1,5 @@
 package survivalGame.userInterface;
 
-import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -21,7 +20,6 @@ import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.ItemStack;
-import survivalGame.ItemManagement.PlaceableItem;
 
 public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListener{
 

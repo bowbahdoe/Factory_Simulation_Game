@@ -58,7 +58,11 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 	private static ConveyorManager ConveyorManagerInstance;
 	static List<Conveyor> conveyors = new ArrayList<>();
 	
-	private static Map<Integer, Conveyor> keyToLeaf = new HashMap<>();
+	/**
+	 * Maps beltKey to conveyor Leaf. 
+	 * A conveyor leaf is the end of a conveyor belt sequence, treated like a linked list.
+	 */
+	private static Map<Integer, Conveyor> keyToTail = new HashMap<>();
 	static int keyCounter = 1; 
 	//This will increment for each new conveyor leef you make.
 	
@@ -82,14 +86,15 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 		return keyCounter++;
 	}
 	
-	public static void asignLeaf(int key, Conveyor conv) {
-		keyToLeaf.put(key, conv);
+	public static void asignTail(int key, Conveyor conv) {
+		keyToTail.put(key, conv);
 	}
 	@Override
 	public void onTick() {
 		
-		List<Conveyor> leaves = new ArrayList<>(keyToLeaf.values());
+		List<Conveyor> leaves = new ArrayList<>(keyToTail.values());
 		
+		//Use DFS for each conveyor belt. Reversed because usually people make conveyor belts chronologically, so in numerical order
 		for (Conveyor c : leaves.reversed()) {
 			traverse(c, c);
 		}
@@ -119,9 +124,10 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		List<Integer> map = new ArrayList<>(keyToLeaf.keySet());
+		List<Integer> map = new ArrayList<>(keyToTail.keySet());
 		for (int key : map) {
-			Conveyor c = keyToLeaf.get(key);
+			//Draws orange box on each Tail (Where DFS starts from)
+			Conveyor c = keyToTail.get(key);
 			
 			int x = c.parentTile.pixelX;
 			int y = c.parentTile.pixelY;

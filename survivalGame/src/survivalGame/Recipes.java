@@ -16,6 +16,14 @@ public enum Recipes {
 			Map.of(ItemFactory.createItem(ItemID.WOOD), 3),
 			ItemFactory.createItem(ItemID.TREEHARVESTER)
 			)),
+	CONVEYORSPLITTER_R(new CraftingRecipe(
+			Map.of(ItemFactory.createItem(ItemID.WOOD), 6),
+			ItemFactory.createItem(ItemID.CONVEYORSPLITTER_R)
+			)),
+	CONVEYORSPLITTER_L(new CraftingRecipe(
+			Map.of(ItemFactory.createItem(ItemID.WOOD), 6),
+			ItemFactory.createItem(ItemID.CONVEYORSPLITTER_L)
+			)),
 	PLANKER(new CraftingRecipe(
 			Map.of(ItemFactory.createItem(ItemID.WOOD), 3),
 			ItemFactory.createItem(ItemID.PLANKER)

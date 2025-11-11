@@ -3,7 +3,6 @@ package survivalGame.userInterface;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 
 import graphics.GameGraphics;
 import graphics.UIClickable;
