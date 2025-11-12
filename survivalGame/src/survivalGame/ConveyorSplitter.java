@@ -52,13 +52,19 @@ public class ConveyorSplitter extends FactoryComponent implements IContainsConve
 		
 		currentConveyor = conveyorForward;
 		GameGraphics.getInstance().registerWorldObj(this, 2);
+	
 	}
 
 	@Override
 	public void onTick() {
+		//if (currentConveyor == null) return;
+		
+		currentConveyor.collectItem().setActive(false);
 		
 		conveyorSwitch = !conveyorSwitch;
 		flipCurrentConveyor();
+		currentConveyor.onTick();
+		
 	}
 
 	@Override
@@ -76,7 +82,16 @@ public class ConveyorSplitter extends FactoryComponent implements IContainsConve
 	}
 
 	public void flipCurrentConveyor() {
-		currentConveyor = conveyorSwitch ? conveyorForward : conveyorSide;
+		if (conveyorSwitch && conveyorForward.canPassToTarget()) {
+			currentConveyor = conveyorForward;
+		}
+		else if (!conveyorSwitch && conveyorSide.canPassToTarget()) {
+			currentConveyor = conveyorSide;
+		}
+		else {
+			currentConveyor = null;
+		}
+		
 	}
 
 	

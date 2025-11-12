@@ -9,7 +9,7 @@ import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 
-public class Planker extends FactoryComponent implements IContainsConveyor{
+public class Planker extends FactoryComponent implements IContainsConveyor, ITickable{
 	
 	private ActionTimer actionTimer;
 	private Conveyor conveyor;

@@ -148,13 +148,13 @@ public class Player implements Updatable, WorldRenderable{
 		tiles[8] = getTile(-100,100);
 		Map<Item, Integer> tempInventory = new HashMap<>();
 		for (Tile tile : tiles) {
-			if (tile.getObject() instanceof Conveyor) {
-				Conveyor conv = (Conveyor) tile.getObject();
-				if (!conv.isEmpty()) {
-					WorldItem worldItem = conv.collectItem();
-					tempInventory.merge(worldItem.getItem(), 1, Integer::sum); 
-					// same as tempInventory.put(item,tempInventory.get(item) + 1)
-				}
+			if ( !(tile.getObject() instanceof IContainsConveyor) ) continue;
+			
+			Conveyor conv = ((IContainsConveyor) tile.getObject()).getConveyor();
+			if (!conv.isEmpty()) {
+				WorldItem worldItem = conv.collectItem();
+				tempInventory.merge(worldItem.getItem(), 1, Integer::sum); 
+				// same as tempInventory.put(item,tempInventory.get(item) + 1)	
 			}
 		}
 		playerUI.mergeInventory(tempInventory);

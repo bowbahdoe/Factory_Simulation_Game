@@ -3,283 +3,97 @@ package survivalGame;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.EnumSet;
 
 import graphics.GameGraphics;
+import graphics.WorldRenderable;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 
-public class Conveyor extends FactoryComponent implements IItemReciever, IContainsConveyor{
+public class Conveyor extends FactoryComponent implements IContainsConveyor{
 
-	private Conveyor inputConveyor; //A conveyor that shares the same key, and is the input
-	private Conveyor targetConveyor;
-	private FactoryComponent parentComponent;
-	private WorldItem heldItem; 
-	private Tile targetTile;
-	private boolean isTail; //Purely for visual purposes
-	private int beltKey = -1;
-	private boolean toRender = true;
-	private boolean locked = false;
-	int mask = 0;
+	private Tile targetTile = super.getTargetTile(rotation);
+	public Conveyor inputConveyor;
+	public Conveyor targetConveyor;
+	public BufferedImage texture;
+	public WorldItem heldItem;
+	public BeltSequence beltSequence;
+	public int spriteMask;
+	protected boolean locked;
+	private EnumSet<Direction> inputBlacklist;
 	
 	public Conveyor(Tile parentTile, Direction rotation) {
-		super(parentTile,rotation);
-		initializeConveyor(parentTile,rotation,null);
-	}
-	public Conveyor(Tile parentTile, Direction rotation, EnumSet<Direction> inputBlacklist) {
-		super(parentTile,rotation);
-		initializeConveyor(parentTile,rotation,inputBlacklist);
-	}
-	
-	private void initializeConveyor(Tile parentTile, Direction rotation, EnumSet<Direction> inputBlacklist) {
-		mask |= rotation.getRotationMask() << 4;
-		super.addTexture(ConveyorManager.getInstance().conveyorSpritemap.get(mask), GameGraphics.getTextureManager());
+		super(parentTile, rotation);
 		GameGraphics.getInstance().registerWorldObj(this, 2);
-		targetTile = getTargetTile(rotation);
-		if (findParents(inputBlacklist)) {
-			//If no target, inherit any other key
-			beltKey = inputConveyor.getBeltKey();
-			if (targetTile.getObject() instanceof IContainsConveyor) {
-				targetConveyor = getConveyorFromTile(targetTile);;
-				targetConveyor.changeSprite(this.rotation);
-			}
-			//And therefore that parent must be the leaf, so make this new leaf.
-			ConveyorManager.asignTail(beltKey, this);
-		}	
-		else if (targetTile.getObject() instanceof IContainsConveyor  ) {
-			//if conveyor infront, attach to conveyor and update beltkey
-			
-			targetConveyor = getConveyorFromTile(targetTile);
-			targetConveyor.changeSprite(this.rotation);
-			
-			if (targetConveyor.hasInputConveyor()) {
-				becomeNewConveyorTail();
-				return;
-			}
-			beltKey = targetConveyor.getBeltKey();
-			targetConveyor.addInputConveyor(this);
-			
-			
-		}
-		
-		else {
-			//Else just make new one
-			becomeNewConveyorTail();
-		}
-		
 	}
-	/**
-	 * Checks surroundings for any possible input conveyors, while obeying the inputblacklist.
-	 * @param inputBlacklist is an enumset which limits the input directions of input conveyors allowing to pass on items to this conveyor
-	 * @returns boolean whether or not it found an input conveyor or not. 
-	 */
-	private boolean findParents(EnumSet<Direction> inputBlacklist) {
-		Tile[] surroundings = new Tile[4];
-		surroundings[0] = TileProvider.world_AccessTile(parentTile.x,parentTile.y - 1);
-		surroundings[1] = TileProvider.world_AccessTile(parentTile.x + 1, parentTile.y);
-		surroundings[2] = TileProvider.world_AccessTile(parentTile.x, parentTile.y + 1);
-		surroundings[3] = TileProvider.world_AccessTile(parentTile.x - 1, parentTile.y);
-		for (Tile tile : surroundings) {
-			//check surrounding tiles for conveyors, make them the input if they point towards you.
-			//Ignore the one you point towards too. 
-			
-			if (targetTile != tile && tile.getObject() instanceof IContainsConveyor icc) {
-				Conveyor conv = icc.getConveyor();
 
-				if ( !conv.isPointingAt(this.parentTile)) continue;
-				if ( inputBlacklist != null && inputBlacklist.contains(conv.getRotation())) continue;
-				
-				addInputConveyor(conv);
-				inputConveyor.addTargetConveyor(this);
-				System.out.println("Found tile with conveyor at " + tile.x + ", " + tile.y);
-				changeSprite(inputConveyor.rotation);
-			}
-		}
-		return inputConveyor != null;
-	}
 	
-	/**
-	 * changes sprite according to the added input direction
-	 * @param inputRotation is the input direction added.
-	 */
-	public void changeSprite(Direction inputRotation) {
-		mask = inputRotation.getRotationMask() | mask;
-		int key;
-
-		key = (rotation.getRotationMask() << 4) | mask;
-		System.out.println(key);
-		if ( !ConveyorManager.getInstance().conveyorSpritemap.containsKey(key) ) return;
-		super.addTexture(ConveyorManager.getInstance().conveyorSpritemap.get(key), GameGraphics.getTextureManager());
-	}
-	@Override
-	public int getY() {
-		return super.parentTile.y;
-	}
 
 	@Override
-	public boolean isActive() {
-		return super.toRender;
-	}
-
-	/**
-	 * OnTick() makes the conveyor attempt passing the item to the next.
-	 * It also calls the function on any parentcomponent it has. 
-	 */
-	@Override
-	public void onTick() {
-
-	    if (targetConveyor != null && targetConveyor.isEmpty() && heldItem != null) {
-	    	if (parentComponent != null) parentComponent.onTick();
-			passToTarget(heldItem);
-		}
-	}
-	
-	/**
-	 * @param tile to get conveyor from
-	 * @return any instance of conveyor on that tile. This function was made due to the interface: IContainsConveyor
-	 */
-	private Conveyor getConveyorFromTile(Tile tile) {
-		IContainsConveyor conv = ((IContainsConveyor) targetTile.getObject());
-		return conv.getConveyor();
+	public void removeObject() {
+		// TODO Auto-generated method stub
 		
 	}
-	/**
-	 * passes the provided item to the target conveyor.
-	 * @param item to pass
-	 */
-	public void passToTarget(WorldItem item) {
-		if (item == null || isLocked()) {
-			return;
-		}
-		if ( !targetConveyor.isEmpty() ) return;
-		
-		targetConveyor.recieveWorldItem(item);
-		heldItem = null;
+
+	public EnumSet<Direction> getInputBlackList(){
+		return inputBlacklist;
 	}
-	
-	public void recieveWorldItem(WorldItem item) {
-		item.fixToTile(this.parentTile);
-		heldItem = item;
-	}
-	public boolean isEmpty() {
-		return heldItem == null;
+
+	public boolean isPointingAt(Tile tile) {
+		return targetTile == tile;
 	}
 	public void addInputConveyor(Conveyor conveyor) {
-		//mask |= conveyor.getRotation().getRotationMask();
 		if (inputConveyor == null) {
 			inputConveyor = conveyor;
 		}
 	}
-	public void removeInputConveyor(Conveyor conveyor) {
-		inputConveyor = null;
-	}
-	public void addTargetConveyor(Conveyor conveyor) {
-		targetConveyor = conveyor;
-	}
-	public int getBeltKey() {
-		return beltKey;
-	}
 	
-	public Conveyor getTargetConveyor() {
-		return targetConveyor;
-	}
-	
-	public Conveyor getInputConveyor() {
-		return inputConveyor;
-	}
 	public boolean hasInputConveyor() {
 		return inputConveyor != null;
 	}
-	public boolean isPointingAt(Tile tile) {
-		return targetTile == tile;
-	}
-	public Direction getRotation() {
-		return rotation;
-	}
-	@Override
-	public void render(Graphics2D g, GameGraphics graphics) {
-		if (toRender)  {
-			int pixelX = parentTile.pixelX;
-			int pixelY = parentTile.pixelY;
-			g.drawImage(super.texture, pixelX, pixelY + verticalOffset, null); 
-			
-			/*
-			int fontSize = 12;
-			Font largeFont = new Font("Arial", Font.BOLD, fontSize);
-		    g.setFont(largeFont);
-		    g.setColor(Color.blue);
-			g.drawString("" + beltKey ,  pixelX, pixelY  + fontSize);
-			
-			if (inputConveyor == null) {
-				g.setColor(Color.MAGENTA);
-				g.fillRect(pixelX + 70, pixelY, 30, 30);
-				
-				g.setColor(Color.BLACK);
-				g.drawString(beltKey + "", pixelX + 73, pixelY + 24);
-			}
-			*/
-		}
-		
-	}
 	public WorldItem collectItem() {
-		
 		WorldItem item = heldItem;
 		if (heldItem == null) return null;
 		heldItem.setActive(false);
 		heldItem = null;
 		return item;
 	}
-	public boolean checkItem(ItemID item) {
-		if (heldItem == null) return false;
-		return heldItem.getItem().getItemID() == item;
-		
-	}
-
 	
-	private void becomeNewConveyorTail() {
-		beltKey = ConveyorManager.generateConveyorKey(this);
-		isTail = true;
-		ConveyorManager.asignTail(beltKey, this);
-	}
-	@Override
-	public void recieveItem(Item item) {
-		recieveWorldItem(new WorldItem(item,parentTile.pixelX,parentTile.pixelY));
-		
-	}
-	@Override
-	public boolean canRecieve() {
-		return isEmpty() && !locked;
-	}
-	public void setRender(boolean state) {
-		toRender = state;
-	}
-	public void removeObject() {
-		
-	}
-
-	public Conveyor getConveyor() {
-		return this;
-	}
-
-	public void lock(boolean state) {
-		locked = state;
+	public void recieveWorldItem(WorldItem item) {
+		item.fixToTile(this.parentTile);
+		heldItem = item;
 	}
 	
-	/**
-	 * For a conveyor to be locked, it means the conveyor can't pass to the target
-	 * @return
-	 */
 	public boolean isLocked() {
 		return locked;
 	}
+	public boolean isEmpty() {
+		return heldItem == null;
+	}
 	
+	@Override
+	public void render(Graphics2D g, GameGraphics graphics) {
+		int x = this.parentTile.pixelX;
+		int y = this.parentTile.pixelY;
+		g.drawImage(super.texture ,x ,y , graphics);
+	}
+	
+	@Override
+	public int getY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-	/**
-	 * Attach a component that will add an additional functionality as items go past the conveyor
-	 * @return
-	 */
-	public void attachParentComponent(FactoryComponent component) {
-		parentComponent = component;
+	public Tile getTargetTile() {
+		return targetTile;
+	}
+
+
+
+	@Override
+	public Conveyor getConveyor() {
+		return this;
 	}
 }

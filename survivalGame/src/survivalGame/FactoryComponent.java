@@ -1,6 +1,6 @@
 package survivalGame;
 
-public abstract class FactoryComponent extends PlacedObject implements ITickable {
+public abstract class FactoryComponent extends PlacedObject  {
 
 	protected Tile parentTile;
 	protected Direction rotation;

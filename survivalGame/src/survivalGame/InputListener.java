@@ -142,6 +142,7 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	
 		if (placedObject instanceof Conveyor) {
 			Conveyor conv = ((Conveyor) placedObject);
+			ConveyorManager.getInstance().registerConveyor(conv);
 			conv.recieveWorldItem(new WorldItem(ItemFactory.createItem(ItemID.WOOD), conv.parentTile.pixelX, conv.parentTile.pixelY));
 		}
 	}

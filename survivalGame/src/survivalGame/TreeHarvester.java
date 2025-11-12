@@ -59,7 +59,7 @@ public class TreeHarvester extends FactoryComponent  {
 		}
 		if (targetOutput instanceof Conveyor conv) {
 			Direction opposite = rotation.rotatedClockwise().rotatedClockwise();
-			conv.changeSprite(opposite);
+			//conv.changeSprite(opposite);
 		}
 	}
 	@Override
