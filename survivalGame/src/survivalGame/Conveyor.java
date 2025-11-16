@@ -12,28 +12,23 @@ import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 
-public class Conveyor extends FactoryComponent implements IContainsConveyor{
+public class Conveyor extends FactoryComponent implements IContainsConveyor, IItemReciever{
 
 	private Tile targetTile = super.getTargetTile(rotation);
 	public Conveyor inputConveyor;
 	public Conveyor targetConveyor;
-	public BufferedImage texture;
 	public WorldItem heldItem;
 	public BeltSequence beltSequence;
 	public int spriteMask;
 	protected boolean locked;
-	private EnumSet<Direction> inputBlacklist;
+	protected EnumSet<Direction> inputBlacklist;
 	
 	public Conveyor(Tile parentTile, Direction rotation) {
 		super(parentTile, rotation);
 		GameGraphics.getInstance().registerWorldObj(this, 2);
 	}
-
-	
-
 	@Override
 	public void removeObject() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -95,5 +90,34 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor{
 	@Override
 	public Conveyor getConveyor() {
 		return this;
+	}
+	
+	protected void lock(boolean state) {
+		locked = state;
+	}
+
+
+	@Override
+	public void recieveItem(Item item) {
+		recieveWorldItem(new WorldItem(item,parentTile.pixelX,parentTile.pixelY));
+	}
+	@Override
+	public boolean canRecieve() {
+		return isEmpty() && !locked;
+	}
+	
+	public boolean canPassToTarget() {
+		if (heldItem == null || isLocked()) {
+			return false;
+		}
+		if ( !targetConveyor.isEmpty() ) return false;
+		return true;
+	}
+	
+	/**
+	 * Disables regular conveyor textures
+	 */
+	protected void disableSpritemask() {
+		spriteMask = -20;
 	}
 }

@@ -11,9 +11,8 @@ import graphics.GameGraphics;
 import graphics.WorldRenderable;
 
 public final class ConveyorManager implements ITickable, WorldRenderable{
-	
-	private ConveyorSpriteManager spriteManager = new ConveyorSpriteManager(); 
-	private ConveyorNetworkSystem networkSystem = new ConveyorNetworkSystem(spriteManager);
+
+	private ConveyorNetworkSystem networkSystem = new ConveyorNetworkSystem();
 	
 	private static ConveyorManager ConveyorManagerInstance;
 
@@ -53,6 +52,8 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 	
 	private void traverse(Conveyor conveyor, Conveyor root) {
 		
+		//process first then pass to target.
+		conveyor.process();
 		networkSystem.conveyorPassToTarget(conveyor, conveyor.heldItem); //Updates the conveyor, pass item along
 		
 		//System.out.println("Traversed through " +  c.parentTile.x + ", " + c.parentTile.y);
@@ -96,9 +97,6 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 		*/
 	}
 
-	public ConveyorSpriteManager getSpriteManager() {
-		return spriteManager;
-	}
 
 	public ConveyorNetworkSystem getNetworkSystem() {
 		return networkSystem;

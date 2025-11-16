@@ -3,6 +3,9 @@ package survivalGame;
 public class BeltSequence {
 	private int beltKey;
 	
+	public BeltSequence(int beltKey) {
+		this.beltKey = beltKey;
+	}
 	public int getBeltKey() {
 		return beltKey;
 	}

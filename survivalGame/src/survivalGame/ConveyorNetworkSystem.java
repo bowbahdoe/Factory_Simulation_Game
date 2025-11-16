@@ -9,19 +9,14 @@ import java.util.Map;
 import survivalGame.ItemManagement.WorldItem;
 
 public class ConveyorNetworkSystem {
-	private final ConveyorSpriteManager spriteManager;
 	
-	
-	public ConveyorNetworkSystem(ConveyorSpriteManager spriteManager) {
-		this.spriteManager = spriteManager;
-	}
 	// possible collisions for beltSequence but we will see
 	private static Map<BeltSequence, Conveyor> keyToTail = new HashMap<>();
 
 	static int keyCounter = 1; 
 	
-	public static int generateConveyorKey(Conveyor conv) {
-		return keyCounter++;
+	public static BeltSequence generateConveyorKey() {
+		return new BeltSequence(keyCounter++);
 	}
 	
 	public static void asignTail(BeltSequence key, Conveyor conv) {
@@ -38,43 +33,25 @@ public class ConveyorNetworkSystem {
 		currentConveyor.targetConveyor = target;
 	}
 	
-	public void initializeConveyor(Conveyor conveyor) {
-		conveyor.spriteMask |= conveyor.rotation.getRotationMask() << 4;
-		searchForInputConveyors(conveyor);
-		spriteManager.updateSprite(conveyor);
-		//conveyor.beltSequence = conveyor.inputConveyor.beltSequence;
-		Tile targetTile = conveyor.getTargetTile(conveyor.rotation);
-		if (conveyor.inputConveyor == null) {
-			//If no target, inherit any other key
-			if (targetTile.getObject() instanceof IContainsConveyor) {
-				conveyor.targetConveyor = getConveyorFromTile(targetTile);
-				//conveyor.targetConveyor.changeSprite(this.rotation);
-				spriteManager.changeSprite(conveyor, conveyor.rotation);
-			}
-			//And therefore that parent must be the leaf, so make this new leaf.
-			asignTail(conveyor.beltSequence, conveyor);
+	public void initializeConveyor(Conveyor currentConveyor) {
+		currentConveyor.spriteMask |= currentConveyor.rotation.getRotationMask() << 4;
+		searchForInputConveyors(currentConveyor);
+		ConveyorSpriteManager.updateSprite(currentConveyor);
+		Tile targetTile = currentConveyor.getTargetTile(currentConveyor.rotation);
+		currentConveyor.targetConveyor = getConveyorFromTile(targetTile);
+		ConveyorSpriteManager.changeSprite(currentConveyor.targetConveyor, currentConveyor.rotation);
+		
+		if (currentConveyor.inputConveyor == null && (currentConveyor.targetConveyor == null || currentConveyor.targetConveyor.hasInputConveyor())) {
+			becomeNewConveyorTail(currentConveyor);
 		}	
-		else if (targetTile.getObject() instanceof IContainsConveyor  ) {
-			//if conveyor infront, attach to conveyor and update beltkey
-			
-			conveyor.targetConveyor = getConveyorFromTile(targetTile);
-			spriteManager.changeSprite(conveyor.targetConveyor, conveyor.rotation); //?
-			
-			
-			if (conveyor.targetConveyor.hasInputConveyor()) {
-				//The conveyor becomes the new tail
-				becomeNewConveyorTail(conveyor);
-				return;
-			}
-			conveyor.beltSequence = conveyor.targetConveyor.beltSequence;
-			conveyor.targetConveyor.addInputConveyor(conveyor);
-			
-			
+		else if ( currentConveyor.inputConveyor == null && !currentConveyor.targetConveyor.hasInputConveyor()) {
+			currentConveyor.beltSequence = currentConveyor.targetConveyor.beltSequence;
+			currentConveyor.targetConveyor.addInputConveyor(currentConveyor);
 		}
 		
 		else {
-			//Else just make new one
-			becomeNewConveyorTail(conveyor);
+			currentConveyor.beltSequence = currentConveyor.inputConveyor.beltSequence;
+			asignTail(currentConveyor.beltSequence, currentConveyor);
 		}
 		
 
@@ -103,9 +80,8 @@ public class ConveyorNetworkSystem {
 				//Make this conveyor the input, and therefore make this conveyor the input's target. Doubly Linked
 				currentConveyor.addInputConveyor(inputConveyor);
 				inputConveyor.targetConveyor = currentConveyor;
-				System.out.println("Found tile with conveyor at " + tile.x + ", " + tile.y);
-				if (inputConveyor.rotation == currentConveyor.rotation) continue;
-				spriteManager.changeSprite(currentConveyor, inputConveyor.rotation);
+
+				ConveyorSpriteManager.changeSprite(currentConveyor, inputConveyor.rotation);
 			
 			}
 		}
@@ -113,7 +89,7 @@ public class ConveyorNetworkSystem {
 	
 	
 	private void becomeNewConveyorTail(Conveyor conveyor) {
-		generateConveyorKey(conveyor);
+		conveyor.beltSequence = generateConveyorKey();
 		asignTail(conveyor.beltSequence, conveyor);
 	}
 	
@@ -121,12 +97,18 @@ public class ConveyorNetworkSystem {
 	 * @param tile to get conveyor from
 	 * @return any instance of conveyor on that tile. This function was made due to the interface: IContainsConveyor
 	 */
-	private Conveyor getConveyorFromTile(Tile tile) {
+	public static Conveyor getConveyorFromTile(Tile tile) {
 		if (!(tile.getObject() instanceof IContainsConveyor)) return null;
 		IContainsConveyor conv = ((IContainsConveyor) tile.getObject());
 		return conv.getConveyor();
 	}
 	
+	
+	/**
+	 * Makes conveyor attempt to pass to the next target, It won't passed if its locked.
+	 * @param conveyor that passes
+	 * @param item to pass (in case you want to create an item)
+	 */
 	public void conveyorPassToTarget(Conveyor conveyor, WorldItem item) {
 		if (item == null || conveyor.isLocked() || conveyor.targetConveyor == null) {
 			return;

@@ -9,13 +9,12 @@ import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 
-public class Planker extends FactoryComponent implements IContainsConveyor, ITickable{
+public class Planker extends Conveyor{
 	
 	private ActionTimer actionTimer;
-	private Conveyor conveyor;
 	public Planker(Tile parentTile, Direction rotation) {
 		super(parentTile, rotation);
-		
+		disableSpritemask();
 		TextureManager textureManager = GameGraphics.getTextureManager();
 		
 		switch (rotation) {
@@ -33,29 +32,26 @@ public class Planker extends FactoryComponent implements IContainsConveyor, ITic
 			break;
 		}
 		
-		EnumSet<Direction> blacklist = EnumSet.of(rotation.rotatedAntiClockwise(), rotation.rotatedClockwise());
-		conveyor = new Conveyor(parentTile, rotation, blacklist);
-		conveyor.setRender(false);
+		inputBlacklist = EnumSet.of(rotation.rotatedAntiClockwise(), rotation.rotatedClockwise());
 
 		actionTimer = new ActionTimer(3);
-		conveyor.attachParentComponent(this);
 		GameGraphics.getInstance().registerWorldObj(this, 2);
 	}
 
 	@Override
-	public void onTick() {
+	public void process() {
 		if (actionTimer.actionTick()) {
-			conveyor.lock(false);
+			lock(false);
 		}
 		else {
-			conveyor.lock(true);
+			lock(true);
 		}
 
-		WorldItem planks = conveyor.collectItem();
+		WorldItem planks = collectItem();
 		if (planks == null) return;
 		planks.getItem().changeItemInto(ItemID.WOOD); //now becomes planks
 		planks.setActive(true);
-		conveyor.recieveWorldItem(planks);
+		recieveWorldItem(planks);
 	}
 
 	@Override
@@ -67,8 +63,6 @@ public class Planker extends FactoryComponent implements IContainsConveyor, ITic
 	public void removeObject() {	
 	}
 
-	
-
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
 		int x = this.parentTile.pixelX;
@@ -78,7 +72,7 @@ public class Planker extends FactoryComponent implements IContainsConveyor, ITic
 	
 	@Override
 	public Conveyor getConveyor() {
-		return conveyor;
+		return this;
 	}
 
 }

@@ -9,7 +9,7 @@ import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 
-public class TreeHarvester extends FactoryComponent  {
+public class TreeHarvester extends FactoryComponent implements ITickable {
 
 	private TileTree targetTree;
 	private IItemReciever targetOutput;
@@ -59,7 +59,7 @@ public class TreeHarvester extends FactoryComponent  {
 		}
 		if (targetOutput instanceof Conveyor conv) {
 			Direction opposite = rotation.rotatedClockwise().rotatedClockwise();
-			//conv.changeSprite(opposite);
+			ConveyorSpriteManager.changeSprite(conv, opposite);
 		}
 	}
 	@Override

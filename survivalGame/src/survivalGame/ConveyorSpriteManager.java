@@ -5,22 +5,26 @@ import java.util.Map;
 import graphics.GameGraphics;
 
 public class ConveyorSpriteManager {
-	public final int NORTH = Direction.NORTH.getRotationMask();
-	public final int EAST  = Direction.EAST.getRotationMask();
-	public final int SOUTH = Direction.SOUTH.getRotationMask();
-	public final int WEST  = Direction.WEST.getRotationMask();
+	public static final int NORTH = Direction.NORTH.getRotationMask();
+	public static final int EAST  = Direction.EAST.getRotationMask();
+	public static final int SOUTH = Direction.SOUTH.getRotationMask();
+	public static final int WEST  = Direction.WEST.getRotationMask();
 	
-	public final int NORTH_out = (NORTH << 4);
-	public final int EAST_out = (EAST << 4);
-	public final int SOUTH_out = (SOUTH << 4);
-	public final int WEST_out = (WEST << 4);
+	public static final int NORTH_out = (NORTH << 4);
+	public static final int EAST_out = (EAST << 4);
+	public static final int SOUTH_out = (SOUTH << 4);
+	public static final int WEST_out = (WEST << 4);
 	
 	//These maps keys are formatted in: OutputDirection_InputDirections
-	private final Map<Integer, String> conveyorSpritemap = (Map<Integer, String>) Map.ofEntries(
+	private static final Map<Integer, String> conveyorSpritemap = (Map<Integer, String>) Map.ofEntries(
 			Map.entry(EAST_out, "ConveyorE"),
 			Map.entry(WEST_out, "ConveyorW"),
 			Map.entry(NORTH_out, "ConveyorN"),
 			Map.entry(SOUTH_out, "ConveyorS"),
+			Map.entry(EAST_out  | EAST, "ConveyorE"),
+			Map.entry(WEST_out  | WEST, "ConveyorW"),
+			Map.entry(NORTH_out | NORTH, "ConveyorN"),
+			Map.entry(SOUTH_out | SOUTH, "ConveyorS"),
 			
 			//Curved
 			Map.entry(EAST_out  | NORTH, "ConveyorNE"),
@@ -52,14 +56,16 @@ public class ConveyorSpriteManager {
 	 * changes sprite according to the added input direction
 	 * @param inputRotation is the input direction added.
 	 */
-	public void changeSprite(Conveyor conveyor, Direction inputRotation) {
+	public static void changeSprite(Conveyor conveyor, Direction inputRotation) {
+		if (conveyor == null || conveyor.spriteMask < 0) return;
+		
 		conveyor.spriteMask |=  inputRotation.getRotationMask();
 		
 		if ( !conveyorSpritemap.containsKey(conveyor.spriteMask) ) return;
 		conveyor.addTexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
 	}
 	
-	public void updateSprite(Conveyor conveyor) {
+	public static void updateSprite(Conveyor conveyor) {
 		if ( !conveyorSpritemap.containsKey(conveyor.spriteMask) ) return;
 		System.out.println("ADDED TEXTURE----------");
 		conveyor.addTexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());

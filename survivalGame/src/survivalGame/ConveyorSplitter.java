@@ -6,22 +6,23 @@ import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageRotater;
 
-public class ConveyorSplitter extends FactoryComponent implements IContainsConveyor{
+public class ConveyorSplitter extends Conveyor{
 	
 	private Conveyor conveyorForward;
 	private Conveyor conveyorSide;
 	
-	private Conveyor currentConveyor;
-	
 	boolean conveyorSwitch = true;
+	
+
+	private final Direction sideDirection;
 	/**Constructor to instantiate ConveyorSplitter
 	 * @param parentTile the tile the component is placed on
 	 * @param rotation the component is facing
-	 * @param rightSide boolean meaning if it splits items to the right or the left. 
-	 */
+	 * @param rightSide boolean meaning if it splits items to the right or the left. */
 	public ConveyorSplitter(Tile parentTile, Direction rotation, boolean rightSide) {
 		super(parentTile, rotation);
-		
+		sideDirection = rightSide ? rotation.rotatedClockwise() : rotation.rotatedAntiClockwise();
+		disableSpritemask();
 		TextureManager textureManager = GameGraphics.getTextureManager();
 		
 		String texture = rightSide ? "ConveyorSplitterR" : "ConveyorSplitterL";
@@ -42,31 +43,31 @@ public class ConveyorSplitter extends FactoryComponent implements IContainsConve
 		}
 		
 		EnumSet<Direction> blacklist = EnumSet.of(rotation.rotatedAntiClockwise(), rotation.rotatedClockwise());
-		conveyorForward = new Conveyor(parentTile, rotation, blacklist);
-		conveyorForward.setRender(false);
-		conveyorForward.attachParentComponent(this);
+
+		attemptAccessingConveyors();
+		targetConveyor = conveyorForward;
 		
-		conveyorSide = new Conveyor(parentTile, rightSide ? rotation.rotatedClockwise() : rotation.rotatedAntiClockwise(), blacklist);
-		conveyorSide.setRender(false);
-		conveyorSide.attachParentComponent(this);
-		
-		currentConveyor = conveyorForward;
 		GameGraphics.getInstance().registerWorldObj(this, 2);
 	
 	}
 
 	@Override
-	public void onTick() {
+	public void process() {
+		 attemptAccessingConveyors();
 		//if (currentConveyor == null) return;
 		
-		currentConveyor.collectItem().setActive(false);
+		//currentConveyor.collectItem().setActive(false);
 		
 		conveyorSwitch = !conveyorSwitch;
 		flipCurrentConveyor();
-		currentConveyor.onTick();
 		
 	}
 
+	private void attemptAccessingConveyors() {
+		conveyorForward = ConveyorNetworkSystem.getConveyorFromTile(super.getTargetTile(rotation));
+		conveyorSide = ConveyorNetworkSystem.getConveyorFromTile(super.getTargetTile(sideDirection));
+		ConveyorSpriteManager.changeSprite(conveyorSide, sideDirection);
+	}
 	@Override
 	public int getY() {
 		return 0;
@@ -74,7 +75,7 @@ public class ConveyorSplitter extends FactoryComponent implements IContainsConve
 
 	@Override
 	public Conveyor getConveyor() {
-		return currentConveyor;
+		return this;
 	}
 
 	@Override
@@ -82,14 +83,14 @@ public class ConveyorSplitter extends FactoryComponent implements IContainsConve
 	}
 
 	public void flipCurrentConveyor() {
-		if (conveyorSwitch && conveyorForward.canPassToTarget()) {
-			currentConveyor = conveyorForward;
+		if (conveyorSwitch && conveyorForward != null ) {
+			targetConveyor = conveyorForward;
 		}
-		else if (!conveyorSwitch && conveyorSide.canPassToTarget()) {
-			currentConveyor = conveyorSide;
+		else if (!conveyorSwitch && conveyorSide != null ) {
+			targetConveyor = conveyorSide;
 		}
 		else {
-			currentConveyor = null;
+			targetConveyor = null;
 		}
 		
 	}
