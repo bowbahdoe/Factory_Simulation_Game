@@ -33,8 +33,9 @@ public class CraftButton implements UIClickable, InventoryListener{
 		
 		buttonActive = GameGraphics.getTextureManager().getTexture("ButtonActive");
 		buttonInactive = GameGraphics.getTextureManager().getTexture("ButtonInactive");
-		itemPixelY = pixelY + buttonActive.getHeight() / 2 - recipe.getOutputItem().getTexture().getHeight() / 2; 
-		itemPixelX = pixelX + buttonActive.getWidth() / 2 - recipe.getOutputItem().getTexture().getWidth() / 2;
+		BufferedImage texture = GameGraphics.getTextureManager().getTexture(recipe.getOutputItem().getIdString());
+		itemPixelY = pixelY + buttonActive.getHeight() / 2 - texture.getHeight() / 2; 
+		itemPixelX = pixelX + buttonActive.getWidth() / 2 - texture.getWidth() / 2;
 	}
 	@Override
 	public boolean isActive() {
@@ -43,7 +44,7 @@ public class CraftButton implements UIClickable, InventoryListener{
 	@Override
 	public void renderUI(Graphics2D g, GameGraphics graphics) {
 		g.drawImage(craftable ? buttonActive : buttonInactive, pixelX, pixelY, null);
-		g.drawImage(recipe.getOutputItem().getTexture(), itemPixelX, itemPixelY , null);
+		g.drawImage(GameGraphics.getTextureManager().getTexture(recipe.getOutputItem().getIdString()), itemPixelX, itemPixelY , null);
 	}
 
 	private boolean canCraft() {

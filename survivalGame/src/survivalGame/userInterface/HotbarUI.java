@@ -25,13 +25,13 @@ public final class HotbarUI implements UIRenderable, GameKeyListener{
 	public HotbarUI(PlayerUI playerUI, Player player) {
 		this.playerUI = playerUI;
 		this.player = player;
-		GameGraphics.getInstance().registerUI(this);
+		GameGraphics.registerUI(this);
 		InputListener.getInstance().registerKeyListener(this);
 		
 		ui = GameGraphics.getTextureManager().getTexture("Hotbar");
 
-		pixelX = GameGraphics.getInstance().screenWidth / 2 - ui.getWidth() / 2;
-		pixelY = GameGraphics.getInstance().screenHeight - ui.getHeight() - 10;
+		pixelX = GameGraphics.SCREEN_WIDTH / 2 - ui.getWidth() / 2;
+		pixelY = GameGraphics.SCREEN_HEIGHT - ui.getHeight() - 10;
 		
 		for (int i = 0; i < 8; i++) {
 			slots[i] = new HotbarSlot((pixelX + 30 + i * 100), pixelY + 15, playerUI);

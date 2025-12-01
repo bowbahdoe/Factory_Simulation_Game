@@ -20,12 +20,12 @@ import survivalGame.userInterface.PlayerUI;
 
 public class Player implements Updatable, WorldRenderable{
 	
-	private InputListener input = new InputListener(this);
-	private PlayerUI playerUI = new PlayerUI(this);
+	private InputListener input;
+	private PlayerUI playerUI;
 	BufferedImage[] blueprints = new BufferedImage[4];
 	
-	private double pixelX = 50;
-	private double pixelY = 0;
+	private double pixelX = -15000;
+	private double pixelY = -10000;
 	private int velocity = 360 * 6;
 	
 	private int[] movement;
@@ -36,10 +36,12 @@ public class Player implements Updatable, WorldRenderable{
 	
 	private InventorySlot selectedInventorySlot;
 	private HotbarSlot selectedHotbarSlot;
-	public Player() {
+	public Player(GameGraphics graphics) {
+		input = new InputListener(this,graphics);
+		playerUI = new PlayerUI(this);
 		Updater.getInstance();
 		Updater.register(this);
-		GameGraphics.getInstance().registerWorldObj(this, 3);
+		GameGraphics.registerWorldObj(this, 3);
 		character = GameGraphics.getTextureManager().getTexture("Player");
 	
 		playerUI.addToInventory(ItemID.CONVEYOR,20);
@@ -146,31 +148,30 @@ public class Player implements Updatable, WorldRenderable{
 		tiles[6] = getTile(-100,-100);
 		tiles[7] = getTile(100,-100);
 		tiles[8] = getTile(-100,100);
-		Map<Item, Integer> tempInventory = new HashMap<>();
+		Map<ItemID, Integer> tempInventory = new HashMap<>();
 		for (Tile tile : tiles) {
 			if ( !(tile.getObject() instanceof IContainsConveyor) ) continue;
 			
 			Conveyor conv = ((IContainsConveyor) tile.getObject()).getConveyor();
 			if (!conv.isEmpty()) {
 				WorldItem worldItem = conv.collectItem();
-				tempInventory.merge(worldItem.getItem(), 1, Integer::sum); 
+				tempInventory.merge(worldItem.getItem().getItemID(), 1, Integer::sum); 
 				// same as tempInventory.put(item,tempInventory.get(item) + 1)	
 			}
 		}
 		playerUI.mergeInventory(tempInventory);
 	}
 	private Tile getTile(int xOffset, int yOffset) {
-		GameGraphics graphics = GameGraphics.getInstance();
 		
 		
-		int x = (int) ((graphics.getOriginOffset()[0] + xOffset )/ GameGraphics.TILESIZE);
-		int y = (int) ((graphics.getOriginOffset()[1] + yOffset ) / GameGraphics.TILESIZE);
+		int x = (int) ((GameGraphics.getOriginOffset()[0] + xOffset )/ GameGraphics.TILESIZE);
+		int y = (int) ((GameGraphics.getOriginOffset()[1] + yOffset ) / GameGraphics.TILESIZE);
 		
-		int chunkSize = graphics.chunkSize;
-		int chunkAmount = graphics.worldSize / chunkSize;
+		int chunkSize = GameGraphics.chunkSize;
+		int chunkAmount = GameGraphics.worldSize / chunkSize;
 		int positionInArray = chunkAmount * (x / chunkSize) + (y / chunkSize);		
 		if (positionInArray < 0) return null;
-		TileChunk chunk = (TileChunk) graphics.chunks[positionInArray];
+		TileChunk chunk = (TileChunk) GameGraphics.chunks[positionInArray];
 		
 		int chunkX = x - (chunk.x * chunkSize);
 		int chunkY = y - (chunk.y * chunkSize);

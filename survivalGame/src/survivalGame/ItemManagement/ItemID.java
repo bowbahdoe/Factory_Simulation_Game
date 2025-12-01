@@ -6,9 +6,11 @@ public enum ItemID {
 	CONVEYORSPLITTER_R("ConveyorSplitterItemR", ItemType.PLACEABLE),
 	CONVEYORSPLITTER_L("ConveyorSplitterItemL", ItemType.PLACEABLE),
 	TREEHARVESTER("TreeHarvesterItem", ItemType.PLACEABLE),
+	ROCKDRILLER("RockDrillerItem", ItemType.PLACEABLE),
 	PLANKER("PlankerItem", ItemType.PLACEABLE),
     WOOD("WoodItem", ItemType.RESOURCE),
-	LOG("LogItem", ItemType.RESOURCE);
+	LOG("LogItem", ItemType.RESOURCE),
+	ROCK("RockItem", ItemType.RESOURCE);
 	
     private final String id;
     private final ItemType itemType;

@@ -4,15 +4,15 @@ import java.util.Map;
 
 public class CraftingRecipe {
 	
-	private Map<Item, Integer> recipe;
-	private Item outputItem;
+	private Map<ItemID, Integer> recipe;
+	private ItemID outputItem;
 	
-	public CraftingRecipe(Map<Item, Integer> recipe, Item outputItem) {
+	public CraftingRecipe(Map<ItemID, Integer> recipe, ItemID outputItem) {
 		this.recipe = recipe;
 		this.outputItem = outputItem;
 	}
 	
-	public Item craftItem(Map<Item, Integer> inventory) {
+	public ItemID craftItem(Map<ItemID, Integer> inventory) {
 		
 		if (!canCraft(inventory)) return null;
 		
@@ -22,9 +22,9 @@ public class CraftingRecipe {
 		return outputItem;
 		
 	}
-	public boolean canCraft(Map<Item, Integer> inventory) {
+	public boolean canCraft(Map<ItemID, Integer> inventory) {
 		
-		 for (Map.Entry<Item, Integer> entry : recipe.entrySet()) {
+		 for (Map.Entry<ItemID, Integer> entry : recipe.entrySet()) {
 			 int available = inventory.getOrDefault(entry.getKey(), 0);
 			 if (available < entry.getValue()) return false;
 		 }
@@ -32,13 +32,13 @@ public class CraftingRecipe {
 		return true;
 	}
 	
-	public Item getOutputItem() {
+	public ItemID getOutputItem() {
 		return outputItem;
 	}
 	
 	public void printRecipe() {
-		 for (Map.Entry<Item, Integer> entry : recipe.entrySet()) {
-			 System.out.println(entry.getKey().getItemID() + ": " + entry.getValue());
+		 for (Map.Entry<ItemID, Integer> entry : recipe.entrySet()) {
+			 System.out.println(entry.getKey() + ": " + entry.getValue());
 		 }
 	}
 }

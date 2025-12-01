@@ -37,8 +37,8 @@ public class HotbarSlot implements UIRenderable{
 			
 		}
 
-		if (item != null && playerUI.getItemQuantity(item) > 0) {
-			UIItem.renderUIItem(g, graphics, item , playerUI.getItemQuantity(item), pixelX, pixelY);
+		if (item != null && playerUI.getItemQuantity(item.getItemID()) > 0) {
+			UIItem.renderUIItem(g, graphics, item , playerUI.getItemQuantity(item.getItemID()), pixelX, pixelY);
 		}
 		
 		

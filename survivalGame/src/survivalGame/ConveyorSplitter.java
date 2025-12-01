@@ -47,7 +47,7 @@ public class ConveyorSplitter extends Conveyor{
 		attemptAccessingConveyors();
 		targetConveyor = conveyorForward;
 		
-		GameGraphics.getInstance().registerWorldObj(this, 2);
+		GameGraphics.registerWorldObj(this, 2);
 	
 	}
 

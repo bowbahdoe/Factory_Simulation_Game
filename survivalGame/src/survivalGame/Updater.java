@@ -10,7 +10,7 @@ public final class Updater implements Runnable {
     private static List<Updatable> updatables = new ArrayList<>();
     private static Queue<Updatable> toAdd = new LinkedList<>();
     
-    final int fps = 120;
+    final int fps = 100;
     final long frameTime = 1000 / fps; // 16 ms target
     
     

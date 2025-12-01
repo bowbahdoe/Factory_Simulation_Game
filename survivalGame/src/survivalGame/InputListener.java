@@ -41,8 +41,8 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	private int mouseX = 0, mouseY = 0;
 	 
 	private boolean mouseDragging = false;
-	public InputListener(Player player) {
-		GameGraphics.getInstance().addMouseMotionListener(this);
+	public InputListener(Player player, GameGraphics graphics) {
+		graphics.addMouseMotionListener(this);
 		InputListenerInstance = this;
 		this.player = player;
 	}
@@ -206,15 +206,15 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		// TODO Auto-generated method stub
-		GameGraphics graphics = GameGraphics.getInstance();
+
 		if (e.isControlDown()) {
             if (e.getWheelRotation() < 0) {
-            	graphics.setCameraZoom(graphics.getCameraZoom() * 1.1f); // zoom in
+            	GameGraphics.setCameraZoom(GameGraphics.getCameraZoom() * 1.1f); // zoom in
             } else {
-            	graphics.setCameraZoom(graphics.getCameraZoom() / 1.1f); // zoom out
+            	GameGraphics.setCameraZoom(GameGraphics.getCameraZoom() / 1.1f); // zoom out
             }
 
-            graphics.setCameraZoom(Math.max(0.1f, Math.min(graphics.getCameraZoom(), 5.0f)));
+            GameGraphics.setCameraZoom(Math.max(0.1f, Math.min(GameGraphics.getCameraZoom(), 5.0f)));
 
         }
 	}

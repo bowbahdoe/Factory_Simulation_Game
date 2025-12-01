@@ -26,7 +26,7 @@ public class Tile implements WorldRenderable{
 		pixelY = y * tileSize;
 		
 
-		GameGraphics.getInstance().registerWorldObj(this, 1);
+		GameGraphics.registerWorldObj(this, 1);
 		
 		chunkParent = parent;
 	}
@@ -36,7 +36,7 @@ public class Tile implements WorldRenderable{
 	public void render(Graphics2D g, GameGraphics graphics) {
 		if (toRender) {
 			
-			g.setColor(new Color(65,105,72));
+			g.setColor(new Color(66,100,74));
 			g.fillRect(pixelX, pixelY, tileSize, tileSize);
 			
 			if (selected) {

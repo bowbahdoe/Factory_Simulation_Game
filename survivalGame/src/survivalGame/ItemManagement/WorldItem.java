@@ -28,7 +28,7 @@ public class WorldItem implements WorldRenderable, Updatable {
 		this.pixelX = pixelX;
 		this.pixelY = pixelY;
 		
-		GameGraphics.getInstance().registerWorldObj(this, 4);
+		GameGraphics.registerWorldObj(this, 4);
 		
 		Updater.register(this);
 	}

@@ -14,7 +14,7 @@ public abstract class TileObject implements WorldRenderable{
 	protected Tile parentTile;
 	
 	protected int verticalOffset = 0;
-	protected boolean toRender; 
+	protected boolean toRender = true; 
 	
 	public TileObject(Tile parentTile) {
 		this.parentTile = parentTile;
@@ -43,6 +43,11 @@ public abstract class TileObject implements WorldRenderable{
 			g.drawImage(texture, pixelX, pixelY + verticalOffset, null); 
 		}
 		
+	}
+	
+	@Override
+	public int getY() {
+		return parentTile.y;
 	}
 	
 }

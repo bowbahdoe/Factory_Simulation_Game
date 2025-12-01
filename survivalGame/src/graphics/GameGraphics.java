@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,81 +25,66 @@ import survivalGame.WorldInfo;
 
 public final class GameGraphics extends JPanel implements Updatable {
 	
-	private static final long serialVersionUID = 1L;
-
-	private static GameGraphics graphicsInstance;
 	private static TextureManager textureManager;
 	private static TreeMap<Integer, List<WorldRenderable>> WorldRenderLayers = new TreeMap<>();
 	private static List<UIRenderable> UIRenderLayers = new ArrayList<>();
 	
 	
-	public TileChunk[] chunks;
+	public static TileChunk[] chunks;
 	
 	AffineTransform uiTransform;
 	
-	public int worldSize;
-    int worldPixelSize;
+	public static int worldSize;
+    static int worldPixelSize;
 
 	public final static int TILESIZE = 100;
-	public int chunkSize;
+	public static int chunkSize;
 	
-	private float cameraZoom = 1;
+	private static float cameraZoom = 1;
 	
-	public final int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-	public final int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
-	public float getCameraZoom() {
+	public static final int SCREEN_WIDTH = Toolkit.getDefaultToolkit().getScreenSize().width;
+	public static final int SCREEN_HEIGHT = Toolkit.getDefaultToolkit().getScreenSize().height;
+	public static float getCameraZoom() {
 		return cameraZoom;
 	}
 
 
-	public void setCameraZoom(float cameraZoom) {
-		this.cameraZoom = cameraZoom;
+	public static void setCameraZoom(float cameraZoom) {
+		GameGraphics.cameraZoom = cameraZoom;
 	}
 	
-	//singleton lolololol
-	public static GameGraphics getInstance() {
-		if (graphicsInstance == null) {
-			graphicsInstance = new GameGraphics();
-		}
-        return graphicsInstance;
-    }
 	
-	
-	public void registerWorldObj(WorldRenderable toRender, int layer) {
+	public static void registerWorldObj(WorldRenderable toRender, int layer) {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
 	}
 	
-	public void registerUI(UIRenderable toRender) {
+	public static void registerUI(UIRenderable toRender) {
 		UIRenderLayers.add(toRender);
 	}
 	
-	public void registerAll(List<WorldRenderable> toRender, int layer) {
+	public static void registerAll(List<WorldRenderable> toRender, int layer) {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).addAll(toRender);
 	}
 
 	private Player player;
-	private int[] originOffset = new int[2];
+	private static int[] originOffset = new int[2];
 	
-	private GameGraphics() {}
+	public GameGraphics() {
+		this.setFocusable(true);
+	}
 
 	public void init(WorldInfo info)
     {		
-		graphicsInstance = this;
-		this.chunks = info.chunks;
-		this.worldSize = info.worldSize;
-		this.chunkSize = info.chunkSize;
+
+		GameGraphics.chunks = info.chunks;
+		GameGraphics.worldSize = info.worldSize;
+		GameGraphics.chunkSize = info.chunkSize;
 		worldPixelSize = (worldSize * GameGraphics.TILESIZE) - 2600;
 		//rough estimate
-		
-    	Updater.getInstance();
-		Updater.register(this);
-		
-		this.setFocusable(true);  // Make sure the panel can receive focus
 		WorldRenderLayers.put(0,new ArrayList<>());
 		for (int layer : WorldRenderLayers.keySet()) {
 			WorldRenderLayers.get(layer).sort(Comparator.comparing(WorldRenderable::getY));
 		}
-		
     }
 	
 	public void attachPlayer(Player player) {
@@ -206,7 +192,7 @@ public final class GameGraphics extends JPanel implements Updatable {
 		// TODO Auto-generated method stub
 		
 	}
-	public int[] getOriginOffset() {
+	public static int[] getOriginOffset() {
 		return originOffset;
 	}
 	

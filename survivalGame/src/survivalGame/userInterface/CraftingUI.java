@@ -11,10 +11,11 @@ import graphics.UIRenderable;
 import survivalGame.InventoryListener;
 import survivalGame.Recipes;
 import survivalGame.ItemManagement.Item;
+import survivalGame.ItemManagement.ItemID;
 
 public class CraftingUI implements UIRenderable, InventoryListener {
 	
-	private Map<Item, Integer> inventory;
+	private Map<ItemID, Integer> inventory;
 	private PlayerUI playerUI;
 	private List<CraftButton> craftButtons = new ArrayList<>();
 	public CraftingUI(PlayerUI playerUI,Rectangle bounds) {
@@ -30,6 +31,7 @@ public class CraftingUI implements UIRenderable, InventoryListener {
 		craftButtons.add(new CraftButton(bounds.x + 200,bounds.y, this, Recipes.PLANKER.getRecipe()));		
 		craftButtons.add(new CraftButton(bounds.x,bounds.y + 100, this, Recipes.CONVEYORSPLITTER_R.getRecipe()));	
 		craftButtons.add(new CraftButton(bounds.x + 100,bounds.y + 100, this, Recipes.CONVEYORSPLITTER_L.getRecipe()));	
+		craftButtons.add(new CraftButton(bounds.x + 200,bounds.y + 100, this, Recipes.ROCKDRILLER.getRecipe()));	
 	}
 	@Override
 	public boolean isActive() {
@@ -44,12 +46,12 @@ public class CraftingUI implements UIRenderable, InventoryListener {
 	}
 
 
-	public Map<Item, Integer> getInventory() {
+	public Map<ItemID, Integer> getInventory() {
 		return inventory;
 	}
 	public void printInventory() {
-		 for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
-			 System.out.println(entry.getKey().getItemID() + ": " + entry.getValue());
+		 for (Map.Entry<ItemID, Integer> entry : inventory.entrySet()) {
+			 System.out.println(entry.getKey() + ": " + entry.getValue());
 		 }
 	}
 	

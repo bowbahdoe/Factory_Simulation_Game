@@ -25,7 +25,7 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	
 	public Conveyor(Tile parentTile, Direction rotation) {
 		super(parentTile, rotation);
-		GameGraphics.getInstance().registerWorldObj(this, 2);
+		GameGraphics.registerWorldObj(this, 2);
 	}
 	@Override
 	public void removeObject() {

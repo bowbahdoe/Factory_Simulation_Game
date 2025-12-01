@@ -34,7 +34,7 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 	
 	public ConveyorManager() {
 		TickManager.getInstance().register(this); 
-		GameGraphics.getInstance().registerWorldObj(this, 4);
+		GameGraphics.registerWorldObj(this, 4);
 	
 	}
 	 

@@ -28,7 +28,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	BufferedImage UI;
 	InventorySlot[] slots = new InventorySlot[40];
 	
-	private Map<Item, Integer> inventory = new HashMap<>();
+	private Map<ItemID, Integer> inventory = new HashMap<>();
 	private List<UIRenderable> allUI = new ArrayList<>();
 	
 	private List<InventoryListener> listeners = new ArrayList<>();
@@ -36,13 +36,13 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	private Player player;
 	public PlayerUI(Player player) {
 		this.player = player;
-		GameGraphics.getInstance().registerUI(this);
+		GameGraphics.registerUI(this);
 		InputListener.getInstance().registerKeyListener(this);
 		UI = GameGraphics.getTextureManager().getTexture("PlayerUI");
 		//allUI.add();
-		int x = GameGraphics.getInstance().screenWidth / 2 - UI.getWidth() / 2;
-		int y = GameGraphics.getInstance().screenHeight / 2 - UI.getHeight() / 2;
-		System.out.println(GameGraphics.getInstance().screenWidth + ", " + GameGraphics.getInstance().screenHeight);
+		int x = GameGraphics.SCREEN_WIDTH / 2 - UI.getWidth() / 2;
+		int y = GameGraphics.SCREEN_HEIGHT / 2 - UI.getHeight() / 2;
+		System.out.println(GameGraphics.SCREEN_WIDTH + ", " + GameGraphics.SCREEN_HEIGHT);
 		for (int i = 0; i < 40; i ++) {
 			int pixelX = x + (i % 5) * 70 + 40;
 			int pixelY = y + (i / 5) * 70 + 80;
@@ -82,15 +82,15 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 
 	    int invCounter = 0;
 	    
-	    for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
-	        Item item = entry.getKey();
+	    for (Map.Entry<ItemID, Integer> entry : inventory.entrySet()) {
+	        ItemID item = entry.getKey();
 	        int quantity = entry.getValue();
 
 	        if (quantity <= 0) break;
 
 	        //merge into existing slots with same item
 	        for (InventorySlot slot : slots) {
-	            if (slot.isEmpty() ||  !slot.getItemStack().getItem().getItemID().equals(item.getItemID()) ) continue;
+	            if (slot.isEmpty() ||  !slot.getItemStack().getItem().getItemID().equals(item) ) continue;
 	           
 	            ItemStack stack = slot.getItemStack();
                 int spaceLeft = ItemStack.MAX_STACK - stack.getQuantity();
@@ -107,7 +107,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	            if (!slot.isEmpty()) continue;
 	            
 	            int toPlace = Math.min(quantity, ItemStack.MAX_STACK); 
-                ItemStack newStack = new ItemStack(item, toPlace);
+                ItemStack newStack = new ItemStack(ItemFactory.createItem(item), toPlace);
                 slot.setItemStack(newStack);
                 quantity -= toPlace;
                 
@@ -116,7 +116,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	    }
 	}
 
-	public void mergeInventory(Map<Item, Integer> inv) {
+	public void mergeInventory(Map<ItemID, Integer> inv) {
 		inv.forEach((key,value) -> inventory.merge(key,value, Integer::sum ));
 		onInventoryChanged(); //including themselves
 	}
@@ -135,15 +135,15 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		listeners.forEach(InventoryListener::onInventoryChanged);
 	}
 	
-	public Map<Item, Integer> getInventory(){
+	public Map<ItemID, Integer> getInventory(){
 		return inventory;
 	}
 	
-	public int getItemQuantity(Item item) {
+	public int getItemQuantity(ItemID item) {
 		return inventory.get(item);
 	}
 		
-	public void changeItemQuantityBy(int amount, Item item) {
+	public void changeItemQuantityBy(int amount, ItemID item) {
 		inventory.put(item, inventory.get(item) + amount);
 	}
 	public void selectSlot(InventorySlot slot) {
@@ -163,7 +163,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	}
 	
 	public void addToInventory(ItemID id, int quantity) {
-		inventory.put(ItemFactory.createItem(id), quantity);
+		inventory.put(id, quantity);
 	}
 	
 	public Player getPlayer() {

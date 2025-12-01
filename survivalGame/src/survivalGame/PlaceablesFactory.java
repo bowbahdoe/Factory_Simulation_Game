@@ -16,6 +16,7 @@ public class PlaceablesFactory {
 		placementMap.put(ItemID.PLANKER, info -> new Planker(info.tile,info.direction));
 		placementMap.put(ItemID.CONVEYORSPLITTER_R, info -> new ConveyorSplitter(info.tile,info.direction,true));
 		placementMap.put(ItemID.CONVEYORSPLITTER_L, info -> new ConveyorSplitter(info.tile,info.direction,false));
+		placementMap.put(ItemID.ROCKDRILLER, info -> new RockDriller(info.tile,info.direction));
 	}
 	
 	public static TileObject createPlaceable(ItemID itemID, PlacementInfo info) {

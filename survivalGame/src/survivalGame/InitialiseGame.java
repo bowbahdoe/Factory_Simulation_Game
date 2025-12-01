@@ -24,7 +24,8 @@ public class InitialiseGame {
 		
 
 		chunks = new TileChunk[chunkAmount * chunkAmount];	
-		GameGraphics gameGraphics = GameGraphics.getInstance();
+		GameGraphics gameGraphics = new GameGraphics();
+		Updater.register(gameGraphics);
 		gameGraphics.init(new WorldInfo(chunks, worldSize, chunkSize));
 		
 		for (int x = 0; x < chunkAmount; x++) {
@@ -34,9 +35,9 @@ public class InitialiseGame {
 		}
 
 		System.out.println(chunks.length + " chunks and " + tiles + " tiles") ;
-
+		
 		gameGraphics.addOnTextureManager(textureManager);
-		Player player = new Player();
+		Player player = new Player(gameGraphics);
 		gameGraphics.attachPlayer(player);
 		
 		new MainScreen(gameGraphics);
@@ -57,12 +58,18 @@ public class InitialiseGame {
 				Tile tile = new Tile(Tx  + (x * chunkSize),Ty  + (y * chunkSize),chunk,  GameGraphics.TILESIZE);
 				tiles++;
 				
-				int rNum = (int) (Math.random() * 115) + 1; 
-				if (rNum <= 1) {
+				int rNum = (int) (Math.random() * 285) + 1; 
+				if (rNum <= 2) {
 					TileObject tree = new TileTree(tile);
 					tree.addTexture("Tree",textureManager);
 					tile.setObject(tree);
 				}
+				else if (rNum <= 3) {
+					TileObject rock = new TileRock(tile);
+					rock.addTexture("Rock",textureManager);
+					tile.setObject(rock);
+				}
+				
 				chunk.add(tile);
 			}
 		}
@@ -74,6 +81,7 @@ public class InitialiseGame {
 		textureManager.loadTexture("src/images/Stickman.png", "Player");
 		textureManager.loadTexture("src/images/grasy.png", "Grass");
 		textureManager.loadTexture("src/images/Tree.png", "Tree");
+		textureManager.loadTexture("src/images/Rock.png", "Rock");
 		
 		String[] directions = {"N", "E", "S", "W"};
 		for (String direction : directions) {
@@ -102,14 +110,17 @@ public class InitialiseGame {
 		textureManager.loadTexture("src/images/factoryComponents/Planker.png", "Planker");
 		textureManager.loadTexture("src/images/factoryComponents/ConveyorSplitter.png", "ConveyorSplitterR");
 		textureManager.addTexture(ImageFlipper.flipImageHorizontal(textureManager.getTexture("ConveyorSplitterR")), "ConveyorSplitterL");
+		textureManager.loadTexture("src/images/factoryComponents/RockDriller.png", "RockDriller");
 		
 		textureManager.loadTexture("src/images/Items/Item_Conveyor.png", "ConveyorItem");
 		textureManager.loadTexture("src/images/Items/Item_TreeHarvester.png", "TreeHarvesterItem");
 		textureManager.loadTexture("src/images/Items/Item_Wood.png", "WoodItem");
 		textureManager.loadTexture("src/images/Items/Item_Log.png", "LogItem");
+		textureManager.loadTexture("src/images/Items/Item_Rock.png", "RockItem");
 		textureManager.loadTexture("src/images/Items/Item_Planker.png", "PlankerItem");
 		textureManager.loadTexture("src/images/Items/Item_ConveyorSplitter.png", "ConveyorSplitterItemR");
 		textureManager.addTexture(ImageFlipper.flipImageHorizontal(textureManager.getTexture("ConveyorSplitterItemR")), "ConveyorSplitterItemL");
+		textureManager.loadTexture("src/images/Items/Item_RockDriller.png", "RockDrillerItem");
 		
 		textureManager.loadTexture("src/images/BlueprintDirection.png", "Blueprint");
 	}

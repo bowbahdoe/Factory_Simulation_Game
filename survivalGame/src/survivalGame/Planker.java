@@ -35,7 +35,7 @@ public class Planker extends Conveyor{
 		inputBlacklist = EnumSet.of(rotation.rotatedAntiClockwise(), rotation.rotatedClockwise());
 
 		actionTimer = new ActionTimer(3);
-		GameGraphics.getInstance().registerWorldObj(this, 2);
+		GameGraphics.registerWorldObj(this, 2);
 	}
 
 	@Override
