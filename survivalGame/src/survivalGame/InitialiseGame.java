@@ -1,5 +1,6 @@
 package survivalGame;
 
+import graphics.CurrentGameState;
 import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageFlipper;
@@ -15,10 +16,11 @@ public class InitialiseGame {
 		Thread updaterThread = new Thread(Updater.getInstance());
 		
 		loadTextures();
+		CurrentGameState.gameState = GameState.MENU;
 		
 		int worldSize = 36 * 9;
 		//world size is length or width of world, so if world size 2, 4 tiles total
-		//chunk size reccommended: 6
+		//chunk size recommended: 6
 		int chunkSize = 6;
 		int chunkAmount = worldSize / chunkSize;
 		

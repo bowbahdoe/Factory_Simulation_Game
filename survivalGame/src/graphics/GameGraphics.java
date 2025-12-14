@@ -15,6 +15,7 @@ import java.util.TreeMap;
 
 import javax.swing.JPanel;
 
+import survivalGame.GameState;
 import survivalGame.InputListener;
 import survivalGame.Player;
 import survivalGame.TileChunk;
@@ -28,8 +29,7 @@ public final class GameGraphics extends JPanel implements Updatable {
 	private static TextureManager textureManager;
 	private static TreeMap<Integer, List<WorldRenderable>> WorldRenderLayers = new TreeMap<>();
 	private static List<UIRenderable> UIRenderLayers = new ArrayList<>();
-	
-	
+	private Menu menu;
 	public static TileChunk[] chunks;
 	
 	AffineTransform uiTransform;
@@ -85,8 +85,9 @@ public final class GameGraphics extends JPanel implements Updatable {
 		for (int layer : WorldRenderLayers.keySet()) {
 			WorldRenderLayers.get(layer).sort(Comparator.comparing(WorldRenderable::getY));
 		}
+		
     }
-	
+
 	public void attachPlayer(Player player) {
 		this.player = player;
 		InputListener input = InputListener.getInstance();
@@ -105,10 +106,14 @@ public final class GameGraphics extends JPanel implements Updatable {
         }
         
         g2d.setStroke(new BasicStroke(4));
-        //background color
+        //background colour
         g2d.setColor(new Color(0,0,0));
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
+        if (CurrentGameState.gameState == GameState.MENU) {
+        	
+        	//return;
+        }
         //translates world objects by player position.
         translateByPlayerView(g2d);
         g2d.scale(cameraZoom,cameraZoom); //must translate then scale otherwise everything will break :(
@@ -181,6 +186,7 @@ public final class GameGraphics extends JPanel implements Updatable {
 	
 	public void addOnTextureManager(TextureManager textureM) {
     	textureManager = textureM;
+    	menu = new Menu(textureManager);
     }
 	
 	public static TextureManager getTextureManager() {
