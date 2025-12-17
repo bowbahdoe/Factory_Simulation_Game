@@ -2,6 +2,8 @@ package survivalGame;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +20,11 @@ import survivalGame.userInterface.HotbarSlot;
 import survivalGame.userInterface.InventorySlot;
 import survivalGame.userInterface.PlayerUI;
 
-public class Player implements Updatable, WorldRenderable{
+public class Player implements Updatable, WorldRenderable, GameKeyListener, MouseClickListener{
 	
-	private InputListener input;
+	private MovementController movement = new MovementController();
+	private BuildingController buildingTool = new BuildingController(this);
+	
 	private PlayerUI playerUI;
 	BufferedImage[] blueprints = new BufferedImage[4];
 	
@@ -28,7 +32,6 @@ public class Player implements Updatable, WorldRenderable{
 	private double pixelY = -10000;
 	private int velocity = 360 * 6;
 	
-	private int[] movement;
 	
 	private Tile selectedTile;
 	
@@ -37,7 +40,8 @@ public class Player implements Updatable, WorldRenderable{
 	private InventorySlot selectedInventorySlot;
 	private HotbarSlot selectedHotbarSlot;
 	public Player(GameGraphics graphics) {
-		input = new InputListener(this,graphics);
+		InputListener.getInstance().registerKeyListener(this);
+		InputListener.getInstance().registerClickListener(this);
 		playerUI = new PlayerUI(this);
 		Updater.getInstance();
 		Updater.register(this);
@@ -55,11 +59,9 @@ public class Player implements Updatable, WorldRenderable{
 	}
 	@Override
 	public void update() {
-		movement = input.listenMovement();
 		if (selectedTile != null) {
 			selectedTile.setSelect(false);
 		}
-		selectedTile = input.listenClickedTile();
 		if (selectedTile != null) {
 			selectedTile.setSelect(true);
 		}
@@ -68,16 +70,18 @@ public class Player implements Updatable, WorldRenderable{
 	@Override
 	public void fixedUpdate(long delta) {
 		//Delta is in milliseconds, so divide it by 1000 to convert it to seconds lol
-		if (movement[0] != 0 && movement[1] != 0) {
-			double move = Math.sqrt(movement[0] * movement[0] + movement[1] * movement[1]);
+		int xMove = movement.getHorizontal();
+		int yMove = movement.getVertical();
+		if (xMove != 0 && yMove != 0) {
+			double move = Math.sqrt(xMove * xMove + yMove * yMove);
 			//(movement[0] / move) to restore direction, since move just gives magnitude. 
-		    pixelX += (movement[0] / move) * velocity * delta / 1000f;
-		    pixelY += (movement[1] / move) * velocity * delta / 1000f;
+		    pixelX += (xMove / move) * velocity * delta / 1000f;
+		    pixelY += (yMove / move) * velocity * delta / 1000f;
 			
 		}
 		else {
-			pixelX += movement[0] * velocity * delta / 1000f;
-			pixelY += movement[1] * velocity * delta / 1000f;
+			pixelX += xMove * velocity * delta / 1000f;
+			pixelY += yMove * velocity * delta / 1000f;
 		}
 		
 		
@@ -108,10 +112,10 @@ public class Player implements Updatable, WorldRenderable{
 		if (selectedHotbarSlot == null) return;
 
 		if (!(selectedHotbarSlot.getItem() instanceof PlaceableItem)) return;
-		Tile tile = TileProvider.pixel_AccessTile(input.getMouseX(), input.getMouseY());
+		Tile tile = TileProvider.pixel_AccessTile(InputListener.getInstance().getMouseX(), InputListener.getInstance().getMouseY());
 		if (!tile.isEmpty()) return;
 		BufferedImage texture = null;
-		switch (input.getBuildRotation()) {
+		switch (buildingTool.getBuildRotation()) {
 		case NORTH:
 			texture = blueprints[0];
 			break;
@@ -127,7 +131,6 @@ public class Player implements Updatable, WorldRenderable{
 		}
 		if (texture == null) return;
 		g.drawImage(texture, (int) (tile.pixelX), (int) (tile.pixelY), graphics);
-		
 		g.drawImage(getSelectedHotbarSlot().getItem().getTexture(), tile.pixelX + 75, tile.pixelY + 75,25,25, graphics);
 	}
 	public Tile getSelectedTile() {
@@ -194,5 +197,36 @@ public class Player implements Updatable, WorldRenderable{
 	public void setSelectedHotbarSlot(HotbarSlot selectedHotbarSlot) {
 		this.selectedHotbarSlot = selectedHotbarSlot;
 	}
+	@Override
+	public void onKeyPressed(int keyCode) {
+		switch (keyCode) {
+			case KeyEvent.VK_F:
+				collectItems();
+		}
+	 	
+		
+	}
+	
+	private Tile getClickedTile(int x, int y) {
+		Tile tile = TileProvider.pixel_AccessTile(x, y);
+		return tile;
+	}
+	
+	@Override
+	public void onClick(MouseEvent e) {
+		if (selectedTile != null) {
+			selectedTile.setSelect(false);
+		}
+		
+		selectedTile = getClickedTile(e.getX(), e.getY());
+
+		
+	}
+
+	@Override
+	public void onKeyReleased(int keyCode) {
+		
+	}
+	
 
 }

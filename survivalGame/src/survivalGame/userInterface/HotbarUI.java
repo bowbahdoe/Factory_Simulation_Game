@@ -39,7 +39,7 @@ public final class HotbarUI implements UIRenderable, GameKeyListener{
 	}
 	
 	@Override
-	public void keyPressed(int keyCode) {
+	public void onKeyPressed(int keyCode) {
 		if (keyCode < KeyEvent.VK_1 || keyCode > KeyEvent.VK_8) return;
 		
 		System.out.println(keyCode + ", " + (keyCode - KeyEvent.VK_1));
@@ -91,6 +91,10 @@ public final class HotbarUI implements UIRenderable, GameKeyListener{
 			slot.renderUI(g, graphics);
 		}
 
+	}
+
+	@Override
+	public void onKeyReleased(int keyCode) {
 	}
 
 

@@ -29,7 +29,7 @@ public class CraftButton implements UIClickable, InventoryListener{
 		this.pixelY = pixelY;
 		this.craftingUI = craftingUI;
 		this.recipe = recipe;
-		InputListener.getInstance().registerClickable(this);
+		InputListener.getInstance().registerClickableUI(this);
 		
 		buttonActive = GameGraphics.getTextureManager().getTexture("ButtonActive");
 		buttonInactive = GameGraphics.getTextureManager().getTexture("ButtonInactive");

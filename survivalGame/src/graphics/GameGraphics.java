@@ -111,7 +111,7 @@ public final class GameGraphics extends JPanel implements Updatable {
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
         if (CurrentGameState.gameState == GameState.MENU) {
-        	
+        	//menu.renderMenu(g2d, this);
         	//return;
         }
         //translates world objects by player position.

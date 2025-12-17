@@ -25,9 +25,12 @@ public class InitialiseGame {
 		int chunkAmount = worldSize / chunkSize;
 		
 
-		chunks = new TileChunk[chunkAmount * chunkAmount];	
+		
 		GameGraphics gameGraphics = new GameGraphics();
+		gameGraphics.addMouseMotionListener(InputListener.getInstance());
+		
 		Updater.register(gameGraphics);
+		chunks = new TileChunk[chunkAmount * chunkAmount];	
 		gameGraphics.init(new WorldInfo(chunks, worldSize, chunkSize));
 		
 		for (int x = 0; x < chunkAmount; x++) {

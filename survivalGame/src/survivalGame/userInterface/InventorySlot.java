@@ -22,7 +22,7 @@ public class InventorySlot implements UIClickable{
 	
 	private boolean selected = false;
 	public InventorySlot(int pixelX, int pixelY, PlayerUI parent) {
-		InputListener.getInstance().registerClickable(this);
+		InputListener.getInstance().registerClickableUI(this);
 		UI = GameGraphics.getTextureManager().getTexture("InventorySlot");
 		selectedUI = GameGraphics.getTextureManager().getTexture("SelectedSlot");
 		this.pixelX = pixelX;

@@ -2,7 +2,7 @@ package graphics;
 
 import java.awt.Rectangle;
 
-public interface UIClickable extends UIRenderable {
+public interface UIClickable extends UIRenderable  {
 	
 	//Rectangle has a function called contains() which takes in class Point as argument
 	//Point is instantiated with (x,y)

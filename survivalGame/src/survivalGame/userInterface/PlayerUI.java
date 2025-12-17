@@ -121,7 +121,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		onInventoryChanged(); //including themselves
 	}
 	@Override
-	public void keyPressed(int keyCode) {
+	public void onKeyPressed(int keyCode) {
 		
 		if (keyCode == KeyEvent.VK_I) {
 			toggle();
@@ -168,5 +168,10 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 	
 	public Player getPlayer() {
 		return player;
+	}
+	@Override
+	public void onKeyReleased(int keyCode) {
+		// TODO Auto-generated method stub
+		
 	}
 }
