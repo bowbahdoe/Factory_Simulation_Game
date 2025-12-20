@@ -29,6 +29,7 @@ public class TextureManager {
     	textures.put(name,image);
     }
     public BufferedImage getTexture(String filename) {
+    	if (!textures.containsKey(filename)) System.out.println("----FILE NOT FOUND----");
         return textures.get(filename);
     }
 }

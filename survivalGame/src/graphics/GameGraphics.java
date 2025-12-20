@@ -111,8 +111,8 @@ public final class GameGraphics extends JPanel implements Updatable {
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
         if (CurrentGameState.gameState == GameState.MENU) {
-        	//menu.renderMenu(g2d, this);
-        	//return;
+        	menu.renderMenu(g2d, this);
+        	return;
         }
         //translates world objects by player position.
         translateByPlayerView(g2d);
@@ -125,10 +125,10 @@ public final class GameGraphics extends JPanel implements Updatable {
         
         renderUI(g2d);
         
-        Font largeFont = new Font("Arial", Font.BOLD, 45);
+        Font largeFont = new Font("Arial", Font.BOLD, 25);
         g2d.setFont(largeFont);
-        g2d.setColor(Color.BLUE);
-        g2d.drawString(originOffset[0] + ", " + originOffset[1] + "  Z: " +  cameraZoom, 222, 222);
+        g2d.setColor(Color.BLACK);
+        g2d.drawString(originOffset[0] + ", " + originOffset[1] + "  Z: " +  cameraZoom, 100, 75);
         
        
     }

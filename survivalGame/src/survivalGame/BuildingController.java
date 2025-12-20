@@ -17,7 +17,7 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 	public BuildingController(Player player) {
 		this.player = player;
 		InputListener.getInstance().registerKeyListener(this);
-		InputListener.getInstance().registerClickListener(this);
+		InputListener.getInstance().registerClickListenerToWorld(this);
 	}
 	
 	public void toggleBuilding() {

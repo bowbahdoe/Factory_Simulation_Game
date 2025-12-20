@@ -81,6 +81,9 @@ public class InitialiseGame {
 		chunks[x * chunkAmount + y] = chunk;
 	}
 	
+	/*
+	 * Loads textures from src directory
+	 */
 	private static void loadTextures() {
 
 		textureManager.loadTexture("src/images/Stickman.png", "Player");
@@ -128,5 +131,8 @@ public class InitialiseGame {
 		textureManager.loadTexture("src/images/Items/Item_RockDriller.png", "RockDrillerItem");
 		
 		textureManager.loadTexture("src/images/BlueprintDirection.png", "Blueprint");
+		
+		textureManager.loadTexture("src/images/Button.png", "Button");
+		textureManager.loadTexture("src/images/Background.png", "Background");
 	}
 }

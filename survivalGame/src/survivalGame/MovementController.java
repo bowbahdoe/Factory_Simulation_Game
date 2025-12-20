@@ -31,7 +31,6 @@ public class MovementController implements GameKeyListener {
 		
 	@Override
 	public void onKeyReleased(int keyCode) {
-		System.out.println("Called " + keyCode);
 		 switch (keyCode) {
          case KeyEvent.VK_W:
          case KeyEvent.VK_S:

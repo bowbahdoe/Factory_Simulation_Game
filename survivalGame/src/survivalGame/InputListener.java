@@ -9,15 +9,12 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 import graphics.CurrentGameState;
 import graphics.GameGraphics;
 import graphics.UIClickable;
-import survivalGame.ItemManagement.ItemFactory;
-import survivalGame.ItemManagement.ItemID;
-import survivalGame.ItemManagement.PlaceableItem;
-import survivalGame.ItemManagement.WorldItem;
 
 public class InputListener implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
 
@@ -39,15 +36,19 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	 
 	//private boolean mouseDragging = false;
 	
-	private static List<UIClickable> clickableUI = new ArrayList<>();
-	private static List<MouseClickListener> clickable = new ArrayList<>();
-	private static List<GameKeyListener> keyListeners = new ArrayList<>();
+	private EnumMap<GameState, List<MouseClickListener>> clickMap = new EnumMap<>(GameState.class);
+	private List<UIClickable> clickableUI = new ArrayList<>();
+	private List<GameKeyListener> keyListeners = new ArrayList<>();
 	
 	public void registerClickableUI(UIClickable clickableInterface) {
 		clickableUI.add(clickableInterface);
 	}
-	public void registerClickListener(MouseClickListener c) {
-		clickable.add(c);
+	public void registerClickListenerToWorld(MouseClickListener c) {
+		clickMap.computeIfAbsent(GameState.GAME, k -> new ArrayList<>()).add(c);
+	}
+	public void registerClickListener(GameState state, MouseClickListener c) {
+		clickMap.computeIfAbsent(state, k -> new ArrayList<>()).add(c);
+
 	}
 	public void registerKeyListener(GameKeyListener keyListener) {
 		keyListeners.add(keyListener);
@@ -88,9 +89,6 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
             leftButtonHeld = true;
         }
         
-        for (MouseClickListener clickableObject : clickable) {
-        	clickableObject.onClick(e);
-        }
     }
 	
 	private void handleClick(MouseEvent e) {
@@ -102,12 +100,13 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 				return;
 			}
 		}
-		for (MouseClickListener click : clickable) {
+		
+		if (!clickMap.containsKey(CurrentGameState.gameState)) return;
+		for (MouseClickListener click : clickMap.get(CurrentGameState.gameState)) { 
 			click.onClick(e);
 		}
+		
 	}
-	
-	
 	
     @Override
     public void mouseReleased(MouseEvent e) {
