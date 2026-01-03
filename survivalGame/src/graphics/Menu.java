@@ -12,7 +12,6 @@ import survivalGame.GameState;
 
 public class Menu {
 	List<Button> buttons = new ArrayList<>();
-	Button button = new Button("hi", GameGraphics.getTextureManager().getTexture("Button"), 0, 0, null);
 	
 	BufferedImage buttonTexture;
 	BufferedImage background;
@@ -24,19 +23,22 @@ public class Menu {
 		buttons.add(new Button("Play",
 				buttonTexture, 
 				buttonX, 450, 
-				() -> CurrentGameState.gameState = GameState.GAME)
+				GameState.MENU,
+				() -> CurrentGameState.gameState = GameState.WORLDSELECTION)
 				);
 		
 		buttons.add(new Button("Settings",
 				buttonTexture, 
 				buttonX, 550, 
+				GameState.MENU,
 				() -> CurrentGameState.gameState = GameState.SETTINGS)
 				);
 		
 		buttons.add(new Button("Quit",
 				buttonTexture, 
 				buttonX, 700, 
-				() -> System.out.println("AA"))
+				GameState.MENU,
+				() -> System.exit(0))
 				);
 	}
 	
@@ -49,6 +51,6 @@ public class Menu {
 		}
 		Font largeFont = new Font("Arial", Font.BOLD, 150);
 	    g.setFont(largeFont);
-	    g.drawString("Autism", 200, 160);
+	    g.drawString("Factorio 2", 410, 160);
 	}
 }

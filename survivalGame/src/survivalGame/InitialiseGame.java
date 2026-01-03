@@ -24,14 +24,15 @@ public class InitialiseGame {
 		int chunkSize = 6;
 		int chunkAmount = worldSize / chunkSize;
 		
-
 		
 		GameGraphics gameGraphics = new GameGraphics();
+		gameGraphics.addOnTextureManager(textureManager);
 		gameGraphics.addMouseMotionListener(InputListener.getInstance());
 		
 		Updater.register(gameGraphics);
 		chunks = new TileChunk[chunkAmount * chunkAmount];	
-		gameGraphics.init(new WorldInfo(chunks, worldSize, chunkSize));
+		WorldInfo info = new WorldInfo(chunks, worldSize, chunkSize);
+		gameGraphics.init(info);
 		
 		for (int x = 0; x < chunkAmount; x++) {
 			for (int y = 0; y < chunkAmount; y++ ) {
@@ -41,7 +42,6 @@ public class InitialiseGame {
 
 		System.out.println(chunks.length + " chunks and " + tiles + " tiles") ;
 		
-		gameGraphics.addOnTextureManager(textureManager);
 		Player player = new Player(gameGraphics);
 		gameGraphics.attachPlayer(player);
 		

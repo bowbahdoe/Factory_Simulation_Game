@@ -13,40 +13,58 @@ public class Button implements MouseClickListener{
 
 	private BufferedImage texture;
 	private String text;
-	private final int xPosition;
-	private final int yPosition;
+	public final int xPosition;
+	public final int yPosition;
+	public final int width;
+	public final int height;
 	private final Runnable function;
-	public Button(String text, BufferedImage texture, int xPosition, int yPosition, Runnable function) {
+	private boolean isActive = true;
+	
+	public Button(String text, BufferedImage texture, int xPosition, int yPosition, GameState state,  Runnable function) {
 		this.text = text;
 		this.texture = texture;
 		this.xPosition = xPosition;
 		this.yPosition = yPosition; 
 		this.function = function;
-		InputListener.getInstance().registerClickListener(GameState.MENU, this);
+		width = texture.getWidth();
+		height = texture.getHeight();
+		InputListener.getInstance().registerClickListener(state, this);
 	}
-	public Button(BufferedImage texture, int xPosition, int yPosition, Runnable function) {
-		this.texture = texture;
-		this.xPosition = xPosition;
-		this.yPosition = yPosition; 
+	public Button(String text, Rectangle rect, GameState state,  Runnable function) {
+		this.text = text;
+		this.xPosition = rect.x;
+		this.yPosition = rect.y; 
 		this.function = function;
-		InputListener.getInstance().registerClickListener(GameState.MENU, this);
-	}	
+		width = rect.width;
+		height = rect.height;
+		InputListener.getInstance().registerClickListener(state, this);
+	}
 
 	public void renderUI(Graphics2D g, GameGraphics graphics) {
-		g.drawImage(texture ,xPosition, yPosition, graphics);
+		if (!isActive) return;
+		if (texture != null) {
+			g.drawImage(texture ,xPosition, yPosition, graphics);
+		}
 		Font largeFont = new Font("Arial", Font.BOLD, 42);
 	    g.setFont(largeFont);
-		g.drawString(text, xPosition + texture.getWidth() / 2 - text.length() * 12, yPosition + texture.getHeight() / 2 + 15);
+		g.drawString(text, xPosition + width / 2 - g.getFontMetrics().stringWidth(text) / 2 , yPosition + height / 2 + 15);
 	}
 	
 	@Override
 	public void onClick(MouseEvent e) {
-		if (!(e.getX() > xPosition && e.getX() < xPosition + texture.getWidth())) return;
-		if (!(e.getY() > yPosition && e.getY() < yPosition + texture.getHeight())) return;
+		if (!isActive) return;
+		if (!(e.getX() > xPosition && e.getX() < xPosition + width)) return;
+		if (!(e.getY() > yPosition && e.getY() < yPosition + height)) return;
 		
 		function.run();
 	}
-
+	
+	public void setActive(boolean state) {
+		isActive = state;
+	}
+	public boolean isActive() {
+		return isActive;
+	}
 	
 	
 }

@@ -29,7 +29,6 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	}
 	@Override
 	public void removeObject() {
-		
 	}
 
 	public EnumSet<Direction> getInputBlackList(){

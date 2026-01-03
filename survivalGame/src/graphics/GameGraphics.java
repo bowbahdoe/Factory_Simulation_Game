@@ -13,11 +13,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import survivalGame.GameState;
 import survivalGame.InputListener;
 import survivalGame.Player;
+import survivalGame.SettingsDisplay;
 import survivalGame.TileChunk;
 import survivalGame.Updatable;
 import survivalGame.Updater;
@@ -30,6 +33,9 @@ public final class GameGraphics extends JPanel implements Updatable {
 	private static TreeMap<Integer, List<WorldRenderable>> WorldRenderLayers = new TreeMap<>();
 	private static List<UIRenderable> UIRenderLayers = new ArrayList<>();
 	private Menu menu;
+	private SettingsDisplay settingsDisplay;
+	private WorldSelectionMenu worldSelection;
+	
 	public static TileChunk[] chunks;
 	
 	AffineTransform uiTransform;
@@ -48,11 +54,9 @@ public final class GameGraphics extends JPanel implements Updatable {
 		return cameraZoom;
 	}
 
-
 	public static void setCameraZoom(float cameraZoom) {
 		GameGraphics.cameraZoom = cameraZoom;
 	}
-	
 	
 	public static void registerWorldObj(WorldRenderable toRender, int layer) {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
@@ -66,11 +70,19 @@ public final class GameGraphics extends JPanel implements Updatable {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).addAll(toRender);
 	}
 
+	public void addJComponent(JComponent component) {
+		this.add(component);
+		this.revalidate();
+	}
 	private Player player;
 	private static int[] originOffset = new int[2];
 	
 	public GameGraphics() {
 		this.setFocusable(true);
+		InputListener input = InputListener.getInstance();
+		this.addKeyListener(input);  // Adds key listener to the panel
+		this.addMouseListener(input);
+		this.addMouseWheelListener(input);
 	}
 
 	public void init(WorldInfo info)
@@ -85,15 +97,13 @@ public final class GameGraphics extends JPanel implements Updatable {
 		for (int layer : WorldRenderLayers.keySet()) {
 			WorldRenderLayers.get(layer).sort(Comparator.comparing(WorldRenderable::getY));
 		}
-		
+		menu = new Menu(textureManager);
+    	settingsDisplay = new SettingsDisplay(textureManager);
+    	worldSelection  = new WorldSelectionMenu(textureManager);
     }
 
 	public void attachPlayer(Player player) {
 		this.player = player;
-		InputListener input = InputListener.getInstance();
-		this.addKeyListener(input);  // Adds key listener to the panel
-		this.addMouseListener(input);
-		this.addMouseWheelListener(input);
 	}
     @Override
     protected void paintComponent(Graphics g) {
@@ -114,6 +124,15 @@ public final class GameGraphics extends JPanel implements Updatable {
         	menu.renderMenu(g2d, this);
         	return;
         }
+        else if (CurrentGameState.gameState == GameState.SETTINGS) {
+        	settingsDisplay.renderSettings(g2d, this);
+        	return;
+        }
+        else if (CurrentGameState.gameState == GameState.WORLDSELECTION) {
+        	worldSelection.renderWorldSelection(g2d, this);
+        	return;
+        }
+        
         //translates world objects by player position.
         translateByPlayerView(g2d);
         g2d.scale(cameraZoom,cameraZoom); //must translate then scale otherwise everything will break :(
@@ -186,7 +205,6 @@ public final class GameGraphics extends JPanel implements Updatable {
 	
 	public void addOnTextureManager(TextureManager textureM) {
     	textureManager = textureM;
-    	menu = new Menu(textureManager);
     }
 	
 	public static TextureManager getTextureManager() {
@@ -195,12 +213,9 @@ public final class GameGraphics extends JPanel implements Updatable {
 
 	@Override
 	public void fixedUpdate(long delta) {
-		// TODO Auto-generated method stub
-		
 	}
+	
 	public static int[] getOriginOffset() {
 		return originOffset;
 	}
-	
-
 }

@@ -10,7 +10,7 @@ import survivalGame.ItemManagement.WorldItem;
 
 public class ConveyorNetworkSystem {
 	
-	// possible collisions for beltSequence but we will see
+	//a hashmap linking the conveyor belt key to the end of the sequence in order to traverse backwards.
 	private static Map<BeltSequence, Conveyor> keyToTail = new HashMap<>();
 
 	static int keyCounter = 1; 
@@ -42,6 +42,7 @@ public class ConveyorNetworkSystem {
 		ConveyorSpriteManager.changeSprite(currentConveyor.targetConveyor, currentConveyor.rotation);
 		
 		if (currentConveyor.inputConveyor == null && (currentConveyor.targetConveyor == null || currentConveyor.targetConveyor.hasInputConveyor())) {
+			//If conveyor is alone, or is a singular conveyor merging into a different belt sequence, Create new beltSequence key
 			becomeNewConveyorTail(currentConveyor);
 		}	
 		else if ( currentConveyor.inputConveyor == null && !currentConveyor.targetConveyor.hasInputConveyor()) {
@@ -57,6 +58,10 @@ public class ConveyorNetworkSystem {
 
 	}
 	
+	/**
+	 * Searches surrounding tiles for conveyors that point to this tile
+	 * @param currentConveyor is the conveyor we are searching inputs for.
+	 */
 	private void searchForInputConveyors(Conveyor currentConveyor) {
 		Tile parentTile = currentConveyor.parentTile;
 		EnumSet<Direction> inputBlackList = currentConveyor.getInputBlackList();
