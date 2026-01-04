@@ -1,4 +1,4 @@
-package graphics;
+package survivalGame.userInterface;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -13,6 +13,9 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import graphics.CurrentGameState;
+import graphics.GameGraphics;
+import graphics.TextureManager;
 import survivalGame.Button;
 import survivalGame.GameState;
 
@@ -53,7 +56,7 @@ public class WorldSelectionMenu {
 	}
 	
 	public void renderWorldSelection(Graphics2D g, GameGraphics graphics) {
-		g.drawImage(background,0,0,graphics);
+		g.drawImage(background,0,0, GameGraphics.SCREEN_WIDTH, GameGraphics.SCREEN_HEIGHT, graphics);
 		
 		for (Button button : buttons) {
 			if (!button.isActive()) continue;

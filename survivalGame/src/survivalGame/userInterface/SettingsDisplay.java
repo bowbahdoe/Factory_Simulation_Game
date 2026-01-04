@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.userInterface;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,6 +10,8 @@ import java.util.List;
 import graphics.CurrentGameState;
 import graphics.GameGraphics;
 import graphics.TextureManager;
+import survivalGame.Button;
+import survivalGame.GameState;
 
 public class SettingsDisplay {
 	List<Button> buttons = new ArrayList<>();
@@ -29,7 +31,7 @@ public class SettingsDisplay {
 	}	
 	
 	public void renderSettings(Graphics2D g, GameGraphics graphics) {
-		g.drawImage(background,0,0,graphics);
+		g.drawImage(background,0,0, GameGraphics.SCREEN_WIDTH, GameGraphics.SCREEN_HEIGHT, graphics);
 		
 		g.setColor(new Color(0,0,0,150));
 		g.fillRect(GameGraphics.SCREEN_WIDTH / 4, GameGraphics.SCREEN_HEIGHT / 4, GameGraphics.SCREEN_WIDTH / 2, GameGraphics.SCREEN_HEIGHT / 2 + 200);

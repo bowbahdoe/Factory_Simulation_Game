@@ -31,7 +31,6 @@ public class Tile implements WorldRenderable{
 		chunkParent = parent;
 	}
 
-
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
 		if (toRender) {
@@ -81,5 +80,4 @@ public class Tile implements WorldRenderable{
 	public boolean isEmpty() {
 		return tileObject == null;
 	}
-	
 }

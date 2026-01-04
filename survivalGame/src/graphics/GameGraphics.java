@@ -20,11 +20,13 @@ import javax.swing.JTextField;
 import survivalGame.GameState;
 import survivalGame.InputListener;
 import survivalGame.Player;
-import survivalGame.SettingsDisplay;
 import survivalGame.TileChunk;
 import survivalGame.Updatable;
 import survivalGame.Updater;
 import survivalGame.WorldInfo;
+import survivalGame.userInterface.Menu;
+import survivalGame.userInterface.SettingsDisplay;
+import survivalGame.userInterface.WorldSelectionMenu;
 
 
 public final class GameGraphics extends JPanel implements Updatable {

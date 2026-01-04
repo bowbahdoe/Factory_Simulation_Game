@@ -1,4 +1,4 @@
-package graphics;
+package survivalGame.userInterface;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import graphics.CurrentGameState;
+import graphics.GameGraphics;
+import graphics.TextureManager;
 import survivalGame.Button;
 import survivalGame.GameState;
 
@@ -17,6 +20,7 @@ public class Menu {
 	BufferedImage background;
 	public Menu(TextureManager Tmanager) {
 		background = Tmanager.getTexture("Background");
+		
 		buttonTexture = Tmanager.getTexture("Button");
 		
 		int buttonX = GameGraphics.SCREEN_WIDTH / 2 - buttonTexture.getWidth() / 2;
@@ -44,7 +48,7 @@ public class Menu {
 	
 	
 	public void renderMenu(Graphics2D g, GameGraphics graphics) {
-		g.drawImage(background,0,0,graphics);
+		g.drawImage(background,0,0, GameGraphics.SCREEN_WIDTH, GameGraphics.SCREEN_HEIGHT, graphics);
 		
 		for (Button button : buttons) {
 			button.renderUI(g, graphics);
