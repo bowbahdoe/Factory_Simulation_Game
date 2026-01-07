@@ -2,10 +2,15 @@ package survivalGame;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.DataOutputStream;
+
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
 
 public class Tile implements WorldRenderable{
+	
+	final TileType tileType = TileType.GRASS; 
+	
 	final int x;
 	final int y;
 	public final int tileSize;
@@ -31,6 +36,11 @@ public class Tile implements WorldRenderable{
 		chunkParent = parent;
 	}
 
+	public void write(DataOutputStream out) {
+		
+	}
+	
+	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
 		if (toRender) {

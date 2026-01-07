@@ -39,7 +39,7 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 	
 	private InventorySlot selectedInventorySlot;
 	private HotbarSlot selectedHotbarSlot;
-	public Player(GameGraphics graphics) {
+	public Player() {
 		InputListener.getInstance().registerKeyListener(this);
 		InputListener.getInstance().registerClickListenerToWorld(this);
 		playerUI = new PlayerUI(this);

@@ -40,6 +40,10 @@ public class Button implements MouseClickListener{
 		InputListener.getInstance().registerClickListener(state, this);
 	}
 
+	public void setTexture(BufferedImage texture) {
+		this.texture = texture;
+	}
+	
 	public void renderUI(Graphics2D g, GameGraphics graphics) {
 		if (!isActive) return;
 		if (texture != null) {
@@ -47,7 +51,10 @@ public class Button implements MouseClickListener{
 		}
 		Font largeFont = new Font("Arial", Font.BOLD, 42);
 	    g.setFont(largeFont);
-		g.drawString(text, xPosition + width / 2 - g.getFontMetrics().stringWidth(text) / 2 , yPosition + height / 2 + 15);
+	    
+	    int textWidth =  xPosition + width / 2 - g.getFontMetrics().stringWidth(text) / 2;
+	    int textHeight = yPosition + height / 2;
+		g.drawString(text,textWidth, textHeight + 15);
 	}
 	
 	@Override
@@ -62,6 +69,7 @@ public class Button implements MouseClickListener{
 	public void setActive(boolean state) {
 		isActive = state;
 	}
+	
 	public boolean isActive() {
 		return isActive;
 	}

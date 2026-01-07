@@ -2,13 +2,21 @@ package survivalGame;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import survivalGame.ItemManagement.ItemID;
 
+/**
+ * A factory that maps itemID to placeable object that can be instantiated
+ */
 public class PlaceablesFactory {
+	
 	static Map<ItemID, Function<PlacementInfo, TileObject>> placementMap;
 	
+	/*
+	 * Links itemID from inventory to instantiating an object, normally placed on a tile. 
+	 */
 	static {
 		placementMap = new HashMap<>();
 		placementMap.put(ItemID.CONVEYOR, info -> new Conveyor(info.tile,info.direction));
@@ -19,8 +27,16 @@ public class PlaceablesFactory {
 		placementMap.put(ItemID.ROCKDRILLER, info -> new RockDriller(info.tile,info.direction));
 	}
 	
+	/**
+	 * Instantiates the placeable object according to the itemID.
+	 * @param itemID specifies which placeable to create.
+	 * @param info contains tile position data and rotation.
+	 * @return The instantiated {@link TileObject}
+	 */
 	public static TileObject createPlaceable(ItemID itemID, PlacementInfo info) {
-		if (!placementMap.containsKey(itemID)) return null;
+		if (!placementMap.containsKey(itemID)) {
+			 throw new IllegalArgumentException("ItemID: " + itemID.toString() + " is invalid! ");
+		}
 		
 		Function<PlacementInfo, TileObject> function = placementMap.get(itemID);
 

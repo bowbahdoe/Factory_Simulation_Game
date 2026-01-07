@@ -1,28 +1,33 @@
 package survivalGame;
 
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import graphics.CurrentGameState;
 import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageFlipper;
+import survivalGame.ItemManagement.ItemID;
 
 public class InitialiseGame {
 	
-	static TileChunk[] chunks;
+	
 	static TextureManager textureManager = new TextureManager();
-	private static int tiles = 0;
+	
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		//playMusic();
+		
 		Thread updaterThread = new Thread(Updater.getInstance());
 		
 		loadTextures();
 		CurrentGameState.gameState = GameState.MENU;
-		
-		int worldSize = 36 * 9;
-		//world size is length or width of world, so if world size 2, 4 tiles total
-		//chunk size recommended: 6
-		int chunkSize = 6;
-		int chunkAmount = worldSize / chunkSize;
 		
 		
 		GameGraphics gameGraphics = new GameGraphics();
@@ -30,60 +35,38 @@ public class InitialiseGame {
 		gameGraphics.addMouseMotionListener(InputListener.getInstance());
 		
 		Updater.register(gameGraphics);
-		chunks = new TileChunk[chunkAmount * chunkAmount];	
-		WorldInfo info = new WorldInfo(chunks, worldSize, chunkSize);
-		gameGraphics.init(info);
-		
-		for (int x = 0; x < chunkAmount; x++) {
-			for (int y = 0; y < chunkAmount; y++ ) {
-				createChunk(x,y,chunkSize, chunkAmount);
-			}
-		}
+		gameGraphics.initialiseMenu(textureManager);
 
-		System.out.println(chunks.length + " chunks and " + tiles + " tiles") ;
-		
-		Player player = new Player(gameGraphics);
-		gameGraphics.attachPlayer(player);
-		
 		new MainScreen(gameGraphics);
 		
         updaterThread.start();  // Start the game loop in a separate thread
+        
 		
 	}
-	/**
-	 * @param x coordinate of chunk
-	 * @param y coordinate of chunk
-	 * @param chunkSize is the width and height of the chunk square
-	 * @param chunkAmount is the amount of chunks there will be in the world
-	 */
-	private static void createChunk(int x, int y, int chunkSize, int chunkAmount) {
-		TileChunk chunk = new TileChunk(x,y, chunkSize, GameGraphics.TILESIZE);
-		for (int Tx = 0; Tx < chunkSize; Tx++) {
-			for (int Ty = 0; Ty < chunkSize; Ty++ ) {
-				Tile tile = new Tile(Tx  + (x * chunkSize),Ty  + (y * chunkSize),chunk,  GameGraphics.TILESIZE);
-				tiles++;
-				
-				int rNum = (int) (Math.random() * 285) + 1; 
-				if (rNum <= 2) {
-					TileObject tree = new TileTree(tile);
-					tree.addTexture("Tree",textureManager);
-					tile.setObject(tree);
-				}
-				else if (rNum <= 3) {
-					TileObject rock = new TileRock(tile);
-					rock.addTexture("Rock",textureManager);
-					tile.setObject(rock);
-				}
-				
-				chunk.add(tile);
+	
+	
+	
+	public static void playMusic() {
+		String location = "src/music.wav";
+		File musicPath = new File(location);
+		try {
+			AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+			Clip clip;
+			try {
+				clip = AudioSystem.getClip();
+				clip.open(audioInput);
+				clip.start();
+				clip.loop(clip.LOOP_CONTINUOUSLY);
+			} catch (LineUnavailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
+		} catch (UnsupportedAudioFileException | IOException e) {
+			e.printStackTrace();
 		}
-		chunks[x * chunkAmount + y] = chunk;
 	}
 	
-	/*
-	 * Loads textures from src directory
-	 */
 	private static void loadTextures() {
 
 		textureManager.loadTexture("src/images/Stickman.png", "Player");

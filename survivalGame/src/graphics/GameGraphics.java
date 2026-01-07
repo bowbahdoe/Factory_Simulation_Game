@@ -76,7 +76,7 @@ public final class GameGraphics extends JPanel implements Updatable {
 		this.add(component);
 		this.revalidate();
 	}
-	private Player player;
+	private static Player player;
 	private static int[] originOffset = new int[2];
 	
 	public GameGraphics() {
@@ -87,7 +87,13 @@ public final class GameGraphics extends JPanel implements Updatable {
 		this.addMouseWheelListener(input);
 	}
 
-	public void init(WorldInfo info)
+	public void initialiseMenu(TextureManager textureManager) {
+		settingsDisplay = new SettingsDisplay(textureManager);
+    	worldSelection  = new WorldSelectionMenu(textureManager);
+    	menu = new Menu(textureManager);
+	}
+	
+	public static void initialiseWorld(WorldInfo info)
     {		
 
 		GameGraphics.chunks = info.chunks;
@@ -99,14 +105,12 @@ public final class GameGraphics extends JPanel implements Updatable {
 		for (int layer : WorldRenderLayers.keySet()) {
 			WorldRenderLayers.get(layer).sort(Comparator.comparing(WorldRenderable::getY));
 		}
-		menu = new Menu(textureManager);
-    	settingsDisplay = new SettingsDisplay(textureManager);
-    	worldSelection  = new WorldSelectionMenu(textureManager);
+		
     }
-
-	public void attachPlayer(Player player) {
-		this.player = player;
+	public static void attachPlayer(Player player) {
+		GameGraphics.player = player;
 	}
+	
     @Override
     protected void paintComponent(Graphics g) {
     	super.paintComponent(g);

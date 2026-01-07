@@ -2,15 +2,12 @@ package survivalGame.userInterface;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.TextArea;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import graphics.CurrentGameState;
@@ -18,9 +15,12 @@ import graphics.GameGraphics;
 import graphics.TextureManager;
 import survivalGame.Button;
 import survivalGame.GameState;
+import survivalGame.WorldGenerator;
+import survivalGame.WorldInfo;
 
 public class WorldSelectionMenu {
-	List<Button> buttons = new ArrayList<>();
+	Button[] buttons = new Button[3];
+	WorldInfo[] saves = new WorldInfo[3];
 	
 	BufferedImage buttonTexture;
 	BufferedImage background;
@@ -36,23 +36,36 @@ public class WorldSelectionMenu {
 		Rectangle rectLeft= new Rectangle((int) (buttonX - 0.6 * buttonX), 300, 300,300);
 		Rectangle rectRight = new Rectangle((int) (buttonX + 0.6 * buttonX), 300, 300,300);
 		
-		buttons.add(new Button("Slot 1",
+		//READ FROM SAVE FILES FIRST BEFORE DISPLAYING BUTTONS. 
+		
+		buttons[0] = (new Button("[EMPTY]",
 				rectLeft, 
 				GameState.WORLDSELECTION,
-				() -> CurrentGameState.gameState = GameState.WORLDSELECTION)
+				() -> onButtonClick(0) )
 				);
 		
-		buttons.add(new Button("Slot 2",
+		buttons[1] = (new Button("[EMPTY]" ,
 				rectMiddle, 
 				GameState.WORLDSELECTION,
-				() -> CurrentGameState.gameState = GameState.WORLDSELECTION)
+				() -> onButtonClick(1) )
 				);
-		buttons.add(new Button("Slot 3",
+		
+		buttons[2] = (new Button("[EMPTY]",
 				rectRight, 
 				GameState.WORLDSELECTION,
-				() -> CurrentGameState.gameState = GameState.MENU)
+				() -> onButtonClick(2) )
 				);
+		
 		JTextField textField = new JTextField();
+	}
+	public void onButtonClick(int index) {
+		if (saves[index] == null) {
+			GameGraphics.initialiseWorld(WorldGenerator.generateWorld());
+			
+		}
+		
+		
+		CurrentGameState.gameState = GameState.GAME;
 	}
 	
 	public void renderWorldSelection(Graphics2D g, GameGraphics graphics) {
