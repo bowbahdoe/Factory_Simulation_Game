@@ -1,12 +1,19 @@
-package survivalGame;
+package survivalGame.tileObjects.FactoryComponents;
 
 import java.util.EnumSet;
 
 import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageRotater;
+import survivalGame.ConveyorNetworkSystem;
+import survivalGame.ConveyorSpriteManager;
+import survivalGame.Direction;
+import survivalGame.Tile;
+import survivalGame.TileObjectID;
 
 public class ConveyorSplitter extends Conveyor{
+	
+	public static final TileObjectID ID = TileObjectID.CONVEYOR_SPLITTER;
 	
 	private Conveyor conveyorForward;
 	private Conveyor conveyorSide;

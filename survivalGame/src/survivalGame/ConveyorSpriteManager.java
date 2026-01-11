@@ -3,6 +3,7 @@ package survivalGame;
 import java.util.Map;
 
 import graphics.GameGraphics;
+import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
 public class ConveyorSpriteManager {
 	public static final int NORTH = Direction.NORTH.getRotationMask();

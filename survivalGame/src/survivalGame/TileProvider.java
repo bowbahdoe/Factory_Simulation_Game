@@ -4,6 +4,12 @@ import graphics.GameGraphics;
 
 public class TileProvider {
 
+	/**
+	 * Accesses the Tile according to the pixel coordinates of the click.
+	 * @param clickedX is x coordinate of the click.
+	 * @param clickedY is y coordinate of the click
+	 * @return {@link Tile}
+	 */
 	public static Tile pixel_AccessTile(int clickedX, int clickedY) {
 		int pixelX = (int) ( (clickedX - GameGraphics.SCREEN_WIDTH / 2) / GameGraphics.getCameraZoom() + GameGraphics.getOriginOffset()[0]);
 		int pixelY = (int) ((clickedY - GameGraphics.SCREEN_HEIGHT / 2) / GameGraphics.getCameraZoom() + GameGraphics.getOriginOffset()[1]);

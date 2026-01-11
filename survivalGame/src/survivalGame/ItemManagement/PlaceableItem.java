@@ -4,7 +4,7 @@ import survivalGame.Direction;
 import survivalGame.PlaceablesFactory;
 import survivalGame.PlacementInfo;
 import survivalGame.Tile;
-import survivalGame.TileObject;
+import survivalGame.tileObjects.TileObject;
 
 public class PlaceableItem extends Item {
 

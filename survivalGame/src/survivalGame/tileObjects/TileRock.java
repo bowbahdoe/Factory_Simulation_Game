@@ -1,8 +1,12 @@
-package survivalGame;
+package survivalGame.tileObjects;
 
 import graphics.GameGraphics;
+import survivalGame.Tile;
+import survivalGame.TileObjectID;
 
 public class TileRock extends TileObject {
+	
+	public static final TileObjectID ID = TileObjectID.CONVEYOR;
 	
 	public TileRock(Tile parentTile) {
 		super(parentTile);
@@ -19,5 +23,9 @@ public class TileRock extends TileObject {
 		return super.parentTile.isActive();
 	}
 	
+	@Override
+	public TileObjectID getTileObjectID() {
+		return ID;
+	}
 	
 }

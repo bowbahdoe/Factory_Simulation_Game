@@ -1,5 +1,11 @@
 package survivalGame;
 
+/**
+ * WorldInfo class contains data for the world.
+ * Including an array of {@link TileChunk} chunks
+ * Size of the chunks, worldSize, and amount of chunks.
+ * Amount of chunks is calculated by worldSize / chunkSize. 
+ */
 public class WorldInfo {
 
 	public final TileChunk[] chunks; 

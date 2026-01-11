@@ -1,6 +1,11 @@
 package survivalGame;
 
+import java.io.IOException;
+
 import graphics.GameGraphics;
+import survivalGame.tileObjects.TileObject;
+import survivalGame.tileObjects.TileRock;
+import survivalGame.tileObjects.TileTree;
 
 public class WorldGenerator {
 	
@@ -8,13 +13,13 @@ public class WorldGenerator {
 	
 	public static WorldInfo generateWorld() {
 		
-		int worldSize = 36 * 9;
+		int worldSize = 36 * 5;
 		//world size is length or width of world, so if world size 2, 4 tiles total
 		//chunk size recommended: 6
 		int chunkSize = 6;
 		int chunkAmount = worldSize / chunkSize;
 		
-		TileChunk[] chunks = new TileChunk[chunkAmount * chunkAmount];	;
+		TileChunk[] chunks = new TileChunk[chunkAmount * chunkAmount];	
 
 		System.out.println(chunks.length + " chunks and " + tiles + " tiles") ;
 		
@@ -23,26 +28,26 @@ public class WorldGenerator {
 				createChunk(x,y,chunkSize, chunkAmount, chunks);
 			}
 		}
+		WorldInfo info = new WorldInfo(chunks, worldSize, chunkSize);
 		
 		Player player = new Player();
 		GameGraphics.attachPlayer(player);
-		
-		WorldInfo info = new WorldInfo(chunks, worldSize, chunkSize);
 		
 		return info;	
 	}
 	
 	/**
+	 * Each <@link TileChunk> has a List of Tiles, that is size of chunkSize squared.
 	 * @param x coordinate of chunk
 	 * @param y coordinate of chunk
 	 * @param chunkSize is the width and height of the chunk square
 	 * @param chunkAmount is the amount of chunks there will be in the world
 	 */
 	private static void createChunk(int x, int y, int chunkSize, int chunkAmount, TileChunk[] chunks) {
-		TileChunk chunk = new TileChunk(x,y, chunkSize, GameGraphics.TILESIZE);
+		TileChunk chunk = new TileChunk(x ,y, chunkSize, GameGraphics.TILESIZE);
 		for (int Tx = 0; Tx < chunkSize; Tx++) {
 			for (int Ty = 0; Ty < chunkSize; Ty++ ) {
-				Tile tile = new Tile(Tx  + (x * chunkSize),Ty  + (y * chunkSize),chunk,  GameGraphics.TILESIZE);
+				Tile tile = new Tile(Tx  + (x * chunkSize), Ty  + (y * chunkSize) ,chunk,  GameGraphics.TILESIZE);
 				tiles++;
 				
 				int rNum = (int) (Math.random() * 285) + 1; 

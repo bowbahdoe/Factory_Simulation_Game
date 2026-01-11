@@ -16,6 +16,7 @@ import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.PlaceableItem;
 import survivalGame.ItemManagement.WorldItem;
+import survivalGame.tileObjects.FactoryComponents.Conveyor;
 import survivalGame.userInterface.HotbarSlot;
 import survivalGame.userInterface.InventorySlot;
 import survivalGame.userInterface.PlayerUI;

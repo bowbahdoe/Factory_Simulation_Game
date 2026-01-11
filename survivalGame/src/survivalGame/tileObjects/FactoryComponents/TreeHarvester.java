@@ -1,23 +1,36 @@
-package survivalGame;
+package survivalGame.tileObjects.FactoryComponents;
 
 import java.awt.Graphics2D;
 
 import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageRotater;
+import survivalGame.ActionTimer;
+import survivalGame.ConveyorSpriteManager;
+import survivalGame.Direction;
+import survivalGame.FactoryComponent;
+import survivalGame.IItemReciever;
+import survivalGame.ITickable;
+import survivalGame.TickManager;
+import survivalGame.Tile;
+import survivalGame.TileObjectID;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
+import survivalGame.tileObjects.TileTree;
 
-public class RockDriller extends FactoryComponent implements ITickable {
-	private TileRock targetRock;
+public class TreeHarvester extends FactoryComponent implements ITickable {
+
+	public static final TileObjectID ID = TileObjectID.TREE_HARVESTER;
+	
+	private TileTree targetTree;
 	private IItemReciever targetOutput;
 	
 	private Tile targetTile;
 	private Tile behindTile;
-	private final ActionTimer actionTime = new ActionTimer(4);
+	private final ActionTimer actionTime = new ActionTimer(3);
 	
-	public RockDriller(Tile parentTile, Direction rotation) {
+	public TreeHarvester(Tile parentTile, Direction rotation) {
 		super(parentTile, rotation);
 		
 		GameGraphics.registerWorldObj(this, 2);
@@ -25,16 +38,16 @@ public class RockDriller extends FactoryComponent implements ITickable {
 		TextureManager textureManager = GameGraphics.getTextureManager();
 		switch (rotation) {
 		case NORTH:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), 90));
+			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("TreeHarvester"), 90));
 			break;
 		case EAST:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), 180));
+			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("TreeHarvester"), 180));
 			break;
 		case SOUTH:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), -90));
+			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("TreeHarvester"), -90));
 			break;
 		case WEST:
-			super.addTexture("RockDriller", textureManager);
+			super.addTexture("TreeHarvester", textureManager);
 			break;
 		}
 		
@@ -42,8 +55,8 @@ public class RockDriller extends FactoryComponent implements ITickable {
 		targetTile = getTargetTile(rotation);
 		behindTile = getTargetTile(opposite);
 		
-		if (targetTile.getObject() instanceof TileRock rock) {
-			targetRock = rock;
+		if (targetTile.getObject() instanceof TileTree tree) {
+			targetTree = tree;
 		}
 		checkForOutput();
 	}
@@ -65,14 +78,14 @@ public class RockDriller extends FactoryComponent implements ITickable {
 		checkForOutput();
 		
 		if (! actionTime.actionTick()) return;
-		if (targetRock == null || targetOutput == null) return;
+		if (targetTree == null || targetOutput == null) return;
 		action();
 		
 	}
 
 	private void action() {
 		if (! targetOutput.canRecieve()) return;
-		Item item = ItemFactory.createItem(ItemID.ROCK);
+		Item item = ItemFactory.createItem(ItemID.LOG);
 		System.out.println("----------LOG OUTPUT");
 		targetOutput.recieveItem(item);
 	}
@@ -93,4 +106,11 @@ public class RockDriller extends FactoryComponent implements ITickable {
 	public void removeObject() {
 
 	}
+
+	@Override
+	public TileObjectID getTileObjectID() {
+		return ID;
+	}
+	
+
 }

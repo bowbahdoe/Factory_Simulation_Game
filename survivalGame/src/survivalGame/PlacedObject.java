@@ -1,5 +1,6 @@
 package survivalGame;
 
+import survivalGame.tileObjects.TileObject;
 
 public abstract class PlacedObject extends TileObject {
 

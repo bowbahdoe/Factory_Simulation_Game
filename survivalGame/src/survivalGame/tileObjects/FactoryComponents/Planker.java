@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.tileObjects.FactoryComponents;
 
 import java.awt.Graphics2D;
 import java.util.EnumSet;
@@ -6,6 +6,9 @@ import java.util.EnumSet;
 import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageRotater;
+import survivalGame.ActionTimer;
+import survivalGame.Direction;
+import survivalGame.Tile;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 

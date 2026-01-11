@@ -1,5 +1,5 @@
 
-package survivalGame;
+package survivalGame.tileObjects;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.WorldRenderable;
+import survivalGame.Tile;
+import survivalGame.TileObjectID;
 
 public abstract class TileObject implements WorldRenderable{
 	
@@ -19,6 +21,9 @@ public abstract class TileObject implements WorldRenderable{
 	public TileObject(Tile parentTile) {
 		this.parentTile = parentTile;
 	}
+	
+	public abstract TileObjectID getTileObjectID();
+	
 	public boolean isActive() {
 		return toRender;
 	}

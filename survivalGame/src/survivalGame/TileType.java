@@ -1,11 +1,11 @@
 package survivalGame;
 
 public enum TileType {
-	GRASS(1);
+	GRASS((byte) 1);
 	
-    public final byte id;
+    private final byte id;
     
-	TileType(int id) {
+	TileType(byte id) {
 		this.id = (byte) id;
 	}
 	
@@ -14,5 +14,8 @@ public enum TileType {
 			if (t.id == id) return t; 
 		}
 		throw new IllegalArgumentException("Invalid TileType ID: " + id);
+	}
+	public byte getID() {
+		return id;
 	}
 }

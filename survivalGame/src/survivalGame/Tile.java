@@ -3,16 +3,18 @@ package survivalGame;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.DataOutputStream;
+import java.io.IOException;
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
+import survivalGame.tileObjects.TileObject;
 
 public class Tile implements WorldRenderable{
 	
-	final TileType tileType = TileType.GRASS; 
+	TileType tileType = TileType.GRASS; //NOT FINAL FOR NOW
 	
-	final int x;
-	final int y;
+	final public int x;
+	final public int y;
 	public final int tileSize;
 	
 	final public int pixelX;
@@ -24,22 +26,24 @@ public class Tile implements WorldRenderable{
 	public final TileChunk chunkParent;
 	// Declare image outside the try block
 	public Tile(int x, int y, TileChunk parent, int tileSize) {
+		
 		this.x = x;
 		this.y = y;
 		this.tileSize = tileSize;
 		pixelX = x * tileSize;
 		pixelY = y * tileSize;
-		
 
 		GameGraphics.registerWorldObj(this, 1);
 		
 		chunkParent = parent;
 	}
 
-	public void write(DataOutputStream out) {
-		
+	public void write(DataOutputStream out) throws IOException {
+	    out.writeByte(tileType.getID());
+	    out.writeBoolean(tileObject != null);
+	    if (tileObject == null) return;
+	    out.writeByte(tileObject.getTileObjectID().id);
 	}
-	
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
@@ -54,8 +58,6 @@ public class Tile implements WorldRenderable{
 				g.setColor(new Color(0,0,50,35));
 				g.fillRect(pixelX, pixelY, tileSize, tileSize);
 			}
-
-			
 		}	
 	}
 

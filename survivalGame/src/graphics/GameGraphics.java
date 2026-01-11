@@ -155,16 +155,15 @@ public final class GameGraphics extends JPanel implements Updatable {
         g2d.setColor(Color.BLACK);
         g2d.drawString(originOffset[0] + ", " + originOffset[1] + "  Z: " +  cameraZoom, 100, 75);
         
-       
     }
     private void translateByPlayerView(Graphics2D g2d) {
     	//discontinue displacing originOffset(player position) when out of bounds
-    	if (-player.getXCoord() >= 0 && -player.getXCoord() < worldPixelSize) {
+    	//if (-player.getXCoord() >= 0 && -player.getXCoord() < worldPixelSize) {
         	 originOffset[0] = (int) (-player.getXCoord() );
-        }
-        if (-player.getYCoord() >= 0 && -player.getYCoord() < worldPixelSize) {
+        //}
+        //if (-player.getYCoord() >= 0 && -player.getYCoord() < worldPixelSize) {
         	 originOffset[1] =  (int) (-player.getYCoord());
-        }
+        //}
       
         
         g2d.translate(-originOffset[0] * cameraZoom + this.getWidth() / 2, -originOffset[1]  * cameraZoom + this.getHeight() / 2 );

@@ -6,6 +6,12 @@ import java.util.Set;
 import java.util.function.Function;
 
 import survivalGame.ItemManagement.ItemID;
+import survivalGame.tileObjects.TileObject;
+import survivalGame.tileObjects.FactoryComponents.Conveyor;
+import survivalGame.tileObjects.FactoryComponents.ConveyorSplitter;
+import survivalGame.tileObjects.FactoryComponents.Planker;
+import survivalGame.tileObjects.FactoryComponents.RockDriller;
+import survivalGame.tileObjects.FactoryComponents.TreeHarvester;
 
 /**
  * A factory that maps itemID to placeable object that can be instantiated

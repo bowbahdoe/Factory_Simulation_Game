@@ -9,6 +9,7 @@ import java.util.Map;
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
+import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
 public final class ConveyorManager implements ITickable, WorldRenderable{
 

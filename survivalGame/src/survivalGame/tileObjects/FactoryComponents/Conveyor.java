@@ -1,19 +1,23 @@
-package survivalGame;
+package survivalGame.tileObjects.FactoryComponents;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.util.EnumSet;
 
 import graphics.GameGraphics;
-import graphics.WorldRenderable;
+import survivalGame.BeltSequence;
+import survivalGame.Direction;
+import survivalGame.FactoryComponent;
+import survivalGame.IContainsConveyor;
+import survivalGame.IItemReciever;
+import survivalGame.Tile;
+import survivalGame.TileObjectID;
 import survivalGame.ItemManagement.Item;
-import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 
 public class Conveyor extends FactoryComponent implements IContainsConveyor, IItemReciever{
-
+	
+	public static final TileObjectID ID = TileObjectID.CONVEYOR;
+	
 	private Tile targetTile = super.getTargetTile(rotation);
 	public Conveyor inputConveyor;
 	public Conveyor targetConveyor;
@@ -118,5 +122,10 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	 */
 	protected void disableSpritemask() {
 		spriteMask = -20;
+	}
+	
+	@Override
+	public TileObjectID getTileObjectID() {
+		return ID;
 	}
 }

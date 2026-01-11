@@ -6,6 +6,12 @@ import java.util.List;
 
 import graphics.GameGraphics;
 
+/**
+ * Contains a List of {@link Tile} (s) 
+ * And an x and y coordinate.
+ * 
+ * List size is usually chunkSize * chunkSize
+ */
 public class TileChunk {
 
 	List<Tile> tiles = new ArrayList<>();
@@ -33,11 +39,11 @@ public class TileChunk {
 
 	public void renderChunk(Graphics2D g, GameGraphics graphics) {
 		//tile chunk works like gamegraphics, but groups tiles together avoiding repeated checks
-		int width = (int) (graphics.getWidth() / graphics.getCameraZoom()); 
-		int height = (int) (graphics.getHeight() / graphics.getCameraZoom() ); 
+		int width = (int) (graphics.getWidth() / GameGraphics.getCameraZoom()); 
+		int height = (int) (graphics.getHeight() / GameGraphics.getCameraZoom() ); 
 		//Renders tiles if within range
-		if (pixelX > graphics.getOriginOffset()[0] - chunkPixelSize - width / 2 && pixelX < graphics.getOriginOffset()[0] + width / 2 
-				&& pixelY > graphics.getOriginOffset()[1] - chunkPixelSize - height / 2 && pixelY < graphics.getOriginOffset()[1] + height / 2 ) {
+		if (pixelX > GameGraphics.getOriginOffset()[0] - chunkPixelSize - width / 2 && pixelX < GameGraphics.getOriginOffset()[0] + width / 2 
+				&& pixelY > GameGraphics.getOriginOffset()[1] - chunkPixelSize - height / 2 && pixelY < GameGraphics.getOriginOffset()[1] + height / 2 ) {
 			
 			for (Tile tile : tiles) {
 				tile.setActive(true);

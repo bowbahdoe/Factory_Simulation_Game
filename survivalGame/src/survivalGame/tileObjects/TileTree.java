@@ -1,9 +1,14 @@
-package survivalGame;
+package survivalGame.tileObjects;
 
 
 import graphics.GameGraphics;
+import survivalGame.Tile;
+import survivalGame.TileObjectID;
 
 public class TileTree extends TileObject{
+	
+	public static final TileObjectID ID = TileObjectID.TREE;
+	
 	public TileTree(Tile parentTile) {
 		super(parentTile);
 		super.verticalOffset = (int) -(50 + Math.random() * 25);
@@ -12,13 +17,16 @@ public class TileTree extends TileObject{
 
 	@Override
 	public int getY() {
-		// TODO Auto-generated method stub
 		return super.parentTile.y;
 	}
 
 	@Override
 	public boolean isActive() {
-		// TODO Auto-generated method stub
 		return super.parentTile.isActive();
+	}
+	
+	@Override
+	public TileObjectID getTileObjectID() {
+		return ID;
 	}
 }
