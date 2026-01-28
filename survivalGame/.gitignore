@@ -1,1 +1,14 @@
+# Compiled output
 /bin/
+/out/
+
+# IDE files
+.idea/
+.classpath
+.project
+
+# Save files
+/saves/
+/*.sav
+/*.bin
+
