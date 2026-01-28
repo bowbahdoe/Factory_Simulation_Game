@@ -117,7 +117,6 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
     
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		// TODO Auto-generated method stub
 
 		if (e.isControlDown()) {
             if (e.getWheelRotation() < 0) {

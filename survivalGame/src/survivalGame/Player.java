@@ -110,12 +110,17 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		
 		g.drawImage(character, -(int)pixelX - playerSize, -(int)pixelY - playerSize, graphics);
 		
+		renderBlueprint(g,graphics);	
+	}
+	
+	private void renderBlueprint(Graphics2D g, GameGraphics graphics) {
 		if (selectedHotbarSlot == null) return;
-
+		
 		if (!(selectedHotbarSlot.getItem() instanceof PlaceableItem)) return;
 		Tile tile = TileProvider.pixel_AccessTile(InputListener.getInstance().getMouseX(), InputListener.getInstance().getMouseY());
 		if (!tile.isEmpty()) return;
 		BufferedImage texture = null;
+		
 		switch (buildingTool.getBuildRotation()) {
 		case NORTH:
 			texture = blueprints[0];
@@ -130,10 +135,12 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 			texture = blueprints[3];
 			break;
 		}
+		
 		if (texture == null) return;
 		g.drawImage(texture, (int) (tile.pixelX), (int) (tile.pixelY), graphics);
 		g.drawImage(getSelectedHotbarSlot().getItem().getTexture(), tile.pixelX + 75, tile.pixelY + 75,25,25, graphics);
 	}
+	
 	public Tile getSelectedTile() {
 		return selectedTile;
 	}

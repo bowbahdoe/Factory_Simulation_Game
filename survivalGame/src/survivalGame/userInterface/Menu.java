@@ -55,6 +55,6 @@ public class Menu {
 		}
 		Font largeFont = new Font("Arial", Font.BOLD, 150);
 	    g.setFont(largeFont);
-	    g.drawString("Factorio 2", 410, 160);
+	    g.drawString("Factory Game", 410, 160);
 	}
 }

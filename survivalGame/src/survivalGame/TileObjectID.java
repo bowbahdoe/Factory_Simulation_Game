@@ -6,8 +6,9 @@ public enum TileObjectID {
 	CONVEYOR(3),
 	TREE_HARVESTER(4),
 	ROCK_DRILLER(5),
-	CONVEYOR_SPLITTER(6),
-	PLANKER(7);
+	CONVEYOR_SPLITTER_R(6),
+	CONVEYOR_SPLITTER_L(7),
+	PLANKER(8);
 	
 	public final byte id;
 	    

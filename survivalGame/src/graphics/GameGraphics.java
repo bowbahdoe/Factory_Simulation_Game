@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
-import java.awt.event.MouseMotionListener;
+
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -15,14 +15,12 @@ import java.util.TreeMap;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import survivalGame.GameState;
 import survivalGame.InputListener;
 import survivalGame.Player;
 import survivalGame.TileChunk;
 import survivalGame.Updatable;
-import survivalGame.Updater;
 import survivalGame.WorldInfo;
 import survivalGame.userInterface.Menu;
 import survivalGame.userInterface.SettingsDisplay;
@@ -72,11 +70,11 @@ public final class GameGraphics extends JPanel implements Updatable {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).addAll(toRender);
 	}
 
-	public void addJComponent(JComponent component) {
-		this.add(component);
-		this.revalidate();
-	}
 	private static Player player;
+	
+	/**
+	 * OriginOffset is the Coordinates offset from the top left of the world.
+	 */
 	private static int[] originOffset = new int[2];
 	
 	public GameGraphics() {
@@ -165,7 +163,7 @@ public final class GameGraphics extends JPanel implements Updatable {
         	 originOffset[1] =  (int) (-player.getYCoord());
         //}
       
-        
+        //Applies player-centering offset such as this.getWidth/2, this.getHeight/2. Can't be saved as a constant due to width and height being variable from scaling. 
         g2d.translate(-originOffset[0] * cameraZoom + this.getWidth() / 2, -originOffset[1]  * cameraZoom + this.getHeight() / 2 );
     }
     private void renderWorld(Graphics2D g) {

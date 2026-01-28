@@ -15,6 +15,11 @@ import survivalGame.tileObjects.TileTree;
 
 public class WorldIO {
 
+	/**
+	 * Used for saving files to inform which version of the software the save file is from.
+	 * A deployed game will need this when introducing new features after release and prevent loss of progress.
+	 * In this NEA this likely won't be used as there are no users. 
+	 */
 	public static final int SAVE_VERSION = 1;
 
 
@@ -29,6 +34,22 @@ public class WorldIO {
 	 * [TileType ID]
 	 * [HasTileObject?]
 	 * [TileObjectID]
+	 * [TileObject instanceof FactoryComponent?]
+	 * [RotationID]
+	 * + more info???
+	 * 
+	 * so far  Byte, Boolean ? Byte Boolean ? Byte
+	 * 
+	 * HOW SAVING WORKS:
+	 * saving and loading from binary file needs to have correct order of processing.
+	 * If you save Byte, Byte, boolean, you must also load Byte, Byte, Boolean, in that correct order, at the correct pointer location. 
+	 * You must load exactly the same way as you save. 
+	 * DataInputStreams has an internal pointer that moves accordingly to what you read, For example, reading Boolean/Byte makes pointer move 1 byte.
+	 * Integer makes pointer move 4 bytes. Files are Byte-Addressed, which means boolean won't make pointer move 1 bit since the minimum is a byte. 
+	 * 	
+	 * It knows when a byte belongs to a TileTypeID or a TileObjectID, since it has been saved the exact same order.
+	 * Inproper reading, like reading an integer rather than a byte, corrupts the loading process. 
+	 * This is because the pointer will be permanently misaligned. 
 	 */
     public static void save(WorldInfo world, File file) throws IOException {
     	 try (DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)))) {
@@ -49,7 +70,11 @@ public class WorldIO {
     	 }
     }
     
-    
+    /**
+     * Loads from the given file
+     * @param file to load from. 
+     * @return {@link WorldInfo}
+     */
     private static WorldInfo load(File file) throws IOException {
     	try (DataInputStream input = new DataInputStream(new BufferedInputStream(new FileInputStream(file)))) {
 	                        
@@ -73,22 +98,19 @@ public class WorldIO {
 		 
 	   }
     
+    /**
+     * Loads the chunk 
+     * @param chunkSize which is the size of chunk's list (chunkSize)^2
+     * @param chunk instance {@link TileChunk} to add to. Must be an empty chunk.
+     * @return new {@link TileChunk} instance
+     */
     private static TileChunk loadChunk(int x, int y, TileChunk chunk, int chunkSize, DataInputStream input) throws IOException {
 		for (int Tx = 0; Tx < chunkSize; Tx++) {
 			for (int Ty = 0; Ty < chunkSize; Ty++ ) {
 				
 				int tileX = Tx  + (x * chunkSize), tileY = Ty  + (y * chunkSize);
 	
-				Tile tile = new Tile(tileX, tileY , chunk,  GameGraphics.TILESIZE);
-				
-				tile.tileType = TileType.fromId(input.readByte()); //READS tileType Byte
-				boolean hasTileObject = input.readBoolean(); //READS tileObject boolean
-				if (hasTileObject) {
-					input.readByte(); //READS tileObject byte (does nothing for now)
-					TileObject tree = new TileTree(tile);
-					tree.addTexture("Tree", GameGraphics.getTextureManager());
-					tile.setObject(tree);
-				}
+				Tile tile = readTile(tileX, tileY, chunk, input);
 				
 				chunk.add(tile);
 				
@@ -97,6 +119,30 @@ public class WorldIO {
 		return chunk;
 	}
     
+    private static Tile readTile(int x, int y, TileChunk chunk, DataInputStream input) throws IOException {
+    	/* TileType
+	   	* Is there an object? 
+	   	* If so, Write TileObject ID.
+		* Is it a factoryComponent?
+		* If so write rotationID required for factory component.
+		* 
+		* Byte, Boolean ? Byte Boolean ? Byte
+		*/
+    	
+    	Tile tile = new Tile(x, y , chunk,  GameGraphics.TILESIZE);
+		
+		tile.tileType = TileType.fromId(input.readByte()); //READS tileType Byte
+		boolean hasTileObject = input.readBoolean(); //READS tileObject boolean
+		if (hasTileObject) {
+			input.readByte(); //READS tileObject byte (does nothing for now)
+			TileObject tree = new TileTree(tile);
+			tree.addTexture("Tree", GameGraphics.getTextureManager());
+			tile.setObject(tree);
+		}
+		
+		return null;
+    	
+    }
     
     public static void saveFile(WorldInfo world, String fileName) throws IOException {
     	File file = new File("saves/" + fileName + ".dat");
@@ -122,6 +168,22 @@ public class WorldIO {
     	return load(file);
     }
     
+    public static void deleteFile(String fileName) {
+    	File file = new File("saves/" + fileName + ".dat");
+    
+    	if (file.delete()) { 
+    	    System.out.println("Deleted the file: " + file.getName());
+    	} 
+    	else {
+    		System.out.println("Failed to delete the file.");
+    	} 
+    }
+    
+    /**
+     * Searches the "saves/" folder for the fileName.dat file
+     * @param fileName to search for. 
+     * @return true boolean value if the file is present
+     */
     public static boolean isFilePresent(String fileName) {
     	File file = new File("saves/" + fileName + ".dat");
 

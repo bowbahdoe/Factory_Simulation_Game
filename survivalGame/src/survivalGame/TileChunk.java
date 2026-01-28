@@ -19,18 +19,20 @@ public class TileChunk {
 	final int x;
 	final int y;
 	
-	final int pixelX;
+	//If screen was stretched to world size, 
+	//these pixel coordinates would represent where they are in the screen from the top left corner
+	final int pixelX; 
 	final int pixelY;
 	final int chunkPixelSize;
 	
 	private boolean activatedTiles = false;
-	public TileChunk(int x, int y, int size, int tileSize) {
+	public TileChunk(int x, int y, int chunkSize, int tileSize) {
 		this.x = x;
 		this.y = y;
 
-		pixelX = x * size * tileSize;
-		pixelY = y * size * tileSize;
-		chunkPixelSize = size * tileSize;
+		pixelX = x * chunkSize * tileSize;
+		pixelY = y * chunkSize * tileSize;
+		chunkPixelSize = chunkSize * tileSize;
 	}
 	
 	public void add(Tile tile) {
@@ -42,6 +44,13 @@ public class TileChunk {
 		int width = (int) (graphics.getWidth() / GameGraphics.getCameraZoom()); 
 		int height = (int) (graphics.getHeight() / GameGraphics.getCameraZoom() ); 
 		//Renders tiles if within range
+		
+		/*
+		 * BOUNDARY LOGIC:
+		 * 
+		 * WIDTH/2 and HEIGHT/2 are offsets due to the player centering offset in gameGraphics.
+		 * 
+		 */
 		if (pixelX > GameGraphics.getOriginOffset()[0] - chunkPixelSize - width / 2 && pixelX < GameGraphics.getOriginOffset()[0] + width / 2 
 				&& pixelY > GameGraphics.getOriginOffset()[1] - chunkPixelSize - height / 2 && pixelY < GameGraphics.getOriginOffset()[1] + height / 2 ) {
 			

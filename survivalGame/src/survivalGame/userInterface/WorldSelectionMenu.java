@@ -22,6 +22,8 @@ import survivalGame.WorldInfo;
 public class WorldSelectionMenu {
 	Button[] slotButtons = new Button[3];
 	
+	Button[] deleteButtons = new Button[3];
+	
 	Button goBackButton;
 	//Button[]  = new Button[3];
 	
@@ -34,7 +36,6 @@ public class WorldSelectionMenu {
 		buttonTexture = Tmanager.getTexture("Button");
 		
 		int buttonX = GameGraphics.SCREEN_WIDTH / 2 - buttonTexture.getWidth() / 2;
-		int buttonSize = 200;
 		Rectangle rectMiddle = new Rectangle(buttonX, 300, 300,300);
 		Rectangle rectLeft= new Rectangle((int) (buttonX - 0.6 * buttonX), 300, 300,300);
 		Rectangle rectRight = new Rectangle((int) (buttonX + 0.6 * buttonX), 300, 300,300);
@@ -44,19 +45,19 @@ public class WorldSelectionMenu {
 		slotButtons[0] = (new Button(WorldIO.isFilePresent("world0") ? "+++" : "[EMPTY]",
 				rectLeft, 
 				GameState.WORLDSELECTION,
-				() -> onButtonClick(0) )
+				() -> onSlotButtonClick(0) )
 				);
 		
 		slotButtons[1] = (new Button(WorldIO.isFilePresent("world1") ? "+++" : "[EMPTY]" ,
 				rectMiddle, 
 				GameState.WORLDSELECTION,
-				() -> onButtonClick(1) )
+				() -> onSlotButtonClick(1) )
 				);
 		
 		slotButtons[2] = (new Button(WorldIO.isFilePresent("world2") ? "+++" : "[EMPTY]",
 				rectRight, 
 				GameState.WORLDSELECTION,
-				() -> onButtonClick(2) )
+				() -> onSlotButtonClick(2) )
 				);
 		
 		goBackButton = new Button("Return",
@@ -65,8 +66,40 @@ public class WorldSelectionMenu {
 				GameState.WORLDSELECTION,
 				() -> CurrentGameState.gameState = GameState.MENU);
 		
+		initialiseDeleteButtons();
 	}
-	public void onButtonClick(int index) {
+	
+	private void initialiseDeleteButtons() {
+		int buttonX = GameGraphics.SCREEN_WIDTH / 2 - buttonTexture.getWidth() / 2;
+		Rectangle rectMiddle = new Rectangle(buttonX, 820, 300,50);
+		Rectangle rectLeft= new Rectangle((int) (buttonX - 0.6 * buttonX), 820, 300,50);
+		Rectangle rectRight = new Rectangle((int) (buttonX + 0.6 * buttonX), 820, 300,50);
+		
+		deleteButtons[0] = (new Button("DELETE SAVE",
+				rectLeft, 
+				GameState.WORLDSELECTION,
+				() -> onDeleteButtonClick(0, slotButtons[0]) )
+				);
+		
+		deleteButtons[1] = (new Button("DELETE SAVE" ,
+				rectMiddle, 
+				GameState.WORLDSELECTION,
+				() -> onDeleteButtonClick(1, slotButtons[1]) )
+				);
+		
+		deleteButtons[2] = (new Button("DELETE SAVE",
+				rectRight, 
+				GameState.WORLDSELECTION,
+				() -> onDeleteButtonClick(2, slotButtons[2]) )
+				);
+		
+		for (Button button : deleteButtons) {
+			button.setFontSize(24);
+		}
+		
+	}
+	
+	public void onSlotButtonClick(int index) {
 		String fileName = "world" + index;
 		try {
 			if (WorldIO.isFilePresent(fileName)) {
@@ -86,13 +119,27 @@ public class WorldSelectionMenu {
 		CurrentGameState.gameState = GameState.GAME;
 	}
 	
+	public void onDeleteButtonClick(int index, Button button) {
+		String fileName = "world" + index;
+		WorldIO.deleteFile(fileName);
+		button.setText("[EMPTY]");
+	}
+	
 	public void renderWorldSelection(Graphics2D g, GameGraphics graphics) {
 		g.drawImage(background,0,0, GameGraphics.SCREEN_WIDTH, GameGraphics.SCREEN_HEIGHT, graphics);
-		
+	    
 		for (Button button : slotButtons) {
 			if (!button.isActive()) continue;
 			g.setColor(new Color(0,0,0, 120));
 			g.fillRect(button.xPosition, button.yPosition, 300, 500);
+			g.setColor(new Color(200,200,200));
+			button.renderUI(g, graphics);
+		}
+		
+		for (Button button : deleteButtons) {
+
+			g.setColor(new Color(150,0,0));
+			g.fillRect(button.xPosition, button.yPosition, 300, 50);
 			g.setColor(new Color(200,200,200));
 			button.renderUI(g, graphics);
 		}

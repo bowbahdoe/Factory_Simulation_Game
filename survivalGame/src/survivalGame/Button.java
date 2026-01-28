@@ -19,6 +19,7 @@ public class Button implements MouseClickListener{
 	public final int height;
 	private final Runnable function;
 	private boolean isActive = true;
+	private int fontSize = 42;
 	
 	public Button(String text, BufferedImage texture, int xPosition, int yPosition, GameState state,  Runnable function) {
 		this.text = text;
@@ -49,12 +50,12 @@ public class Button implements MouseClickListener{
 		if (texture != null) {
 			g.drawImage(texture ,xPosition, yPosition, graphics);
 		}
-		Font largeFont = new Font("Arial", Font.BOLD, 42);
+		Font largeFont = new Font("Arial", Font.BOLD, fontSize);
 	    g.setFont(largeFont);
 	    
-	    int textWidth =  xPosition + width / 2 - g.getFontMetrics().stringWidth(text) / 2;
-	    int textHeight = yPosition + height / 2;
-		g.drawString(text,textWidth, textHeight + 15);
+	    int textX =  xPosition + width / 2 - g.getFontMetrics().stringWidth(text) / 2;
+	    int textY = yPosition + height / 2;
+		g.drawString(text,textX, textY + 15);
 	}
 	
 	@Override
@@ -66,6 +67,12 @@ public class Button implements MouseClickListener{
 		function.run();
 	}
 	
+	public void setText(String text) {
+		this.text = text;
+	}
+	public void setFontSize(int fontSize) {
+		this.fontSize = fontSize;
+	}
 	public void setActive(boolean state) {
 		isActive = state;
 	}

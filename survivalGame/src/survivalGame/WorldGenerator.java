@@ -13,7 +13,7 @@ public class WorldGenerator {
 	
 	public static WorldInfo generateWorld() {
 		
-		int worldSize = 36 * 5;
+		int worldSize = 36 * 9;
 		//world size is length or width of world, so if world size 2, 4 tiles total
 		//chunk size recommended: 6
 		int chunkSize = 6;
