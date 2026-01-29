@@ -1,9 +1,12 @@
 # Factory Simulation Game  (A-Level Computer Science NEA)
 
 ![ConveyorPlacing](https://github.com/user-attachments/assets/3015b998-95a3-4852-8a4a-0f41227e1e82)
-Placing conveyors attached to a Tree harvester demonstrating item generation and conveyor-based item flow.
 
-A 2D factory simulation game implementing conveyor-based item flow, inventories, and crafting systems using structured, system-based game logic in Java.
+(*demonstrating item generation and conveyor-based item movement.*)
+
+
+
+**A 2D factory simulation game implementing conveyor-based item flow, inventories, and crafting systems using structured, system-based game logic in Java.**
 
 ## Overview
 
