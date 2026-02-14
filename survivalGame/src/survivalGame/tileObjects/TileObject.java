@@ -32,7 +32,7 @@ public abstract class TileObject implements WorldRenderable{
 		this.toRender = isActive;
 	}
 
-	public void setexture(String Texture, TextureManager textureM) {
+	public void setTexture(String Texture, TextureManager textureM) {
 		texture = textureM.getTexture(Texture);
 	}
 	

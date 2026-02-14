@@ -16,6 +16,7 @@ import survivalGame.tileObjects.FactoryComponents.TreeHarvester;
 
 public class TileObjectFactory {
 	
+	//Map linking ID's to functions that can instantiate the appropiate class.
 	static private Map<TileObjectID, Function<PlacementInfo, TileObject>> IDtoInstance;
 	
 	static {

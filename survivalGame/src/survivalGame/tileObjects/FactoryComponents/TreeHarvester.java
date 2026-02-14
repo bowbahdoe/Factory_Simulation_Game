@@ -47,7 +47,7 @@ public class TreeHarvester extends FactoryComponent implements ITickable {
 			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture("TreeHarvester"), -90));
 			break;
 		case WEST:
-			super.setexture("TreeHarvester", textureManager);
+			super.setTexture("TreeHarvester", textureManager);
 			break;
 		}
 		

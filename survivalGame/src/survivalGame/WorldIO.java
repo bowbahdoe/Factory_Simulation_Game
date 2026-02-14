@@ -12,6 +12,8 @@ import java.io.IOException;
 import graphics.GameGraphics;
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileChunk;
+import survivalGame.TileManagement.TileObjectFactory;
+import survivalGame.TileManagement.TileObjectID;
 import survivalGame.TileManagement.TileType;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.TileTree;
@@ -92,10 +94,10 @@ public class WorldIO {
 	    out.writeByte(tileObject.getTileObjectID().id);
 	    
 	    //Write boolean asking if the tileObject is a factoryComponent
-	    out.writeBoolean(tileObject instanceof FactoryComponent);
+	    //out.writeBoolean(tileObject instanceof FactoryComponent);
 	    
 	    if (!(tileObject instanceof FactoryComponent)) return;
-	    out.writeByte( ((FactoryComponent) tileObject).getRotation().getRotationID() );
+	    //out.writeByte( ((FactoryComponent) tileObject).getRotation().getRotationID() );
 	    
 	}
     
@@ -164,10 +166,9 @@ public class WorldIO {
 		tile.setTileType(TileType.fromId(input.readByte())); //READS tileType Byte
 		boolean hasTileObject = input.readBoolean(); //READS tileObject boolean
 		if (hasTileObject) {
-			input.readByte(); //READS tileObject byte (does nothing for now)
-			TileObject tree = new TileTree(tile);
-			tree.setexture("Tree", GameGraphics.getTextureManager());
-			tile.setObject(tree);
+			TileObjectID ID = TileObjectID.fromId(input.readByte());  //READS tileObjectID
+			TileObject object = TileObjectFactory.createTileObject(ID, new PlacementInfo(tile, Direction.NORTH));
+			tile.setObject(object);
 		}
 		
 		return tile;

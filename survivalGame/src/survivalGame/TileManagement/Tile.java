@@ -38,29 +38,6 @@ public class Tile implements WorldRenderable{
 		
 		chunkParent = parent;
 	}
-
-	public void write(DataOutputStream out) throws IOException {
-		/*
-		 * TileType
-		 * Is there an object? 
-		 * If so, Write TileObject ID.
-		 * Is it a factoryComponent?
-		 * If so write rotationID required for factory component.
-		 * 
-		 * Byte, Boolean ? Byte Boolean ? Byte
-		 */
-	    out.writeByte(getTileType().getID());
-	    
-	    out.writeBoolean(tileObject != null);
-	    if (tileObject == null) return;
-	    
-	    out.writeByte(tileObject.getTileObjectID().id);
-	    
-	   // out.writeBoolean(tileObject instanceof FactoryComponent);
-	   // if (!(tileObject instanceof FactoryComponent)) return;
-	   // out.writeByte( ((FactoryComponent) tileObject).getRotation().getRotationID() );
-	    
-	}
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
@@ -103,9 +80,11 @@ public class Tile implements WorldRenderable{
 	public void setObject(TileObject object) {
 		tileObject = object;
 	}
+	
 	public TileObject getTileObject() {
 		return tileObject;
 	}
+	
 	public boolean isEmpty() {
 		return tileObject == null;
 	}

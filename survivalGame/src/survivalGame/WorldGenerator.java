@@ -55,12 +55,10 @@ public class WorldGenerator {
 				int rNum = (int) (Math.random() * 285) + 1; 
 				if (rNum <= 2) {
 					TileObject tree = new TileTree(tile);
-					tree.setexture("Tree", GameGraphics.getTextureManager());
 					tile.setObject(tree);
 				}
 				else if (rNum <= 3) {
 					TileObject rock = new TileRock(tile);
-					rock.setexture("Rock", GameGraphics.getTextureManager());
 					tile.setObject(rock);
 				}
 				

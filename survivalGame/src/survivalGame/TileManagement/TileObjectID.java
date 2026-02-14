@@ -16,7 +16,7 @@ public enum TileObjectID {
 			this.id = (byte) id;
 	}
 	
-	static TileObjectID fromId(byte id) {
+	public static TileObjectID fromId(byte id) {
 		for (TileObjectID t : TileObjectID.values()) {
 			if (t.id == id) return t; 
 		}

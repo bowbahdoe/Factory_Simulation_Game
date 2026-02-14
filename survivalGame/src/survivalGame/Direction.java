@@ -5,7 +5,7 @@ public enum Direction {
 	EAST((byte) 1  ,1 << 1),  // 0010
 	SOUTH((byte)2 ,1 << 2), // 0100
 	WEST((byte) 3  ,1 << 3);  // 1000
-	
+
 	private int mask = 0;
 	private byte ID = 0;
 	

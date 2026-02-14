@@ -52,6 +52,7 @@ public class TileProvider {
 	 * @return Tile reference
 	 */
 	public static Tile world_AccessTile(int x, int y) {
+		if (x < 0 || y < 0 || x > GameGraphics.worldSize || y > GameGraphics.worldSize) return null;
 		int chunkSize = GameGraphics.chunkSize;
 		int chunkAmount = GameGraphics.worldSize / chunkSize;
 		int positionInArray = chunkAmount * (x / chunkSize) + (y / chunkSize);		

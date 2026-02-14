@@ -6,11 +6,12 @@ import survivalGame.TileManagement.TileObjectID;
 
 public class TileRock extends TileObject {
 	
-	public static final TileObjectID ID = TileObjectID.CONVEYOR;
+	public static final TileObjectID ID = TileObjectID.ROCK;
 	
 	public TileRock(Tile parentTile) {
 		super(parentTile);
 		GameGraphics.registerWorldObj(this, 2);
+		super.setTexture("Rock", GameGraphics.getTextureManager());
 	}
 
 	@Override

@@ -13,6 +13,7 @@ public class TileTree extends TileObject{
 		super(parentTile);
 		super.verticalOffset = (int) -(50 + Math.random() * 25);
 		GameGraphics.registerWorldObj(this, 2);
+		super.setTexture("Tree", GameGraphics.getTextureManager());
 	}
 
 	@Override

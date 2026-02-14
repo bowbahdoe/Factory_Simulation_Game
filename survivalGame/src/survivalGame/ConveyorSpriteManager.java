@@ -65,13 +65,13 @@ public class ConveyorSpriteManager {
 		conveyor.spriteMask |=  inputRotation.getRotationMask();
 		
 		if ( !conveyorSpritemap.containsKey(conveyor.spriteMask) ) return;
-		conveyor.setexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
+		conveyor.setTexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
 	}
 	
 	public static void updateSprite(Conveyor conveyor) {
 		if ( !conveyorSpritemap.containsKey(conveyor.spriteMask) ) return;
 		System.out.println("ADDED TEXTURE----------");
-		conveyor.setexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
+		conveyor.setTexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
 	}
 	
 }

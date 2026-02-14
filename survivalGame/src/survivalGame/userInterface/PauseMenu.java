@@ -1,0 +1,63 @@
+package survivalGame.userInterface;
+
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+
+import graphics.GameGraphics;
+import graphics.UIRenderable;
+import survivalGame.Button;
+import survivalGame.GameKeyListener;
+import survivalGame.GameState;
+import survivalGame.WorldIO;
+
+public class PauseMenu implements GameKeyListener, UIRenderable{
+
+	Button[] buttons = new Button[3];
+	final BufferedImage buttonTexture;
+	
+	private boolean active = false;
+	
+	public PauseMenu() {
+		buttonTexture = GameGraphics.getTextureManager().getTexture("Button");
+		
+		buttons[0] = (new Button(WorldIO.isFilePresent("world0") ? "+++" : "[EMPTY]",
+				rectLeft, 
+				GameState.WORLDSELECTION,
+				() -> onSlotButtonClick(0) )
+				);
+		
+		buttons[1] = (new Button(WorldIO.isFilePresent("world1") ? "+++" : "[EMPTY]" ,
+				rectMiddle, 
+				GameState.WORLDSELECTION,
+				() -> onSlotButtonClick(1) )
+				);
+		
+		buttons[2] = (new Button(WorldIO.isFilePresent("world2") ? "+++" : "[EMPTY]",
+				rectRight, 
+				GameState.WORLDSELECTION,
+				() -> onSlotButtonClick(2) )
+				);
+		
+	}
+	@Override
+	public void onKeyPressed(int keyCode) {
+		if (keyCode != KeyEvent.VK_ESCAPE) return;
+		active = !active;
+	}
+
+	@Override
+	public void onKeyReleased(int keyCode) {
+	}
+
+	@Override
+	public boolean isActive() {
+		return active;
+	}
+
+	@Override
+	public void renderUI(Graphics2D g, GameGraphics graphics) {
+		
+	}
+
+}

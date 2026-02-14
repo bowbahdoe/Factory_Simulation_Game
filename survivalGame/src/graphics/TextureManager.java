@@ -32,4 +32,7 @@ public class TextureManager {
     	if (!textures.containsKey(filename)) System.out.println("----FILE NOT FOUND----");
         return textures.get(filename);
     }
+    public boolean containsTexture(String fileName) {
+    	return textures.containsKey(fileName);
+    }
 }

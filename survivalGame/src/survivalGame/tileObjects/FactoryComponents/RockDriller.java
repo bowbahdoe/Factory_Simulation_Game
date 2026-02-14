@@ -47,7 +47,7 @@ public class RockDriller extends FactoryComponent implements ITickable {
 			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), -90));
 			break;
 		case WEST:
-			super.setexture("RockDriller", textureManager);
+			super.setTexture("RockDriller", textureManager);
 			break;
 		}
 		

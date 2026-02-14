@@ -1,0 +1,17 @@
+package survivalGame.userInterface;
+
+public enum UIAnchor {
+	CENTER,
+	CENTER_LEFT,
+	CENTER_RIGHT,
+	CENTER_TOP,
+	CENTER_BOTTOM,
+	LEFT,
+	RIGHT,
+	TOP,
+	BOTTOM,
+	TOP_LEFT,
+	TOP_RIGHT,
+	BOTTOM_LEFT,
+	BOTTOM_RIGHT,
+}
