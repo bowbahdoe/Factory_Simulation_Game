@@ -1,9 +1,10 @@
-package survivalGame;
+package survivalGame.TileManagement;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import survivalGame.PlacementInfo;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.TileRock;
 import survivalGame.tileObjects.TileTree;
@@ -19,14 +20,14 @@ public class TileObjectFactory {
 	
 	static {
 		IDtoInstance = new HashMap<>();
-		IDtoInstance.put(TileObjectID.CONVEYOR, info -> new Conveyor(info.tile,info.direction));
-		IDtoInstance.put(TileObjectID.TREE_HARVESTER, info -> new TreeHarvester(info.tile,info.direction));
-		IDtoInstance.put(TileObjectID.PLANKER, info -> new Planker(info.tile,info.direction));
-		IDtoInstance.put(TileObjectID.CONVEYOR_SPLITTER_L, info -> new ConveyorSplitter(info.tile,info.direction,true));
-		IDtoInstance.put(TileObjectID.CONVEYOR_SPLITTER_R, info -> new ConveyorSplitter(info.tile,info.direction,false));
-		IDtoInstance.put(TileObjectID.ROCK_DRILLER, info -> new RockDriller(info.tile,info.direction));
-		IDtoInstance.put(TileObjectID.TREE, info -> new TileTree(info.tile));
-		IDtoInstance.put(TileObjectID.ROCK, info -> new TileRock(info.tile));
+		IDtoInstance.put(TileObjectID.CONVEYOR, info -> new Conveyor(info.getTile(),info.getDirection()));
+		IDtoInstance.put(TileObjectID.TREE_HARVESTER, info -> new TreeHarvester(info.getTile(),info.getDirection()));
+		IDtoInstance.put(TileObjectID.PLANKER, info -> new Planker(info.getTile(),info.getDirection()));
+		IDtoInstance.put(TileObjectID.CONVEYOR_SPLITTER_L, info -> new ConveyorSplitter(info.getTile(),info.getDirection(),true));
+		IDtoInstance.put(TileObjectID.CONVEYOR_SPLITTER_R, info -> new ConveyorSplitter(info.getTile(),info.getDirection(),false));
+		IDtoInstance.put(TileObjectID.ROCK_DRILLER, info -> new RockDriller(info.getTile(),info.getDirection()));
+		IDtoInstance.put(TileObjectID.TREE, info -> new TileTree(info.getTile()));
+		IDtoInstance.put(TileObjectID.ROCK, info -> new TileRock(info.getTile()));
 	}
 	
 	/**

@@ -60,7 +60,8 @@ public final class Updater implements Runnable {
         
     	//Exception in thread "Thread-0" java.util.ConcurrentModificationException 
     	//list is modified during the foreach loop, commonly occurs when placing conveyor belts with item on it :(
-    	// fuck this shit
+    	
+    	//This issue has been fixed with queuing, so that list won't be modified if items are instantiated inbetween frames.
     	
     	while (!toAdd.isEmpty()) {
     		updatables.add(toAdd.poll());

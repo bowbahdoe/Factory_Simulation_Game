@@ -6,11 +6,13 @@ import graphics.GameGraphics;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
 public class ConveyorSpriteManager {
+	//integers used for input. North is 0001 for example 
 	public static final int NORTH = Direction.NORTH.getRotationMask();
 	public static final int EAST  = Direction.EAST.getRotationMask();
 	public static final int SOUTH = Direction.SOUTH.getRotationMask();
 	public static final int WEST  = Direction.WEST.getRotationMask();
 	
+	//Integers shifted by 4 to represent output. North_Out is now 00010000
 	public static final int NORTH_out = (NORTH << 4);
 	public static final int EAST_out = (EAST << 4);
 	public static final int SOUTH_out = (SOUTH << 4);
@@ -63,13 +65,13 @@ public class ConveyorSpriteManager {
 		conveyor.spriteMask |=  inputRotation.getRotationMask();
 		
 		if ( !conveyorSpritemap.containsKey(conveyor.spriteMask) ) return;
-		conveyor.addTexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
+		conveyor.setexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
 	}
 	
 	public static void updateSprite(Conveyor conveyor) {
 		if ( !conveyorSpritemap.containsKey(conveyor.spriteMask) ) return;
 		System.out.println("ADDED TEXTURE----------");
-		conveyor.addTexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
+		conveyor.setexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
 	}
 	
 }

@@ -8,6 +8,8 @@ import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.PlaceableItem;
 import survivalGame.ItemManagement.WorldItem;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileProvider;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
@@ -25,11 +27,16 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 	public void toggleBuilding() {
 		isBuilding = !isBuilding;
 	}
+	
 	public void placeBuild(Tile tile, Player player) {
-		if (tile.getObject() != null) {
+		//If tile is occupied, don't place build.
+		if (tile.getTileObject() != null) {
 			return;
 		}
+		//If player hasn't selected a hotbarSlot, return.
 		if (player.getSelectedHotbarSlot() == null) return;
+		
+		//place the item if it is placeable.
 		PlaceableItem toPlace = (PlaceableItem)player.getSelectedHotbarSlot().getItem();
 		if (toPlace == null) return;
 		TileObject placedObject = toPlace.place(tile, buildRotation);
@@ -43,6 +50,9 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 
 	@Override
 	public void onKeyPressed(int keyCode) {
+		//E -> rotate clockwise
+		//Q -> rotate antiClockwise
+		//B -> toggle building
 		if (keyCode == KeyEvent.VK_E) {
     		buildRotation = buildRotation.rotatedClockwise();
     	}
@@ -56,7 +66,6 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 
 	@Override
 	public void onKeyReleased(int keyCode) {
-		
 	}
 	
 	public boolean isBuilding() {
@@ -69,6 +78,7 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 
 	@Override
 	public void onClick(MouseEvent e) {
+		//Select Tile and place build if buidling enabled.
 		Tile tile = TileProvider.pixel_AccessTile(e.getX(), e.getY());
 		if ( !isBuilding ) {
 			player.selectTile(tile);

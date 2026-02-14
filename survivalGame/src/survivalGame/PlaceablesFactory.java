@@ -25,12 +25,12 @@ public class PlaceablesFactory {
 	 */
 	static {
 		placementMap = new HashMap<>();
-		placementMap.put(ItemID.CONVEYOR, info -> new Conveyor(info.tile,info.direction));
-		placementMap.put(ItemID.TREEHARVESTER, info -> new TreeHarvester(info.tile,info.direction));
-		placementMap.put(ItemID.PLANKER, info -> new Planker(info.tile,info.direction));
-		placementMap.put(ItemID.CONVEYORSPLITTER_R, info -> new ConveyorSplitter(info.tile,info.direction,true));
-		placementMap.put(ItemID.CONVEYORSPLITTER_L, info -> new ConveyorSplitter(info.tile,info.direction,false));
-		placementMap.put(ItemID.ROCKDRILLER, info -> new RockDriller(info.tile,info.direction));
+		placementMap.put(ItemID.CONVEYOR, info -> new Conveyor(info.getTile(),info.getDirection()));
+		placementMap.put(ItemID.TREEHARVESTER, info -> new TreeHarvester(info.getTile(),info.getDirection()));
+		placementMap.put(ItemID.PLANKER, info -> new Planker(info.getTile(),info.getDirection()));
+		placementMap.put(ItemID.CONVEYORSPLITTER_R, info -> new ConveyorSplitter(info.getTile(),info.getDirection(),true));
+		placementMap.put(ItemID.CONVEYORSPLITTER_L, info -> new ConveyorSplitter(info.getTile(),info.getDirection(),false));
+		placementMap.put(ItemID.ROCKDRILLER, info -> new RockDriller(info.getTile(),info.getDirection()));
 	}
 	
 	/**

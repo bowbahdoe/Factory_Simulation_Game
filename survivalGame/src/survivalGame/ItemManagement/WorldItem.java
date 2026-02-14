@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
-import survivalGame.Tile;
 import survivalGame.Updatable;
 import survivalGame.Updater;
+import survivalGame.TileManagement.Tile;
 
 public class WorldItem implements WorldRenderable, Updatable {
 

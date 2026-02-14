@@ -12,11 +12,11 @@ import survivalGame.FactoryComponent;
 import survivalGame.IItemReciever;
 import survivalGame.ITickable;
 import survivalGame.TickManager;
-import survivalGame.Tile;
-import survivalGame.TileObjectID;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileObjectID;
 import survivalGame.tileObjects.TileRock;
 
 public class RockDriller extends FactoryComponent implements ITickable {
@@ -38,16 +38,16 @@ public class RockDriller extends FactoryComponent implements ITickable {
 		TextureManager textureManager = GameGraphics.getTextureManager();
 		switch (rotation) {
 		case NORTH:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), 90));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), 90));
 			break;
 		case EAST:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), 180));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), 180));
 			break;
 		case SOUTH:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), -90));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture("RockDriller"), -90));
 			break;
 		case WEST:
-			super.addTexture("RockDriller", textureManager);
+			super.setexture("RockDriller", textureManager);
 			break;
 		}
 		
@@ -55,7 +55,7 @@ public class RockDriller extends FactoryComponent implements ITickable {
 		targetTile = getTargetTile(rotation);
 		behindTile = getTargetTile(opposite);
 		
-		if (targetTile.getObject() instanceof TileRock rock) {
+		if (targetTile.getTileObject() instanceof TileRock rock) {
 			targetRock = rock;
 		}
 		checkForOutput();
@@ -65,11 +65,11 @@ public class RockDriller extends FactoryComponent implements ITickable {
 	 * checks for any object that can recieve the item it dispenses.
 	 */
 	public void checkForOutput() {
-		if (behindTile.getObject() instanceof IItemReciever output) {
+		if (behindTile.getTileObject() instanceof IItemReciever output) {
 			targetOutput = output;
 		}
 		if (targetOutput instanceof Conveyor conv) {
-			Direction opposite = rotation.rotatedClockwise().rotatedClockwise();
+			Direction opposite = getRotation().rotatedClockwise().rotatedClockwise();
 			ConveyorSpriteManager.changeSprite(conv, opposite);
 		}
 	}

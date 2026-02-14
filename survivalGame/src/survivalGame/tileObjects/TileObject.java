@@ -7,8 +7,8 @@ import java.awt.image.BufferedImage;
 import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.WorldRenderable;
-import survivalGame.Tile;
-import survivalGame.TileObjectID;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileObjectID;
 
 public abstract class TileObject implements WorldRenderable{
 	
@@ -32,11 +32,11 @@ public abstract class TileObject implements WorldRenderable{
 		this.toRender = isActive;
 	}
 
-	public void addTexture(String Texture, TextureManager textureM) {
+	public void setexture(String Texture, TextureManager textureM) {
 		texture = textureM.getTexture(Texture);
 	}
 	
-	public void addTexture(BufferedImage texture) {
+	public void setTexture(BufferedImage texture) {
 		this.texture = texture;
 	}
 	

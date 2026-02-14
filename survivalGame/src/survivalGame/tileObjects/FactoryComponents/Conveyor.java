@@ -9,16 +9,16 @@ import survivalGame.Direction;
 import survivalGame.FactoryComponent;
 import survivalGame.IContainsConveyor;
 import survivalGame.IItemReciever;
-import survivalGame.Tile;
-import survivalGame.TileObjectID;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.WorldItem;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileObjectID;
 
 public class Conveyor extends FactoryComponent implements IContainsConveyor, IItemReciever{
 	
 	public static final TileObjectID ID = TileObjectID.CONVEYOR;
 	
-	private Tile targetTile = super.getTargetTile(rotation);
+	private Tile targetTile = super.getTargetTile(getRotation());
 	public Conveyor inputConveyor;
 	public Conveyor targetConveyor;
 	public WorldItem heldItem;

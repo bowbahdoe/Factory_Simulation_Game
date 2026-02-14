@@ -8,8 +8,8 @@ import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ConveyorNetworkSystem;
 import survivalGame.ConveyorSpriteManager;
 import survivalGame.Direction;
-import survivalGame.Tile;
-import survivalGame.TileObjectID;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileObjectID;
 
 public class ConveyorSplitter extends Conveyor{
 	
@@ -36,16 +36,16 @@ public class ConveyorSplitter extends Conveyor{
 		
 		switch (rotation) {
 		case NORTH:
-			super.addTexture(textureManager.getTexture(texture));
+			super.setTexture(textureManager.getTexture(texture));
 			break;
 		case EAST:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture(texture), 90));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture(texture), 90));
 			break;
 		case SOUTH:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture(texture), 180));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture(texture), 180));
 			break;
 		case WEST:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture(texture), -90));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture(texture), -90));
 			break;
 		}
 		
@@ -71,7 +71,7 @@ public class ConveyorSplitter extends Conveyor{
 	}
 
 	private void attemptAccessingConveyors() {
-		conveyorForward = ConveyorNetworkSystem.getConveyorFromTile(super.getTargetTile(rotation));
+		conveyorForward = ConveyorNetworkSystem.getConveyorFromTile(super.getTargetTile(getRotation()));
 		conveyorSide = ConveyorNetworkSystem.getConveyorFromTile(super.getTargetTile(sideDirection));
 		ConveyorSpriteManager.changeSprite(conveyorSide, sideDirection);
 	}

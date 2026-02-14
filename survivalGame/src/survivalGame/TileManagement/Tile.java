@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.TileManagement;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,11 +7,12 @@ import java.io.IOException;
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
+import survivalGame.FactoryComponent;
 import survivalGame.tileObjects.TileObject;
 
 public class Tile implements WorldRenderable{
 	
-	TileType tileType = TileType.GRASS; //NOT FINAL FOR NOW
+	private TileType tileType = TileType.GRASS; //NOT FINAL FOR NOW
 	
 	final public int x;
 	final public int y;
@@ -48,16 +49,16 @@ public class Tile implements WorldRenderable{
 		 * 
 		 * Byte, Boolean ? Byte Boolean ? Byte
 		 */
-	    out.writeByte(tileType.getID());
+	    out.writeByte(getTileType().getID());
 	    
 	    out.writeBoolean(tileObject != null);
 	    if (tileObject == null) return;
 	    
 	    out.writeByte(tileObject.getTileObjectID().id);
 	    
-	    out.writeBoolean(tileObject instanceof FactoryComponent);
-	    if (!(tileObject instanceof FactoryComponent)) return;
-	    out.writeByte( ((FactoryComponent) tileObject).rotation.getRotationID() );
+	   // out.writeBoolean(tileObject instanceof FactoryComponent);
+	   // if (!(tileObject instanceof FactoryComponent)) return;
+	   // out.writeByte( ((FactoryComponent) tileObject).getRotation().getRotationID() );
 	    
 	}
 	
@@ -102,10 +103,18 @@ public class Tile implements WorldRenderable{
 	public void setObject(TileObject object) {
 		tileObject = object;
 	}
-	public TileObject getObject() {
+	public TileObject getTileObject() {
 		return tileObject;
 	}
 	public boolean isEmpty() {
 		return tileObject == null;
+	}
+
+	public TileType getTileType() {
+		return tileType;
+	}
+	
+	public void setTileType(TileType tileType) {
+		this.tileType = tileType;
 	}
 }

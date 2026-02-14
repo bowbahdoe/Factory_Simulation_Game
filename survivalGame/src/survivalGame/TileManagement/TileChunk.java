@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.TileManagement;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ public class TileChunk {
 
 	List<Tile> tiles = new ArrayList<>();
 
-	final int x;
-	final int y;
+	private final int x;
+	private final int y;
 	
 	//If screen was stretched to world size, 
 	//these pixel coordinates would represent where they are in the screen from the top left corner
@@ -36,7 +36,7 @@ public class TileChunk {
 	}
 	
 	public void add(Tile tile) {
-		tiles.add(tile);
+		getTiles().add(tile);
 	}
 
 	public void renderChunk(Graphics2D g, GameGraphics graphics) {
@@ -54,18 +54,30 @@ public class TileChunk {
 		if (pixelX > GameGraphics.getOriginOffset()[0] - chunkPixelSize - width / 2 && pixelX < GameGraphics.getOriginOffset()[0] + width / 2 
 				&& pixelY > GameGraphics.getOriginOffset()[1] - chunkPixelSize - height / 2 && pixelY < GameGraphics.getOriginOffset()[1] + height / 2 ) {
 			
-			for (Tile tile : tiles) {
+			for (Tile tile : getTiles()) {
 				tile.setActive(true);
 				activatedTiles = true;
 			}
 			
 		}
 		else if (activatedTiles){
-			for (Tile tile : tiles) {
+			for (Tile tile : getTiles()) {
 				tile.setActive(false);
 				activatedTiles = false;
 			}
 		}
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public List<Tile> getTiles() {
+		return tiles;
 	}
 
 	

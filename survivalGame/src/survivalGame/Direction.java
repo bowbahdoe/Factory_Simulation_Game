@@ -18,7 +18,7 @@ public enum Direction {
 		return mask;
 	}
 	
-	public byte getRotationID() {
+	public int getRotationID() {
 		return ID;
 	}
 	

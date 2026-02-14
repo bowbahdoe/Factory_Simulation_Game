@@ -1,8 +1,8 @@
 package survivalGame.tileObjects;
 
 import graphics.GameGraphics;
-import survivalGame.Tile;
-import survivalGame.TileObjectID;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileObjectID;
 
 public class TileRock extends TileObject {
 	

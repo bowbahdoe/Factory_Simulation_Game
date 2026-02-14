@@ -8,9 +8,9 @@ import graphics.TextureManager;
 import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ActionTimer;
 import survivalGame.Direction;
-import survivalGame.Tile;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
+import survivalGame.TileManagement.Tile;
 
 public class Planker extends Conveyor{
 	
@@ -22,16 +22,16 @@ public class Planker extends Conveyor{
 		
 		switch (rotation) {
 		case NORTH:
-			super.addTexture(textureManager.getTexture("Planker"));
+			super.setTexture(textureManager.getTexture("Planker"));
 			break;
 		case EAST:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("Planker"), 90));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture("Planker"), 90));
 			break;
 		case SOUTH:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("Planker"), 180));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture("Planker"), 180));
 			break;
 		case WEST:
-			super.addTexture(ImageRotater.rotateImage(textureManager.getTexture("Planker"), -90));
+			super.setTexture(ImageRotater.rotateImage(textureManager.getTexture("Planker"), -90));
 			break;
 		}
 		

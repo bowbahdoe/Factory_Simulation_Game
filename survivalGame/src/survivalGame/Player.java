@@ -16,6 +16,9 @@ import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.PlaceableItem;
 import survivalGame.ItemManagement.WorldItem;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileChunk;
+import survivalGame.TileManagement.TileProvider;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 import survivalGame.userInterface.HotbarSlot;
 import survivalGame.userInterface.InventorySlot;
@@ -161,9 +164,9 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		tiles[8] = getTile(-100,100);
 		Map<ItemID, Integer> tempInventory = new HashMap<>();
 		for (Tile tile : tiles) {
-			if ( !(tile.getObject() instanceof IContainsConveyor) ) continue;
+			if ( !(tile.getTileObject() instanceof IContainsConveyor) ) continue;
 			
-			Conveyor conv = ((IContainsConveyor) tile.getObject()).getConveyor();
+			Conveyor conv = ((IContainsConveyor) tile.getTileObject()).getConveyor();
 			if (!conv.isEmpty()) {
 				WorldItem worldItem = conv.collectItem();
 				tempInventory.merge(worldItem.getItem().getItemID(), 1, Integer::sum); 
@@ -184,11 +187,11 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		if (positionInArray < 0) return null;
 		TileChunk chunk = (TileChunk) GameGraphics.chunks[positionInArray];
 		
-		int chunkX = x - (chunk.x * chunkSize);
-		int chunkY = y - (chunk.y * chunkSize);
+		int chunkX = x - (chunk.getX() * chunkSize);
+		int chunkY = y - (chunk.getY() * chunkSize);
 		
 		if (chunkX * chunkSize + chunkY < 0 ) return null; //Out of bounds
-		Tile tile = chunk.tiles.get(chunkX * chunkSize + chunkY);
+		Tile tile = chunk.getTiles().get(chunkX * chunkSize + chunkY);
 
 		
 		return tile;

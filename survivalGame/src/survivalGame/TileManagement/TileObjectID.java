@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.TileManagement;
 
 public enum TileObjectID {
 	TREE(1),

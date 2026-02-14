@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import survivalGame.ItemManagement.WorldItem;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileProvider;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
 public class ConveyorNetworkSystem {
@@ -34,7 +36,7 @@ public class ConveyorNetworkSystem {
 	}
 	
 	public void asignTargetConveyor(Conveyor currentConveyor) {
-		Tile targetTile = currentConveyor.getTargetTile(currentConveyor.rotation);
+		Tile targetTile = currentConveyor.getTargetTile(currentConveyor.getRotation());
 		Conveyor target = getConveyorFromTile(targetTile);
 		currentConveyor.targetConveyor = target;
 	}
@@ -44,13 +46,19 @@ public class ConveyorNetworkSystem {
 	 * Connects the conveyors into a network of linked lists. 
 	 */
 	public void initializeConveyor(Conveyor currentConveyor) {
-		currentConveyor.spriteMask |= currentConveyor.rotation.getRotationMask() << 4;
+		currentConveyor.spriteMask |= currentConveyor.getRotation().getRotationMask() << 4;
+		
 		//First search surrounding area and update variables as needed
 		searchForInputConveyors(currentConveyor);
+		
+		//update the sprite determined by surrounding conveyors
 		ConveyorSpriteManager.updateSprite(currentConveyor);
-		Tile targetTile = currentConveyor.getTargetTile(currentConveyor.rotation);
+		
+		//Get conveyor from targetTile
+		Tile targetTile = currentConveyor.getTargetTile(currentConveyor.getRotation());
 		currentConveyor.targetConveyor = getConveyorFromTile(targetTile);
-		ConveyorSpriteManager.changeSprite(currentConveyor.targetConveyor, currentConveyor.rotation);
+		
+		ConveyorSpriteManager.changeSprite(currentConveyor.targetConveyor, currentConveyor.getRotation());
 		
 		//If Conveyor has no input and target conveyor, or target is in a different belt sequence then.. Create new beltSequence key
 		if (currentConveyor.inputConveyor == null && (currentConveyor.targetConveyor == null || currentConveyor.targetConveyor.hasInputConveyor())) {
@@ -88,19 +96,19 @@ public class ConveyorNetworkSystem {
 			//check surrounding tiles for conveyors, make them the input if they point towards you.
 			//Ignore the one you point towards too. 
 
-			if (currentConveyor.getTargetTile() != tile && tile.getObject() instanceof IContainsConveyor containingConveyor) {
+			if (currentConveyor.getTargetTile() != tile && tile.getTileObject() instanceof IContainsConveyor containingConveyor) {
 				//If the tile isnt the targetTile (basically not facing it), and the object is a conveyor..
 				Conveyor inputConveyor = containingConveyor.getConveyor();
 
 				//And if its pointing at THIS tile, and obeys the inputBlacklist Directions...
 				if ( !inputConveyor.isPointingAt(parentTile)) continue;
-				if ( inputBlackList != null && inputBlackList.contains(inputConveyor.rotation)) continue;
+				if ( inputBlackList != null && inputBlackList.contains(inputConveyor.getRotation())) continue;
 				
 				//Make this conveyor the input, and therefore make this conveyor the input's target. Doubly Linked
 				currentConveyor.addInputConveyor(inputConveyor);
 				inputConveyor.targetConveyor = currentConveyor;
 
-				ConveyorSpriteManager.changeSprite(currentConveyor, inputConveyor.rotation);
+				ConveyorSpriteManager.changeSprite(currentConveyor, inputConveyor.getRotation());
 			
 			}
 		}
@@ -120,8 +128,8 @@ public class ConveyorNetworkSystem {
 	 * @return any instance of conveyor on that tile. This function was made due to the interface: IContainsConveyor
 	 */
 	public static Conveyor getConveyorFromTile(Tile tile) {
-		if (!(tile.getObject() instanceof IContainsConveyor)) return null;
-		IContainsConveyor conv = ((IContainsConveyor) tile.getObject());
+		if (!(tile.getTileObject() instanceof IContainsConveyor)) return null;
+		IContainsConveyor conv = ((IContainsConveyor) tile.getTileObject());
 		return conv.getConveyor();
 	}
 	

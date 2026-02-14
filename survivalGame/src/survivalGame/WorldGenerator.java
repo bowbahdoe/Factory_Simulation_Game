@@ -3,6 +3,8 @@ package survivalGame;
 import java.io.IOException;
 
 import graphics.GameGraphics;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileChunk;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.TileRock;
 import survivalGame.tileObjects.TileTree;
@@ -53,12 +55,12 @@ public class WorldGenerator {
 				int rNum = (int) (Math.random() * 285) + 1; 
 				if (rNum <= 2) {
 					TileObject tree = new TileTree(tile);
-					tree.addTexture("Tree", GameGraphics.getTextureManager());
+					tree.setexture("Tree", GameGraphics.getTextureManager());
 					tile.setObject(tree);
 				}
 				else if (rNum <= 3) {
 					TileObject rock = new TileRock(tile);
-					rock.addTexture("Rock", GameGraphics.getTextureManager());
+					rock.setexture("Rock", GameGraphics.getTextureManager());
 					tile.setObject(rock);
 				}
 				

@@ -1,5 +1,7 @@
 package survivalGame;
 
+import survivalGame.TileManagement.TileChunk;
+
 /**
  * WorldInfo class contains data for the world.
  * Including an array of {@link TileChunk} chunks

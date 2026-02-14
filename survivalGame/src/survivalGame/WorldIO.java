@@ -10,6 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import graphics.GameGraphics;
+import survivalGame.TileManagement.Tile;
+import survivalGame.TileManagement.TileChunk;
+import survivalGame.TileManagement.TileType;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.TileTree;
 
@@ -58,17 +61,44 @@ public class WorldIO {
     		 out.writeInt(world.worldSize);
     		 out.writeInt(world.chunkAmount);
     		 
-    		 int chunkAmount = world.chunkAmount;
-    		 for (int x = 0; x < chunkAmount; x++) {
-    				for (int y = 0; y < chunkAmount; y++ ) {
-    					for (Tile tile : world.chunks[x * chunkAmount + y].tiles) {
-    						tile.write(out);
-    					}
-    				}
-    		 }
+    		 saveWorld(world,out);
     		 out.close();
     	 }
     }
+    
+    private static void saveWorld(WorldInfo world, DataOutputStream out) throws IOException {
+    	int chunkAmount = world.chunkAmount;
+    	
+    	 for (int x = 0; x < chunkAmount; x++) {
+				for (int y = 0; y < chunkAmount; y++ ) {
+					for (Tile tile : world.chunks[x * chunkAmount + y].getTiles()) {
+						writeTile(tile,out);
+					}
+				}
+		 }
+    }
+    private static void writeTile(Tile tile, DataOutputStream out) throws IOException {
+		TileObject tileObject = tile.getTileObject();
+		
+		//Write TyleType ID
+	    out.writeByte(tile.getTileType().getID());
+	    
+	    //Write boolean if there is a tileObject
+	    out.writeBoolean(tileObject != null);
+	
+	    if (tileObject == null) return;
+	    
+	    //If so, write the ID of the tileObject
+	    out.writeByte(tileObject.getTileObjectID().id);
+	    
+	    //Write boolean asking if the tileObject is a factoryComponent
+	    out.writeBoolean(tileObject instanceof FactoryComponent);
+	    
+	    if (!(tileObject instanceof FactoryComponent)) return;
+	    out.writeByte( ((FactoryComponent) tileObject).getRotation().getRotationID() );
+	    
+	}
+    
     
     /**
      * Loads from the given file
@@ -131,16 +161,16 @@ public class WorldIO {
     	
     	Tile tile = new Tile(x, y , chunk,  GameGraphics.TILESIZE);
 		
-		tile.tileType = TileType.fromId(input.readByte()); //READS tileType Byte
+		tile.setTileType(TileType.fromId(input.readByte())); //READS tileType Byte
 		boolean hasTileObject = input.readBoolean(); //READS tileObject boolean
 		if (hasTileObject) {
 			input.readByte(); //READS tileObject byte (does nothing for now)
 			TileObject tree = new TileTree(tile);
-			tree.addTexture("Tree", GameGraphics.getTextureManager());
+			tree.setexture("Tree", GameGraphics.getTextureManager());
 			tile.setObject(tree);
 		}
 		
-		return null;
+		return tile;
     	
     }
     

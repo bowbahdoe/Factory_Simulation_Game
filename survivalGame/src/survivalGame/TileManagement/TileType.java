@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.TileManagement;
 
 public enum TileType {
 	GRASS((byte) 1);
@@ -9,7 +9,7 @@ public enum TileType {
 		this.id = (byte) id;
 	}
 	
-	static TileType fromId(byte id) {
+	public static TileType fromId(byte id) {
 		for (TileType t : TileType.values()) {
 			if (t.id == id) return t; 
 		}
