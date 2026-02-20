@@ -17,27 +17,36 @@ public class UIAlignment {
 
 	private static int leftEdge = (int) (0 + WIDTH * edgeScaling);
 	private static int rightEdge = (int) (WIDTH - WIDTH * edgeScaling);
-	private static int topEdge = (int) (HEIGHT - HEIGHT * edgeScaling);
-	private static int bottomEdge = (int) (0 + HEIGHT * edgeScaling);
+	private static int topEdge =  (int) (0 + HEIGHT * edgeScaling);
+	private static int bottomEdge = (int) (HEIGHT - HEIGHT * edgeScaling);
 	
+	private static int topCenter = (int) (HEIGHT/2 - HEIGHT * centerScaling);
+	private static int bottomCenter = (int) (HEIGHT/2 + HEIGHT * centerScaling);
+	private static int rightCenter = (int) (WIDTH/2 + WIDTH * centerScaling);
+	private static int leftCenter = (int) (WIDTH/2 - WIDTH * centerScaling);
+			
 	//Maps UIAnchors to their coordinates. 
-	static EnumMap<UIAnchor,int[]> anchorCoordinates = (EnumMap<UIAnchor, int[]>) Map.ofEntries(
+	static EnumMap<UIAnchor,int[]> anchorCoordinates = new EnumMap<>(Map.ofEntries(
 			Map.entry(UIAnchor.CENTER, new int[] {WIDTH/2, HEIGHT/2}),
 			Map.entry(UIAnchor.LEFT, new int[] {leftEdge, HEIGHT/2}),
 			Map.entry(UIAnchor.RIGHT, new int[] {rightEdge, HEIGHT/2}),
 			Map.entry(UIAnchor.TOP, new int[] {WIDTH/2, topEdge} ),
 			Map.entry(UIAnchor.BOTTOM, new int[] {WIDTH/2,bottomEdge}),
 			
-			Map.entry(UIAnchor.CENTER_LEFT, new int[] {(int) (WIDTH/2 - WIDTH * centerScaling), HEIGHT/2}),
-			Map.entry(UIAnchor.CENTER_RIGHT,  new int[] {(int) (WIDTH/2 + WIDTH * centerScaling), HEIGHT/2}),
-			Map.entry(UIAnchor.CENTER_TOP, new int[] { (WIDTH/2), (int) (HEIGHT/2 + HEIGHT * centerScaling)}),
-			Map.entry(UIAnchor.CENTER_BOTTOM, new int[] { (WIDTH/2), (int) (HEIGHT/2 +-HEIGHT * centerScaling)}),
-
+			Map.entry(UIAnchor.CENTER_LEFT, new int[] {leftCenter, HEIGHT/2}),
+			Map.entry(UIAnchor.CENTER_RIGHT,  new int[] {rightCenter, HEIGHT/2}),
+			Map.entry(UIAnchor.CENTER_TOP, new int[] { (WIDTH/2), topCenter }),
+			Map.entry(UIAnchor.CENTER_BOTTOM, new int[] { (WIDTH/2), bottomCenter}),
+			Map.entry(UIAnchor.CENTER_BOTTOM_LEFT, new int[] { leftCenter, bottomCenter}),
+			Map.entry(UIAnchor.CENTER_BOTTOM_RIGHT, new int[] { rightCenter, bottomCenter}),
+			Map.entry(UIAnchor.CENTER_TOP_LEFT, new int[] { leftCenter, topCenter}),
+			Map.entry(UIAnchor.CENTER_TOP_RIGHT, new int[] { rightCenter, topCenter}),
+			
 			Map.entry(UIAnchor.TOP_LEFT, new int[] {(int) leftEdge, topEdge}),
 			Map.entry(UIAnchor.TOP_RIGHT, new int[] {(int) rightEdge, topEdge}),
 			Map.entry(UIAnchor.BOTTOM_LEFT, new int[] {leftEdge, bottomEdge}),
 			Map.entry(UIAnchor.BOTTOM_RIGHT, new int[] {rightEdge, bottomEdge})
-	);
+	));
 	
 	/**
 	 * Gets screen coordinates for the Anchor point

@@ -96,7 +96,7 @@ public class WorldIO {
 	    //Write boolean asking if the tileObject is a factoryComponent
 	    //out.writeBoolean(tileObject instanceof FactoryComponent);
 	    
-	    if (!(tileObject instanceof FactoryComponent)) return;
+	    //if (!(tileObject instanceof FactoryComponent)) return;
 	    //out.writeByte( ((FactoryComponent) tileObject).getRotation().getRotationID() );
 	    
 	}

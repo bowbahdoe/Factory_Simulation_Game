@@ -31,6 +31,7 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 		super(parentTile, rotation);
 		GameGraphics.registerWorldObj(this, 2);
 	}
+	
 	@Override
 	public void removeObject() {
 	}
@@ -80,15 +81,12 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	
 	@Override
 	public int getY() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public Tile getTargetTile() {
 		return targetTile;
 	}
-
-
 
 	@Override
 	public Conveyor getConveyor() {
@@ -99,9 +97,9 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 		locked = state;
 	}
 
-
 	@Override
 	public void recieveItem(Item item) {
+		//new worldItem instantiated in order to display the item visually
 		recieveWorldItem(new WorldItem(item,parentTile.pixelX,parentTile.pixelY));
 	}
 	@Override

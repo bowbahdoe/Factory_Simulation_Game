@@ -74,6 +74,9 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
         }
 	}
 
+	/**
+	 * @return most recently clicked coordinates in int[]{x,y} format
+	 */
 	public int[] listenClick() {
 		return clickedCoords;
 	}

@@ -49,6 +49,7 @@ public class WorldGenerator {
 		TileChunk chunk = new TileChunk(x ,y, chunkSize, GameGraphics.TILESIZE);
 		for (int Tx = 0; Tx < chunkSize; Tx++) {
 			for (int Ty = 0; Ty < chunkSize; Ty++ ) {
+				//Tile Coordinates are coordinates relative to chunk + number of tiles up to that chunk coordinate. 
 				Tile tile = new Tile(Tx  + (x * chunkSize), Ty  + (y * chunkSize) ,chunk,  GameGraphics.TILESIZE);
 				tiles++;
 				

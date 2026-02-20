@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 
 import java.awt.geom.AffineTransform;
@@ -13,7 +14,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import survivalGame.GameState;
@@ -83,6 +83,7 @@ public final class GameGraphics extends JPanel implements Updatable {
 		this.addKeyListener(input);  // Adds key listener to the panel
 		this.addMouseListener(input);
 		this.addMouseWheelListener(input);
+	
 	}
 
 	public void initialiseMenu(TextureManager textureManager) {
@@ -117,6 +118,10 @@ public final class GameGraphics extends JPanel implements Updatable {
         // save default transform.
         if (uiTransform == null) {
             uiTransform = g2d.getTransform();
+            
+            //Added this because it apparently makes scaling smoother
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         }
         
         g2d.setStroke(new BasicStroke(4));
@@ -156,12 +161,12 @@ public final class GameGraphics extends JPanel implements Updatable {
     }
     private void translateByPlayerView(Graphics2D g2d) {
     	//discontinue displacing originOffset(player position) when out of bounds
-    	//if (-player.getXCoord() >= 0 && -player.getXCoord() < worldPixelSize) {
+    	if (-player.getXCoord() >= 0 && -player.getXCoord() < worldPixelSize) {
         	 originOffset[0] = (int) (-player.getXCoord() );
-        //}
-        //if (-player.getYCoord() >= 0 && -player.getYCoord() < worldPixelSize) {
+        }
+        if (-player.getYCoord() >= 0 && -player.getYCoord() < worldPixelSize) {
         	 originOffset[1] =  (int) (-player.getYCoord());
-        //}
+        }
       
         //Applies player-centering offset such as this.getWidth/2, this.getHeight/2. Can't be saved as a constant due to width and height being variable from scaling. 
         g2d.translate(-originOffset[0] * cameraZoom + this.getWidth() / 2, -originOffset[1]  * cameraZoom + this.getHeight() / 2 );

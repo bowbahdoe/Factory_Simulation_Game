@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JButton;
+
 import graphics.GameGraphics;
 import graphics.UIRenderable;
 import survivalGame.Button;
@@ -20,25 +22,11 @@ public class PauseMenu implements GameKeyListener, UIRenderable{
 	
 	public PauseMenu() {
 		buttonTexture = GameGraphics.getTextureManager().getTexture("Button");
+		int[] center = UIAlignment.getCoordinateFromAnchor(UIAnchor.CENTER);
 		
-		buttons[0] = (new Button(WorldIO.isFilePresent("world0") ? "+++" : "[EMPTY]",
-				rectLeft, 
-				GameState.WORLDSELECTION,
-				() -> onSlotButtonClick(0) )
-				);
 		
-		buttons[1] = (new Button(WorldIO.isFilePresent("world1") ? "+++" : "[EMPTY]" ,
-				rectMiddle, 
-				GameState.WORLDSELECTION,
-				() -> onSlotButtonClick(1) )
-				);
-		
-		buttons[2] = (new Button(WorldIO.isFilePresent("world2") ? "+++" : "[EMPTY]",
-				rectRight, 
-				GameState.WORLDSELECTION,
-				() -> onSlotButtonClick(2) )
-				);
-		
+
+	
 	}
 	@Override
 	public void onKeyPressed(int keyCode) {

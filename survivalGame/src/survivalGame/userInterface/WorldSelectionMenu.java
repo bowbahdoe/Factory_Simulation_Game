@@ -18,6 +18,7 @@ import survivalGame.Player;
 import survivalGame.WorldGenerator;
 import survivalGame.WorldIO;
 import survivalGame.WorldInfo;
+import survivalGame.Button.ButtonBuilder;
 
 public class WorldSelectionMenu {
 	Button[] slotButtons = new Button[3];
@@ -29,44 +30,46 @@ public class WorldSelectionMenu {
 	
 	BufferedImage buttonTexture;
 	BufferedImage background;
+	BufferedImage worldSlot;
 	
-
+	private final int[] titlePosition;
 	public WorldSelectionMenu(TextureManager Tmanager) {
 		background = Tmanager.getTexture("Background");
 		buttonTexture = Tmanager.getTexture("Button");
-		
-		int buttonX = GameGraphics.SCREEN_WIDTH / 2 - buttonTexture.getWidth() / 2;
-		Rectangle rectMiddle = new Rectangle(buttonX, 300, 300,300);
-		Rectangle rectLeft= new Rectangle((int) (buttonX - 0.6 * buttonX), 300, 300,300);
-		Rectangle rectRight = new Rectangle((int) (buttonX + 0.6 * buttonX), 300, 300,300);
+		worldSlot = Tmanager.getTexture("WorldSlot");
 		
 		//READ FROM SAVE FILES FIRST BEFORE DISPLAYING BUTTONS. 
 		
-		slotButtons[0] = (new Button(WorldIO.isFilePresent("world0") ? "+++" : "[EMPTY]",
-				rectLeft, 
-				GameState.WORLDSELECTION,
-				() -> onSlotButtonClick(0) )
-				);
 		
-		slotButtons[1] = (new Button(WorldIO.isFilePresent("world1") ? "+++" : "[EMPTY]" ,
-				rectMiddle, 
-				GameState.WORLDSELECTION,
-				() -> onSlotButtonClick(1) )
-				);
+		slotButtons[0] = new ButtonBuilder(() -> onSlotButtonClick(0), GameState.WORLDSELECTION)
+				.setTexture(worldSlot)
+				.setDimensionToTexture()
+				.centerDimensionToPoint(UIAnchor.CENTER)
+				.build();
 		
-		slotButtons[2] = (new Button(WorldIO.isFilePresent("world2") ? "+++" : "[EMPTY]",
-				rectRight, 
-				GameState.WORLDSELECTION,
-				() -> onSlotButtonClick(2) )
-				);
+		slotButtons[1] = new ButtonBuilder(() -> onSlotButtonClick(0), GameState.WORLDSELECTION)
+				.setTexture(worldSlot)
+				.setDimensionToTexture()
+				.centerDimensionToPoint(UIAnchor.CENTER_LEFT)
+				.build();
 		
-		goBackButton = new Button("Return",
-				buttonTexture, 
-				buttonX, 1000,
-				GameState.WORLDSELECTION,
-				() -> CurrentGameState.gameState = GameState.MENU);
+		slotButtons[2] = new ButtonBuilder(() -> onSlotButtonClick(0), GameState.WORLDSELECTION)
+				.setTexture(worldSlot)
+				.setDimensionToTexture()
+				.centerDimensionToPoint(UIAnchor.CENTER_RIGHT)
+				.build();
 		
+		goBackButton = new ButtonBuilder(() -> CurrentGameState.gameState = GameState.MENU, GameState.WORLDSELECTION)
+				.setTexture(buttonTexture)
+				.setDimensionToTexture()
+				.centerDimensionToPoint(UIAnchor.BOTTOM)
+				.offsetY(-50)
+				.setText("Return")
+				.build();
+	
 		initialiseDeleteButtons();
+		
+		titlePosition = UIAlignment.getCoordinateFromAnchor(UIAnchor.CENTER_TOP);
 	}
 	
 	private void initialiseDeleteButtons() {
@@ -75,27 +78,36 @@ public class WorldSelectionMenu {
 		Rectangle rectLeft= new Rectangle((int) (buttonX - 0.6 * buttonX), 820, 300,50);
 		Rectangle rectRight = new Rectangle((int) (buttonX + 0.6 * buttonX), 820, 300,50);
 		
-		deleteButtons[0] = (new Button("DELETE SAVE",
-				rectLeft, 
-				GameState.WORLDSELECTION,
-				() -> onDeleteButtonClick(0, slotButtons[0]) )
-				);
+		Color buttonColour = new Color(200,20,20);
 		
-		deleteButtons[1] = (new Button("DELETE SAVE" ,
-				rectMiddle, 
-				GameState.WORLDSELECTION,
-				() -> onDeleteButtonClick(1, slotButtons[1]) )
-				);
+		deleteButtons[0] = new ButtonBuilder(() -> onDeleteButtonClick(0, slotButtons[0]), GameState.WORLDSELECTION)
+				.setWidth(320)
+				.setHeight(60)
+				.setColour(buttonColour)
+				.setText("DELETE SAVE")
+				.setFontSize(35)
+				.centerDimensionToPoint(UIAnchor.CENTER_BOTTOM)
+				.build();
 		
-		deleteButtons[2] = (new Button("DELETE SAVE",
-				rectRight, 
-				GameState.WORLDSELECTION,
-				() -> onDeleteButtonClick(2, slotButtons[2]) )
-				);
+		deleteButtons[1] = new ButtonBuilder(() -> onDeleteButtonClick(1, slotButtons[1]), GameState.WORLDSELECTION)
+				.setWidth(320)
+				.setHeight(60)
+				.setColour(buttonColour)
+				.setText("DELETE SAVE")
+				.setFontSize(35)
+				.centerDimensionToPoint(UIAnchor.CENTER_BOTTOM_LEFT)
+				.build();
 		
-		for (Button button : deleteButtons) {
-			button.setFontSize(24);
-		}
+		deleteButtons[2] = new ButtonBuilder(() -> onDeleteButtonClick(2, slotButtons[2]), GameState.WORLDSELECTION)
+				.setWidth(320)
+				.setHeight(60)
+				.setColour(buttonColour)
+				.setText("DELETE SAVE")
+				.setFontSize(35)
+				.centerDimensionToPoint(UIAnchor.CENTER_BOTTOM_RIGHT)
+				.build();
+		
+	
 		
 	}
 	
@@ -127,29 +139,22 @@ public class WorldSelectionMenu {
 	
 	public void renderWorldSelection(Graphics2D g, GameGraphics graphics) {
 		g.drawImage(background,0,0, GameGraphics.SCREEN_WIDTH, GameGraphics.SCREEN_HEIGHT, graphics);
-	    
+		
 		for (Button button : slotButtons) {
-			if (!button.isActive()) continue;
-			g.setColor(new Color(0,0,0, 120));
-			g.fillRect(button.xPosition, button.yPosition, 300, 500);
-			g.setColor(new Color(200,200,200));
 			button.renderUI(g, graphics);
 		}
 		
 		for (Button button : deleteButtons) {
-
-			g.setColor(new Color(150,0,0));
-			g.fillRect(button.xPosition, button.yPosition, 300, 50);
-			g.setColor(new Color(200,200,200));
 			button.renderUI(g, graphics);
 		}
-		g.setColor(new Color(0,0,0));
+		
 		goBackButton.renderUI(g, graphics);
 		
+
 		Font largeFont = new Font("Arial", Font.BOLD, 100);
 	    g.setFont(largeFont);
-	    g.drawString("World Selection", 400, 160);
-	    
+	    g.drawString("World Selection", titlePosition[0] - g.getFontMetrics().stringWidth("World Selection") / 2, titlePosition[1]);
+
 	}
 
 	

@@ -12,6 +12,7 @@ import graphics.GameGraphics;
 import graphics.TextureManager;
 import survivalGame.Button;
 import survivalGame.GameState;
+import survivalGame.Button.ButtonBuilder;
 
 public class SettingsDisplay {
 	List<Button> buttons = new ArrayList<>();
@@ -22,12 +23,12 @@ public class SettingsDisplay {
 		background = Tmanager.getTexture("Background");
 		buttonTexture = Tmanager.getTexture("Button");
 		
-		int buttonX = GameGraphics.SCREEN_WIDTH / 2 - buttonTexture.getWidth() / 2;
-		buttons.add(new Button("Return",
-				buttonTexture, 
-				buttonX, 450,
-				GameState.SETTINGS,
-				() -> CurrentGameState.gameState = GameState.MENU));
+		buttons.add(new ButtonBuilder(() -> CurrentGameState.gameState = GameState.MENU, GameState.SETTINGS)
+				.fixToPoint(UIAnchor.CENTER).offsetY(250)
+				.setTexture(buttonTexture)
+				.setText("Return")
+				.build());
+		
 	}	
 	
 	public void renderSettings(Graphics2D g, GameGraphics graphics) {

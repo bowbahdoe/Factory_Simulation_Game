@@ -51,6 +51,7 @@ public abstract class FactoryComponent extends TileObject  {
 	public Direction getRotation() {
 		return rotation;
 	}
+	
 	protected void setRotation(Direction rotation) {
 		this.rotation = rotation;
 	}

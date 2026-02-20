@@ -40,8 +40,6 @@ public class InitialiseGame {
 		new MainScreen(gameGraphics);
 		
         updaterThread.start();  // Start the game loop in a separate thread
-        
-		
 	}
 	
 	
@@ -117,5 +115,10 @@ public class InitialiseGame {
 		
 		textureManager.loadTexture("src/images/Button.png", "Button");
 		textureManager.loadTexture("src/images/Background.png", "Background");
+		textureManager.loadTexture("src/images/WorldSelection.png", "WorldSlot");
+		
+		textureManager.loadTexture("src/images/Icons/ExitIcon.png", "ExitIcon");
+		textureManager.loadTexture("src/images/Icons/PlayIcon.png", "PlayIcon");
+		textureManager.loadTexture("src/images/Icons/SettingsIcon.png", "SettingsIcon");
 	}
 }
