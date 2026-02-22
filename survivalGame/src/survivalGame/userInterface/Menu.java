@@ -12,9 +12,8 @@ import javax.swing.JButton;
 import graphics.CurrentGameState;
 import graphics.GameGraphics;
 import graphics.TextureManager;
-import survivalGame.Button;
 import survivalGame.GameState;
-import survivalGame.Button.ButtonBuilder;
+import survivalGame.userInterface.Button.ButtonBuilder;
 
 public class Menu {
 	List<Button> buttons = new ArrayList<>();

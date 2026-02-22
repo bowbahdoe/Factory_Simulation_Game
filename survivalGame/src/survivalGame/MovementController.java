@@ -3,6 +3,9 @@ package survivalGame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import survivalGame.inputs.GameKeyListener;
+import survivalGame.inputs.InputListener;
+
 public class MovementController implements GameKeyListener {
 	private int horiz = 0;
 	private int vert = 0;

@@ -4,14 +4,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
+import survivalGame.ConveyorSystem.ConveyorManager;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.PlaceableItem;
 import survivalGame.ItemManagement.WorldItem;
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileProvider;
+import survivalGame.inputs.GameKeyListener;
+import survivalGame.inputs.InputListener;
+import survivalGame.inputs.MouseClickListener;
+import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
+import survivalGame.tileObjects.FactoryComponents.FactoryComponent;
 
 public class BuildingController implements GameKeyListener, MouseClickListener {
 	private BuildMode buildMode = BuildMode.BUILD;
@@ -43,7 +49,7 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 		if (placedObject instanceof Conveyor) {
 			Conveyor conv = ((Conveyor) placedObject);
 			ConveyorManager.getInstance().registerConveyor(conv);
-			conv.recieveWorldItem(new WorldItem(ItemFactory.createItem(ItemID.WOOD), conv.parentTile.pixelX, conv.parentTile.pixelY));
+			conv.recieveWorldItem(new WorldItem(ItemFactory.createItem(ItemID.WOOD), conv.getParentTile().pixelX, conv.getParentTile().pixelY));
 		}
 	}
 

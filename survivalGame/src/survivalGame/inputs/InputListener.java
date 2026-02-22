@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.inputs;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -15,6 +15,7 @@ import java.util.List;
 import graphics.CurrentGameState;
 import graphics.GameGraphics;
 import graphics.UIClickable;
+import survivalGame.GameState;
 
 public class InputListener implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
 

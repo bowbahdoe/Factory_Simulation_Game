@@ -6,17 +6,16 @@ import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ActionTimer;
-import survivalGame.ConveyorSpriteManager;
-import survivalGame.Direction;
-import survivalGame.FactoryComponent;
 import survivalGame.IItemReciever;
 import survivalGame.ITickable;
 import survivalGame.TickManager;
+import survivalGame.ConveyorSystem.ConveyorSpriteManager;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileObjectID;
+import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.TileTree;
 
 public class TreeHarvester extends FactoryComponent implements ITickable {
@@ -90,13 +89,13 @@ public class TreeHarvester extends FactoryComponent implements ITickable {
 	
 	@Override
 	public int getY() {
-		return parentTile.y;
+		return getParentTile().y;
 	}
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		int x = this.parentTile.pixelX;
-		int y = this.parentTile.pixelY;
+		int x = this.getParentTile().pixelX;
+		int y = this.getParentTile().pixelY;
 		g.drawImage(super.texture ,x ,y , graphics);
 	}
 

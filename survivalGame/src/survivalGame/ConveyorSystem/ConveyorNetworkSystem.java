@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.ConveyorSystem;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -9,6 +9,7 @@ import java.util.Map;
 import survivalGame.ItemManagement.WorldItem;
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileProvider;
+import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
 public class ConveyorNetworkSystem {
@@ -83,7 +84,7 @@ public class ConveyorNetworkSystem {
 	 * @param currentConveyor is the conveyor we are searching inputs for.
 	 */
 	private void searchForInputConveyors(Conveyor currentConveyor) {
-		Tile parentTile = currentConveyor.parentTile;
+		Tile parentTile = currentConveyor.getParentTile();
 		EnumSet<Direction> inputBlackList = currentConveyor.getInputBlackList();
 		
 		//Get surrounding tiles.

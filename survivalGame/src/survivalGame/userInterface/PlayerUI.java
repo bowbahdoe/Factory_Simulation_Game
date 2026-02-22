@@ -13,14 +13,14 @@ import java.util.Map;
 
 import graphics.GameGraphics;
 import graphics.UIRenderable;
-import survivalGame.GameKeyListener;
-import survivalGame.InputListener;
 import survivalGame.InventoryListener;
 import survivalGame.Player;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.ItemStack;
+import survivalGame.inputs.GameKeyListener;
+import survivalGame.inputs.InputListener;
 
 public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListener{
 

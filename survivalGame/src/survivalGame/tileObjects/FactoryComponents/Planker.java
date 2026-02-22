@@ -7,10 +7,10 @@ import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageRotater;
 import survivalGame.ActionTimer;
-import survivalGame.Direction;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.WorldItem;
 import survivalGame.TileManagement.Tile;
+import survivalGame.tileObjects.Direction;
 
 public class Planker extends Conveyor{
 	
@@ -70,8 +70,8 @@ public class Planker extends Conveyor{
 
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		int x = this.parentTile.pixelX;
-		int y = this.parentTile.pixelY;
+		int x = this.getParentTile().pixelX;
+		int y = this.getParentTile().pixelY;
 		g.drawImage(super.texture ,x ,y , graphics);
 	}
 	

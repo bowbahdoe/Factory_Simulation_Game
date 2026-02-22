@@ -5,11 +5,11 @@ import java.util.EnumSet;
 import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageRotater;
-import survivalGame.ConveyorNetworkSystem;
-import survivalGame.ConveyorSpriteManager;
-import survivalGame.Direction;
+import survivalGame.ConveyorSystem.ConveyorNetworkSystem;
+import survivalGame.ConveyorSystem.ConveyorSpriteManager;
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileObjectID;
+import survivalGame.tileObjects.Direction;
 
 public class ConveyorSplitter extends Conveyor{
 	

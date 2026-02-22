@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 
 import graphics.GameGraphics;
 import graphics.UIClickable;
-import survivalGame.InputListener;
 import survivalGame.InventoryListener;
 import survivalGame.ItemManagement.CraftingRecipe;
+import survivalGame.inputs.InputListener;
 
 public class CraftButton implements UIClickable, InventoryListener{
 

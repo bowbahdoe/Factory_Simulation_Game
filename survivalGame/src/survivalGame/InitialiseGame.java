@@ -14,6 +14,7 @@ import graphics.GameGraphics;
 import graphics.TextureManager;
 import graphics.ImageManipulation.ImageFlipper;
 import survivalGame.ItemManagement.ItemID;
+import survivalGame.inputs.InputListener;
 
 public class InitialiseGame {
 	

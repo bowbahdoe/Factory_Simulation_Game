@@ -1,8 +1,9 @@
-package survivalGame;
+package survivalGame.ConveyorSystem;
 
 import java.util.Map;
 
 import graphics.GameGraphics;
+import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
 public class ConveyorSpriteManager {

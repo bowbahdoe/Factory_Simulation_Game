@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 
 import graphics.GameGraphics;
 import graphics.UIClickable;
-import survivalGame.InputListener;
 import survivalGame.ItemManagement.ItemStack;
+import survivalGame.inputs.InputListener;
 
 public class InventorySlot implements UIClickable{
 	

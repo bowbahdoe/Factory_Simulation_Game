@@ -13,13 +13,12 @@ import javax.swing.JTextField;
 import graphics.CurrentGameState;
 import graphics.GameGraphics;
 import graphics.TextureManager;
-import survivalGame.Button;
 import survivalGame.GameState;
 import survivalGame.Player;
 import survivalGame.WorldGenerator;
 import survivalGame.WorldIO;
 import survivalGame.WorldInfo;
-import survivalGame.Button.ButtonBuilder;
+import survivalGame.userInterface.Button.ButtonBuilder;
 
 public class WorldSelectionMenu {
 	Button[] slotButtons = new Button[3];

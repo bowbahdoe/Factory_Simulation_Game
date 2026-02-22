@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.inputs;
 
 import java.awt.event.KeyEvent;
 

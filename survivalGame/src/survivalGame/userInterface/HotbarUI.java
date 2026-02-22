@@ -7,12 +7,12 @@ import java.awt.image.BufferedImage;
 
 import graphics.GameGraphics;
 import graphics.UIRenderable;
-import survivalGame.GameKeyListener;
-import survivalGame.InputListener;
 import survivalGame.Player;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemStack;
 import survivalGame.ItemManagement.PlaceableItem;
+import survivalGame.inputs.GameKeyListener;
+import survivalGame.inputs.InputListener;
 
 public final class HotbarUI implements UIRenderable, GameKeyListener{
 
@@ -91,10 +91,7 @@ public final class HotbarUI implements UIRenderable, GameKeyListener{
 		for (HotbarSlot slot : slots) {
 			slot.renderUI(g, graphics);
 		}
-		
-		//This should be in a different class
-		g.setFont(new Font("Arial",24, 25));
-		g.drawString(player.getBuildingMode().toString(), InputListener.getInstance().getMouseX() - 50, InputListener.getInstance().getMouseY() + 40);
+
 
 	}
 

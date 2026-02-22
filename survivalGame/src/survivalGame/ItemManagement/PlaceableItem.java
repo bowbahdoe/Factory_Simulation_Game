@@ -1,9 +1,9 @@
 package survivalGame.ItemManagement;
 
-import survivalGame.Direction;
 import survivalGame.PlaceablesFactory;
-import survivalGame.PlacementInfo;
 import survivalGame.TileManagement.Tile;
+import survivalGame.tileObjects.Direction;
+import survivalGame.tileObjects.PlacementInfo;
 import survivalGame.tileObjects.TileObject;
 
 public class PlaceableItem extends Item {

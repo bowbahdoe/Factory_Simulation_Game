@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.ConveyorSystem;
 
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 

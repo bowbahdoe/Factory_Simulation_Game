@@ -6,16 +6,15 @@ import java.awt.Graphics2D;
 import java.util.EnumSet;
 
 import graphics.GameGraphics;
-import survivalGame.BeltSequence;
-import survivalGame.ConveyorManager;
-import survivalGame.Direction;
-import survivalGame.FactoryComponent;
-import survivalGame.IContainsConveyor;
 import survivalGame.IItemReciever;
+import survivalGame.ConveyorSystem.BeltSequence;
+import survivalGame.ConveyorSystem.ConveyorManager;
+import survivalGame.ConveyorSystem.IContainsConveyor;
 import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.WorldItem;
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileObjectID;
+import survivalGame.tileObjects.Direction;
 
 public class Conveyor extends FactoryComponent implements IContainsConveyor, IItemReciever{
 	
@@ -79,7 +78,7 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	}
 	
 	public void recieveWorldItem(WorldItem item) {
-		item.fixToTile(this.parentTile);
+		item.fixToTile(this.getParentTile());
 		heldItem = item;
 	}
 	
@@ -92,8 +91,8 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	
 	@Override
 	public void render(Graphics2D g, GameGraphics graphics) {
-		int x = this.parentTile.pixelX;
-		int y = this.parentTile.pixelY;
+		int x = this.getParentTile().pixelX;
+		int y = this.getParentTile().pixelY;
 		g.drawImage(super.texture ,x ,y , graphics);
 		g.setColor(Color.WHITE);
 		Font largeFont = new Font("Arial", Font.BOLD, 25);
@@ -122,7 +121,7 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	@Override
 	public void recieveItem(Item item) {
 		//new worldItem instantiated in order to display the item visually
-		recieveWorldItem(new WorldItem(item,parentTile.pixelX,parentTile.pixelY));
+		recieveWorldItem(new WorldItem(item,getParentTile().pixelX,getParentTile().pixelY));
 	}
 	@Override
 	public boolean canRecieve() {

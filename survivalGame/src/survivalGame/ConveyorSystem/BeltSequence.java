@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.ConveyorSystem;
 
 public class BeltSequence {
 	private int beltKey;

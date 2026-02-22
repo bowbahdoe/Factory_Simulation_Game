@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.ConveyorSystem;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -9,6 +9,8 @@ import java.util.Map;
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
+import survivalGame.ITickable;
+import survivalGame.TickManager;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
 public final class ConveyorManager implements ITickable{

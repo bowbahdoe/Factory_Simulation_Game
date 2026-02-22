@@ -8,8 +8,8 @@ import java.io.IOException;
 
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
-import survivalGame.FactoryComponent;
 import survivalGame.tileObjects.TileObject;
+import survivalGame.tileObjects.FactoryComponents.FactoryComponent;
 
 public class Tile implements WorldRenderable{
 	

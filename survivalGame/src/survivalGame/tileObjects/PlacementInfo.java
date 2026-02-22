@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.tileObjects;
 
 import survivalGame.TileManagement.Tile;
 

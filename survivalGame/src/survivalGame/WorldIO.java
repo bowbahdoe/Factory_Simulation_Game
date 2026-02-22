@@ -15,6 +15,8 @@ import survivalGame.TileManagement.TileChunk;
 import survivalGame.TileManagement.TileObjectFactory;
 import survivalGame.TileManagement.TileObjectID;
 import survivalGame.TileManagement.TileType;
+import survivalGame.tileObjects.Direction;
+import survivalGame.tileObjects.PlacementInfo;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.TileTree;
 

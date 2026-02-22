@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.userInterface;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,8 +10,9 @@ import java.awt.image.BufferedImage;
 
 import graphics.GameGraphics;
 import graphics.UIClickable;
-import survivalGame.userInterface.UIAlignment;
-import survivalGame.userInterface.UIAnchor;
+import survivalGame.GameState;
+import survivalGame.inputs.InputListener;
+import survivalGame.inputs.MouseClickListener;
 
 public class Button implements MouseClickListener{
 	

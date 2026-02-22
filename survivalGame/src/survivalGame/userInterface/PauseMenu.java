@@ -8,10 +8,9 @@ import javax.swing.JButton;
 
 import graphics.GameGraphics;
 import graphics.UIRenderable;
-import survivalGame.Button;
-import survivalGame.GameKeyListener;
 import survivalGame.GameState;
 import survivalGame.WorldIO;
+import survivalGame.inputs.GameKeyListener;
 
 public class PauseMenu implements GameKeyListener, UIRenderable{
 

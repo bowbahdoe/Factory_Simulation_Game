@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import survivalGame.ItemManagement.ItemID;
+import survivalGame.tileObjects.PlacementInfo;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 import survivalGame.tileObjects.FactoryComponents.ConveyorSplitter;

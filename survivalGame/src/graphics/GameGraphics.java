@@ -17,11 +17,11 @@ import java.util.TreeMap;
 import javax.swing.JPanel;
 
 import survivalGame.GameState;
-import survivalGame.InputListener;
 import survivalGame.Player;
 import survivalGame.Updatable;
 import survivalGame.WorldInfo;
 import survivalGame.TileManagement.TileChunk;
+import survivalGame.inputs.InputListener;
 import survivalGame.userInterface.Menu;
 import survivalGame.userInterface.SettingsDisplay;
 import survivalGame.userInterface.WorldSelectionMenu;

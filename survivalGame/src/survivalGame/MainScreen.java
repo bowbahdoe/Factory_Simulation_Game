@@ -5,6 +5,7 @@ package survivalGame;
 import javax.swing.JFrame;
 
 import graphics.GameGraphics;
+import survivalGame.inputs.InputListener;
 
 
 public class MainScreen {

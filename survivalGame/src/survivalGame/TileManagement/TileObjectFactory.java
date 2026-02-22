@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import survivalGame.PlacementInfo;
+import survivalGame.tileObjects.PlacementInfo;
 import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.TileRock;
 import survivalGame.tileObjects.TileTree;

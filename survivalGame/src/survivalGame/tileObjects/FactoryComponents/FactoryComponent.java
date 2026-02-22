@@ -1,7 +1,8 @@
-package survivalGame;
+package survivalGame.tileObjects.FactoryComponents;
 
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileProvider;
+import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.TileObject;
 
 public abstract class FactoryComponent extends TileObject  {
@@ -29,20 +30,20 @@ public abstract class FactoryComponent extends TileObject  {
 	 * @param rotation or direction to get the next Tile from.
 	 * @return the {@link Tile} that rotation is pointing towards.
 	 */
-	protected Tile getTargetTile(Direction rotation) {
+	public Tile getTargetTile(Direction rotation) {
 		Tile targetTile = null;
 		switch (rotation){
 		case NORTH:
-			targetTile = TileProvider.world_AccessTile(parentTile.x,parentTile.y - 1);
+			targetTile = TileProvider.world_AccessTile(getParentTile().x,getParentTile().y - 1);
 			break;
 		case EAST:
-			targetTile = TileProvider.world_AccessTile(parentTile.x + 1, parentTile.y);
+			targetTile = TileProvider.world_AccessTile(getParentTile().x + 1, getParentTile().y);
 			break;
 		case SOUTH:
-			targetTile = TileProvider.world_AccessTile(parentTile.x, parentTile.y + 1);
+			targetTile = TileProvider.world_AccessTile(getParentTile().x, getParentTile().y + 1);
 			break;
 		case WEST:
-			targetTile = TileProvider.world_AccessTile(parentTile.x - 1, parentTile.y);
+			targetTile = TileProvider.world_AccessTile(getParentTile().x - 1, getParentTile().y);
 			break;
 		}
 		return targetTile;
@@ -52,6 +53,9 @@ public abstract class FactoryComponent extends TileObject  {
 		return rotation;
 	}
 	
+	public Tile getParentTile() {
+		return parentTile;
+	}
 	protected void setRotation(Direction rotation) {
 		this.rotation = rotation;
 	}

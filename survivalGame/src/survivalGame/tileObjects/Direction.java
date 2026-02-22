@@ -1,4 +1,4 @@
-package survivalGame;
+package survivalGame.tileObjects;
 
 public enum Direction {
 	NORTH((byte)0 ,1 << 0), // 0001
