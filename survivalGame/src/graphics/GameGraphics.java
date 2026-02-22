@@ -29,6 +29,8 @@ import survivalGame.userInterface.WorldSelectionMenu;
 
 public final class GameGraphics extends JPanel implements Updatable {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private static TextureManager textureManager;
 	private static TreeMap<Integer, List<WorldRenderable>> WorldRenderLayers = new TreeMap<>();
 	private static List<UIRenderable> UIRenderLayers = new ArrayList<>();
@@ -56,10 +58,15 @@ public final class GameGraphics extends JPanel implements Updatable {
 
 	public static void setCameraZoom(float cameraZoom) {
 		GameGraphics.cameraZoom = cameraZoom;
+		GameGraphics.cameraZoom = Math.max(0.2f, Math.min(cameraZoom, 3f));
 	}
 	
 	public static void registerWorldObj(WorldRenderable toRender, int layer) {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).add(toRender);
+	}
+	
+	public static void removeWorldObj(WorldRenderable toRemove, int layer) {
+		WorldRenderLayers.get(layer).remove(toRemove);
 	}
 	
 	public static void registerUI(UIRenderable toRender) {

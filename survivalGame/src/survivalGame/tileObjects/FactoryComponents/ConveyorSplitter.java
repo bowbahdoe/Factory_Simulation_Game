@@ -87,6 +87,10 @@ public class ConveyorSplitter extends Conveyor{
 
 	@Override
 	public void removeObject() {	
+		
+		GameGraphics.removeWorldObj(this, 2);
+		super.removeObject();
+		
 	}
 
 	public void flipCurrentConveyor() {

@@ -64,6 +64,8 @@ public class Planker extends Conveyor{
 
 	@Override
 	public void removeObject() {	
+		GameGraphics.removeWorldObj(this, 2);
+		super.removeObject();
 	}
 
 	@Override

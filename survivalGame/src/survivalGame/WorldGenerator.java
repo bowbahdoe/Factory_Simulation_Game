@@ -56,11 +56,11 @@ public class WorldGenerator {
 				int rNum = (int) (Math.random() * 285) + 1; 
 				if (rNum <= 2) {
 					TileObject tree = new TileTree(tile);
-					tile.setObject(tree);
+					tile.setTileObject(tree);
 				}
 				else if (rNum <= 3) {
 					TileObject rock = new TileRock(tile);
-					tile.setObject(rock);
+					tile.setTileObject(rock);
 				}
 				
 				chunk.add(tile);

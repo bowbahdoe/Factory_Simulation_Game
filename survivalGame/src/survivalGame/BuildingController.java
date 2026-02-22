@@ -14,7 +14,8 @@ import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
 public class BuildingController implements GameKeyListener, MouseClickListener {
-	private boolean isBuilding = true;
+	private BuildMode buildMode = BuildMode.BUILD;
+	
 	private Direction buildRotation = Direction.NORTH;
 	private Player player;
 	
@@ -24,9 +25,6 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 		InputListener.getInstance().registerClickListenerToWorld(this);
 	}
 	
-	public void toggleBuilding() {
-		isBuilding = !isBuilding;
-	}
 	
 	public void placeBuild(Tile tile, Player player) {
 		//If tile is occupied, don't place build.
@@ -35,8 +33,9 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 		}
 		//If player hasn't selected a hotbarSlot, return.
 		if (player.getSelectedHotbarSlot() == null) return;
+		if (!(player.getSelectedHotbarSlot().getItem() instanceof PlaceableItem)) return;
 		
-		//place the item if it is placeable.
+ 		//place the item if it is placeable.
 		PlaceableItem toPlace = (PlaceableItem)player.getSelectedHotbarSlot().getItem();
 		if (toPlace == null) return;
 		TileObject placedObject = toPlace.place(tile, buildRotation);
@@ -48,6 +47,12 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 		}
 	}
 
+	public void deleteBuild(Tile tile) {
+		if (tile.getTileObject() instanceof FactoryComponent component) {
+			component.removeObject();
+			tile.setTileObject(null);
+		}
+	}
 	@Override
 	public void onKeyPressed(int keyCode) {
 		//E -> rotate clockwise
@@ -60,7 +65,16 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
     		buildRotation = buildRotation.rotatedAntiClockwise();
     	}
     	else if (keyCode == KeyEvent.VK_B) {
-    		toggleBuilding();
+    		if (buildMode == BuildMode.BUILD) buildMode = BuildMode.SELECT;
+    		else {
+    		buildMode = BuildMode.BUILD;
+    		}
+    	}
+    	else if (keyCode == KeyEvent.VK_V) {
+    		if (buildMode == BuildMode.DELETE) buildMode = BuildMode.SELECT;
+    		else {
+    		buildMode = BuildMode.DELETE;
+    		}
     	}
 	}
 
@@ -68,8 +82,8 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 	public void onKeyReleased(int keyCode) {
 	}
 	
-	public boolean isBuilding() {
-		return isBuilding;
+	public BuildMode getBuildMode() {
+		return buildMode;
 	}
 	
 	public Direction getBuildRotation() {
@@ -80,10 +94,13 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 	public void onClick(MouseEvent e) {
 		//Select Tile and place build if buidling enabled.
 		Tile tile = TileProvider.pixel_AccessTile(e.getX(), e.getY());
-		if ( !isBuilding ) {
-			player.selectTile(tile);
+		if (buildMode == BuildMode.BUILD) {
+			
+			placeBuild(tile,player);
 			return;
 		}
-		placeBuild(tile,player);
+		if (buildMode != BuildMode.DELETE) return;
+		
+		deleteBuild(tile);
 	}
 }

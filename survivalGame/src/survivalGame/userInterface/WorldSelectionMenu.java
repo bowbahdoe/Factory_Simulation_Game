@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JTextField;
 
@@ -40,24 +41,19 @@ public class WorldSelectionMenu {
 		
 		//READ FROM SAVE FILES FIRST BEFORE DISPLAYING BUTTONS. 
 		
+		UIAnchor[] anchors = {UIAnchor.CENTER, UIAnchor.CENTER_LEFT, UIAnchor.CENTER_RIGHT};
 		
-		slotButtons[0] = new ButtonBuilder(() -> onSlotButtonClick(0), GameState.WORLDSELECTION)
-				.setTexture(worldSlot)
-				.setDimensionToTexture()
-				.centerDimensionToPoint(UIAnchor.CENTER)
-				.build();
-		
-		slotButtons[1] = new ButtonBuilder(() -> onSlotButtonClick(0), GameState.WORLDSELECTION)
-				.setTexture(worldSlot)
-				.setDimensionToTexture()
-				.centerDimensionToPoint(UIAnchor.CENTER_LEFT)
-				.build();
-		
-		slotButtons[2] = new ButtonBuilder(() -> onSlotButtonClick(0), GameState.WORLDSELECTION)
-				.setTexture(worldSlot)
-				.setDimensionToTexture()
-				.centerDimensionToPoint(UIAnchor.CENTER_RIGHT)
-				.build();
+		for (int i = 0; i < 3; i++) {
+			//Lambda expressions need final variables
+			final int index = i;
+			slotButtons[index] = new ButtonBuilder(() -> onSlotButtonClick(index), GameState.WORLDSELECTION)
+					.setTexture(worldSlot)
+					.setDimensionToTexture()
+					.setText(worldPresent(index) ? "+++" : "[EMPTY]")
+					.setTextColour(Color.WHITE)
+					.centerDimensionToPoint(anchors[index])
+					.build();
+		}
 		
 		goBackButton = new ButtonBuilder(() -> CurrentGameState.gameState = GameState.MENU, GameState.WORLDSELECTION)
 				.setTexture(buttonTexture)
@@ -73,11 +69,6 @@ public class WorldSelectionMenu {
 	}
 	
 	private void initialiseDeleteButtons() {
-		int buttonX = GameGraphics.SCREEN_WIDTH / 2 - buttonTexture.getWidth() / 2;
-		Rectangle rectMiddle = new Rectangle(buttonX, 820, 300,50);
-		Rectangle rectLeft= new Rectangle((int) (buttonX - 0.6 * buttonX), 820, 300,50);
-		Rectangle rectRight = new Rectangle((int) (buttonX + 0.6 * buttonX), 820, 300,50);
-		
 		Color buttonColour = new Color(200,20,20);
 		
 		deleteButtons[0] = new ButtonBuilder(() -> onDeleteButtonClick(0, slotButtons[0]), GameState.WORLDSELECTION)
@@ -106,9 +97,7 @@ public class WorldSelectionMenu {
 				.setFontSize(35)
 				.centerDimensionToPoint(UIAnchor.CENTER_BOTTOM_RIGHT)
 				.build();
-		
-	
-		
+
 	}
 	
 	public void onSlotButtonClick(int index) {
@@ -129,6 +118,14 @@ public class WorldSelectionMenu {
 		}
 
 		CurrentGameState.gameState = GameState.GAME;
+	}
+	
+	public boolean worldPresent(int index) {
+		String fileName = "world" + index;
+		if (WorldIO.isFilePresent(fileName)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void onDeleteButtonClick(int index, Button button) {

@@ -2,6 +2,7 @@ package survivalGame.TileManagement;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -25,6 +26,8 @@ public class Tile implements WorldRenderable{
 	private boolean selected = false;
 	private TileObject tileObject; 
 	public final TileChunk chunkParent;
+	
+	BufferedImage texture = GameGraphics.getTextureManager().getTexture("Grass");
 	// Declare image outside the try block
 	public Tile(int x, int y, TileChunk parent, int tileSize) {
 		
@@ -45,6 +48,7 @@ public class Tile implements WorldRenderable{
 			
 			g.setColor(new Color(66,100,74));
 			g.fillRect(pixelX, pixelY, tileSize, tileSize);
+			g.drawImage(texture, pixelX, pixelY, tileSize,tileSize, graphics);
 			
 			if (selected) {
 				g.setColor(new Color(0,0,111));
@@ -52,6 +56,7 @@ public class Tile implements WorldRenderable{
 				g.setColor(new Color(0,0,50,35));
 				g.fillRect(pixelX, pixelY, tileSize, tileSize);
 			}
+			
 		}	
 	}
 
@@ -77,7 +82,7 @@ public class Tile implements WorldRenderable{
 		return selected;
 	}
 	
-	public void setObject(TileObject object) {
+	public void setTileObject(TileObject object) {
 		tileObject = object;
 	}
 	

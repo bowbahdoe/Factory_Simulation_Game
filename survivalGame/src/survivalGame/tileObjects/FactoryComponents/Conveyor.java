@@ -1,10 +1,13 @@
 package survivalGame.tileObjects.FactoryComponents;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.EnumSet;
 
 import graphics.GameGraphics;
 import survivalGame.BeltSequence;
+import survivalGame.ConveyorManager;
 import survivalGame.Direction;
 import survivalGame.FactoryComponent;
 import survivalGame.IContainsConveyor;
@@ -19,7 +22,10 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	public static final TileObjectID ID = TileObjectID.CONVEYOR;
 	
 	private Tile targetTile = super.getTargetTile(getRotation());
+	
+	//input conveyor is always the same beltSequence as the current one.
 	public Conveyor inputConveyor;
+	//Target conveyor doesn't rely on beltSequence. 
 	public Conveyor targetConveyor;
 	public WorldItem heldItem;
 	public BeltSequence beltSequence;
@@ -34,6 +40,13 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	
 	@Override
 	public void removeObject() {
+		//Coupling needs to be reworked later, likely using interfaces and listeners. 
+		ConveyorManager.getInstance().deleteConveyor(this);
+		GameGraphics.removeWorldObj(this, 2);
+		
+		if (heldItem == null) return;
+		heldItem.deleteItem();
+		heldItem = null;
 	}
 
 	public EnumSet<Direction> getInputBlackList(){
@@ -52,6 +65,11 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 	public boolean hasInputConveyor() {
 		return inputConveyor != null;
 	}
+	
+	public boolean hasTargetConveyor() {
+		return targetConveyor != null;
+	}
+	
 	public WorldItem collectItem() {
 		WorldItem item = heldItem;
 		if (heldItem == null) return null;
@@ -77,6 +95,10 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 		int x = this.parentTile.pixelX;
 		int y = this.parentTile.pixelY;
 		g.drawImage(super.texture ,x ,y , graphics);
+		g.setColor(Color.WHITE);
+		Font largeFont = new Font("Arial", Font.BOLD, 25);
+		g.setFont(largeFont);
+		g.drawString(beltSequence.getBeltKey() + "", x, y);
 	}
 	
 	@Override

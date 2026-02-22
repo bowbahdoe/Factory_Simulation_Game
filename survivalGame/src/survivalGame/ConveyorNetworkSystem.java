@@ -133,19 +133,65 @@ public class ConveyorNetworkSystem {
 		return conv.getConveyor();
 	}
 	
-	
 	/**
 	 * Makes conveyor attempt to pass to the next target, It won't passed if its locked.
 	 * @param conveyor that passes
 	 * @param item to pass (in case you want to create an item)
 	 */
 	public void conveyorPassToTarget(Conveyor conveyor, WorldItem item) {
-		if (item == null || conveyor.isLocked() || conveyor.targetConveyor == null) {
+		if (item == null || conveyor.isLocked() || conveyor.targetConveyor == null ) {
+			return;
+		}
+		if (conveyor.getTargetTile().isEmpty()) {
+			//If the conveyor is removed but variable not set to null.
+			conveyor.targetConveyor = null;
 			return;
 		}
 		if ( !conveyor.targetConveyor.isEmpty() ) return;
 		
 		conveyor.targetConveyor.recieveWorldItem(item);
 		conveyor.heldItem = null;
+	}
+	
+	public void deleteConveyor(Conveyor conveyor) {
+		//Input conveyors are always of the same beltSequence key
+		//Target conveyors can be any conveyor. 
+		
+		
+		if (keyToTail.containsValue(conveyor) && conveyor.targetConveyor == null) {
+			//Conveyor is isolated
+			keyToTail.remove(conveyor.beltSequence);
+			
+			System.out.println("Delete ISOLATED");
+		}
+		else if (keyToTail.containsValue(conveyor) && conveyor.targetConveyor.beltSequence == conveyor.beltSequence) {
+			//When removing last/tail conveyor, next conveyor is the new tail
+			keyToTail.put(conveyor.beltSequence, conveyor.targetConveyor);
+			conveyor.targetConveyor.inputConveyor = null;
+		}
+		else if (conveyor.hasInputConveyor() && conveyor.hasTargetConveyor()) {
+			//Similar to removing in the middle of a linked list
+			//Except the lower end needs to have a new beltKey
+			//Input conveyor needs to be in that map.
+			conveyor.inputConveyor.targetConveyor = null;
+			BeltSequence key = generateConveyorKey();
+			replaceBeltKey(conveyor.inputConveyor, key);
+			keyToTail.put(key, conveyor.inputConveyor);
+			
+			if (conveyor.targetConveyor.inputConveyor == conveyor){
+				conveyor.targetConveyor.inputConveyor = null;
+			}
+		}
+		else if (conveyor.inputConveyor != null){
+			conveyor.inputConveyor.targetConveyor = null;
+		}
+	}
+	
+	public void replaceBeltKey(Conveyor conveyor, BeltSequence beltKey) {
+		if (conveyor == null) return;
+		
+		conveyor.beltSequence = beltKey;
+		
+		replaceBeltKey(conveyor.inputConveyor, beltKey);
 	}
 }

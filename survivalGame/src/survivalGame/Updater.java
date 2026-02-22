@@ -10,9 +10,8 @@ public final class Updater implements Runnable {
     private static List<Updatable> updatables = new ArrayList<>();
     private static Queue<Updatable> toAdd = new LinkedList<>();
     
-    final int fps = 100;
+    final int fps = 70;
     final long frameTime = 1000 / fps; // 16 ms target
-    
     
     private Updater() {}
 
@@ -23,13 +22,19 @@ public final class Updater implements Runnable {
         return instance;
     }
 
-
     public static void register(Updatable updatable) {
     	 if (updatable == null) {
     	        throw new IllegalArgumentException("Trying to register null!");
     	    }
         toAdd.add(updatable);
     }
+    
+    public static void remove(Updatable updatable) {
+   	 if (updatable == null) {
+   	        throw new IllegalArgumentException("Trying to remove null!");
+   	    }
+       toAdd.remove(updatable);
+   }
     
     @Override
     public void run() {
@@ -54,7 +59,6 @@ public final class Updater implements Runnable {
             }
         }
     }
-
 
     public void updateAll() {
         

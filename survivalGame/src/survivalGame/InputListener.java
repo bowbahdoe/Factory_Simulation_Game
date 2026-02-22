@@ -128,7 +128,6 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
             	GameGraphics.setCameraZoom(GameGraphics.getCameraZoom() / 1.1f); // zoom out
             }
 
-            GameGraphics.setCameraZoom(Math.max(0.1f, Math.min(GameGraphics.getCameraZoom(), 5.0f)));
 
         }
 	}

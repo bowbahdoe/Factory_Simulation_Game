@@ -79,14 +79,12 @@ public class TreeHarvester extends FactoryComponent implements ITickable {
 		
 		if (! actionTime.actionTick()) return;
 		if (targetTree == null || targetOutput == null) return;
-		action();
-		
+		action();	
 	}
 
 	private void action() {
 		if (! targetOutput.canRecieve()) return;
 		Item item = ItemFactory.createItem(ItemID.LOG);
-		System.out.println("----------LOG OUTPUT");
 		targetOutput.recieveItem(item);
 	}
 	
@@ -104,7 +102,8 @@ public class TreeHarvester extends FactoryComponent implements ITickable {
 
 	@Override
 	public void removeObject() {
-
+		GameGraphics.removeWorldObj(this, 2);
+		TickManager.getInstance().remove(this);
 	}
 
 	@Override

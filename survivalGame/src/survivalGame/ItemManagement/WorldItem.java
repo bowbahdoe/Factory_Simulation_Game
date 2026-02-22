@@ -74,6 +74,11 @@ public class WorldItem implements WorldRenderable, Updatable {
 	public float lerp(float a, float b, float t) {
 	    return a + t * (b - a);
 	}
+	
+	public void deleteItem() {
+		Updater.remove(this);
+		GameGraphics.removeWorldObj(this, 4);
+	}
 	@Override
 	public void fixedUpdate(long delta) {
 		if (!active) return;

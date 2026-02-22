@@ -104,7 +104,8 @@ public class RockDriller extends FactoryComponent implements ITickable {
 
 	@Override
 	public void removeObject() {
-
+		GameGraphics.removeWorldObj(this, 2);
+		TickManager.getInstance().remove(this);
 	}
 
 	@Override

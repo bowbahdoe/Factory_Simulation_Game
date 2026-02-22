@@ -23,9 +23,6 @@ public class PauseMenu implements GameKeyListener, UIRenderable{
 	public PauseMenu() {
 		buttonTexture = GameGraphics.getTextureManager().getTexture("Button");
 		int[] center = UIAlignment.getCoordinateFromAnchor(UIAnchor.CENTER);
-		
-		
-
 	
 	}
 	@Override

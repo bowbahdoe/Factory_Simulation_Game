@@ -30,6 +30,10 @@ public final class TickManager implements Updatable{
 	public void register(ITickable obj) {
 		toTick.add(obj);
 	}
+	
+	public void remove(ITickable obj) {
+		toTick.remove(obj);
+	}
 
 	@Override
 	public void update() {

@@ -11,18 +11,16 @@ import graphics.GameGraphics;
 import graphics.WorldRenderable;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
-public final class ConveyorManager implements ITickable, WorldRenderable{
+public final class ConveyorManager implements ITickable{
 
 	private ConveyorNetworkSystem networkSystem = new ConveyorNetworkSystem();
 	
 	private static ConveyorManager ConveyorManagerInstance;
-
 	
 	/**
 	 * Maps beltKey to conveyor Leaf. 
 	 * A conveyor leaf is the end of a conveyor belt sequence, treated like a linked list.
 	 */
-	
 	
 	//This will increment for each new conveyor leef you make.
 	
@@ -35,7 +33,6 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 	
 	public ConveyorManager() {
 		TickManager.getInstance().register(this); 
-		GameGraphics.registerWorldObj(this, 4);
 	
 	}
 	 
@@ -67,41 +64,13 @@ public final class ConveyorManager implements ITickable, WorldRenderable{
 	public void registerConveyor(Conveyor conveyor) {
 		networkSystem.initializeConveyor(conveyor);
 	}
-	@Override
-	public int getY() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean isActive() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void render(Graphics2D g, GameGraphics graphics) {
-		/*
-		List<Integer> map = new ArrayList<>(keyToTail.keySet());
-		for (int key : map) {
-			//Draws orange box on each Tail (Where DFS starts from)
-			Conveyor c = keyToTail.get(key);
-			
-			int x = c.parentTile.pixelX;
-			int y = c.parentTile.pixelY;
-			g.setColor(Color.ORANGE);
-			g.fillRect(x + 70, y, 30, 30);
-			
-			g.setColor(Color.BLACK);
-			g.drawString(key + "", x + 73, y + 24);
-		}
-		*/
-	}
-
 
 	public ConveyorNetworkSystem getNetworkSystem() {
 		return networkSystem;
 	}
 	
+	public void deleteConveyor(Conveyor conveyor) {
+		networkSystem.deleteConveyor(conveyor);
+	}
 
 }

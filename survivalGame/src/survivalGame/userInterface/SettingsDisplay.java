@@ -24,11 +24,15 @@ public class SettingsDisplay {
 		buttonTexture = Tmanager.getTexture("Button");
 		
 		buttons.add(new ButtonBuilder(() -> CurrentGameState.gameState = GameState.MENU, GameState.SETTINGS)
-				.fixToPoint(UIAnchor.CENTER).offsetY(250)
 				.setTexture(buttonTexture)
+				.setDimensionToTexture()
+				.centerDimensionToPoint(UIAnchor.BOTTOM)
+				.offsetY(-50)
 				.setText("Return")
 				.build());
 		
+
+	
 	}	
 	
 	public void renderSettings(Graphics2D g, GameGraphics graphics) {

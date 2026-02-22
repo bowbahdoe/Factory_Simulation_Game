@@ -168,7 +168,7 @@ public class WorldIO {
 		if (hasTileObject) {
 			TileObjectID ID = TileObjectID.fromId(input.readByte());  //READS tileObjectID
 			TileObject object = TileObjectFactory.createTileObject(ID, new PlacementInfo(tile, Direction.NORTH));
-			tile.setObject(object);
+			tile.setTileObject(object);
 		}
 		
 		return tile;

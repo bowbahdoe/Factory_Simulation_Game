@@ -1,5 +1,6 @@
 package survivalGame.userInterface;
 
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -90,6 +91,10 @@ public final class HotbarUI implements UIRenderable, GameKeyListener{
 		for (HotbarSlot slot : slots) {
 			slot.renderUI(g, graphics);
 		}
+		
+		//This should be in a different class
+		g.setFont(new Font("Arial",24, 25));
+		g.drawString(player.getBuildingMode().toString(), InputListener.getInstance().getMouseX() - 50, InputListener.getInstance().getMouseY() + 40);
 
 	}
 

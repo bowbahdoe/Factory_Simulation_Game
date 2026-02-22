@@ -68,7 +68,7 @@ public class InitialiseGame {
 	private static void loadTextures() {
 
 		textureManager.loadTexture("src/images/Stickman.png", "Player");
-		textureManager.loadTexture("src/images/grasy.png", "Grass");
+		textureManager.loadTexture("src/images/grasy.jpg", "Grass");
 		textureManager.loadTexture("src/images/Tree.png", "Tree");
 		textureManager.loadTexture("src/images/Rock.png", "Rock");
 		
@@ -112,6 +112,7 @@ public class InitialiseGame {
 		textureManager.loadTexture("src/images/Items/Item_RockDriller.png", "RockDrillerItem");
 		
 		textureManager.loadTexture("src/images/BlueprintDirection.png", "Blueprint");
+		textureManager.loadTexture("src/images/BlueprintDelete.png", "DeleteBlueprint");
 		
 		textureManager.loadTexture("src/images/Button.png", "Button");
 		textureManager.loadTexture("src/images/Background.png", "Background");

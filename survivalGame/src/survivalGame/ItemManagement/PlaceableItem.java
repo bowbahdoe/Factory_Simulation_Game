@@ -14,7 +14,7 @@ public class PlaceableItem extends Item {
 
 	public TileObject place(Tile tile, Direction placementRotation) {
 		TileObject placedObject = PlaceablesFactory.createPlaceable(this.getItemID(), new PlacementInfo(tile, placementRotation));
-		tile.setObject(placedObject);
+		tile.setTileObject(placedObject);
 		return placedObject;
 	}
 }

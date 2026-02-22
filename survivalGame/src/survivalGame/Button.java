@@ -14,7 +14,6 @@ import survivalGame.userInterface.UIAlignment;
 import survivalGame.userInterface.UIAnchor;
 
 public class Button implements MouseClickListener{
-
 	
 	//Make x and y "virtual" and make it scale with resolution
 	
@@ -36,6 +35,7 @@ public class Button implements MouseClickListener{
 	private int fontSize = 42;
 	
 	private Color colour;
+	private Color textColour;
 	
 	private Button(ButtonBuilder builder) {
 		this.xPosition = builder.xPosition;
@@ -48,6 +48,7 @@ public class Button implements MouseClickListener{
 		this.width = builder.width;
 		this.height = builder.height;
 		this.colour = builder.colour;
+		this.textColour = builder.textColour;
 		InputListener.getInstance().registerClickListener(builder.gameState, this);
 	}
 
@@ -63,7 +64,7 @@ public class Button implements MouseClickListener{
 		}
 		if (text == null || text.equals("")) return;
 		
-		g.setColor(Color.BLACK);
+		g.setColor(textColour);
 		Font largeFont = new Font("Arial", Font.BOLD, fontSize);
 	    g.setFont(largeFont);
 	    
@@ -100,6 +101,7 @@ public class Button implements MouseClickListener{
 	public void setColour(Color colour) {
 		this.colour = colour;
 	}
+	
 	public static class ButtonBuilder{
 		
 		private int xPosition = 300;
@@ -113,6 +115,7 @@ public class Button implements MouseClickListener{
 		private String text;
 		private GameState gameState;
 		private Color colour;
+		private Color textColour = Color.BLACK;
 		/**
 		 * Constructor for the ButtonBuilder
 		 * @param function to execute upon click
@@ -182,11 +185,19 @@ public class Button implements MouseClickListener{
 			return this;
 		}
 		
+		/**
+		 * Sets the fill colour of the button.
+		 */
 		public ButtonBuilder setColour(Color colour) {
 			this.colour = colour;
 			return this;
 		}
 
+		public ButtonBuilder setTextColour(Color colour) {
+			textColour = colour;
+			return this;
+		}
+		
 		public ButtonBuilder fixToPoint(UIAnchor anchorPoint) {
 			int[] coordinate = UIAlignment.getCoordinateFromAnchor(anchorPoint);
 			this.xPosition = coordinate[0];
@@ -223,8 +234,7 @@ public class Button implements MouseClickListener{
 			this.height = texture.getHeight();
 			return this;
 		}
-		
-	
+
 		public Button build() {
 			return new Button(this);
 		}

@@ -8,16 +8,13 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import graphics.GameGraphics;
 import graphics.WorldRenderable;
 import graphics.ImageManipulation.ImageRotater;
-import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.PlaceableItem;
 import survivalGame.ItemManagement.WorldItem;
 import survivalGame.TileManagement.Tile;
-import survivalGame.TileManagement.TileChunk;
 import survivalGame.TileManagement.TileProvider;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 import survivalGame.userInterface.HotbarSlot;
@@ -31,10 +28,11 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 	
 	private PlayerUI playerUI;
 	BufferedImage[] blueprints = new BufferedImage[4];
+	BufferedImage deleteBlueprint = GameGraphics.getTextureManager().getTexture("DeleteBlueprint");
 	
 	private double pixelX = -15000;
 	private double pixelY = -10000;
-	private int velocity = 360 * 6;
+	private int velocity = 360 * 4;
 	
 	
 	private Tile selectedTile;
@@ -113,10 +111,19 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		
 		g.drawImage(character, -(int)pixelX - playerSize, -(int)pixelY - playerSize, graphics);
 		
-		renderBlueprint(g,graphics);	
+		renderBlueprint(g,graphics);
+		renderDeleteBlueprint(g,graphics);
 	}
 	
+	private void renderDeleteBlueprint(Graphics2D g, GameGraphics graphics) {
+		if (buildingTool.getBuildMode() != BuildMode.DELETE) return;
+		Tile tile = TileProvider.pixel_AccessTile(InputListener.getInstance().getMouseX(), InputListener.getInstance().getMouseY());
+		
+		BufferedImage texture = deleteBlueprint;
+		g.drawImage(texture, (int) (tile.pixelX), (int) (tile.pixelY), graphics);
+	}
 	private void renderBlueprint(Graphics2D g, GameGraphics graphics) {
+		if (buildingTool.getBuildMode() != BuildMode.BUILD) return;
 		if (selectedHotbarSlot == null) return;
 		
 		if (!(selectedHotbarSlot.getItem() instanceof PlaceableItem)) return;
@@ -176,26 +183,12 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		playerUI.mergeInventory(tempInventory);
 	}
 	private Tile getTile(int xOffset, int yOffset) {
-		
-		
 		int x = (int) ((GameGraphics.getOriginOffset()[0] + xOffset )/ GameGraphics.TILESIZE);
 		int y = (int) ((GameGraphics.getOriginOffset()[1] + yOffset ) / GameGraphics.TILESIZE);
 		
-		int chunkSize = GameGraphics.chunkSize;
-		int chunkAmount = GameGraphics.worldSize / chunkSize;
-		int positionInArray = chunkAmount * (x / chunkSize) + (y / chunkSize);		
-		if (positionInArray < 0) return null;
-		TileChunk chunk = (TileChunk) GameGraphics.chunks[positionInArray];
-		
-		int chunkX = x - (chunk.getX() * chunkSize);
-		int chunkY = y - (chunk.getY() * chunkSize);
-		
-		if (chunkX * chunkSize + chunkY < 0 ) return null; //Out of bounds
-		Tile tile = chunk.getTiles().get(chunkX * chunkSize + chunkY);
-
-		
-		return tile;
+		return TileProvider.world_AccessTile(x, y);
 	}
+	
 	public InventorySlot getSelectedInventorySlot() {
 		return selectedInventorySlot;
 	}
@@ -230,10 +223,11 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		}
 		
 		selectedTile = getClickedTile(e.getX(), e.getY());
-
-		
 	}
 
+	public BuildMode getBuildingMode() {
+		return buildingTool.getBuildMode();
+	}
 	@Override
 	public void onKeyReleased(int keyCode) {
 		
