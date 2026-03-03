@@ -76,6 +76,13 @@ public final class GameGraphics extends JPanel implements Updatable {
 	public static void registerAll(List<WorldRenderable> toRender, int layer) {
 		WorldRenderLayers.computeIfAbsent(layer, k -> new ArrayList<>()).addAll(toRender);
 	}
+	
+	public static void clearWorldObjects() {
+		WorldRenderLayers.clear();
+	}
+	public static void clearUI() {
+		UIRenderLayers.clear();
+	}
 
 	private static Player player;
 	
@@ -180,10 +187,7 @@ public final class GameGraphics extends JPanel implements Updatable {
     }
     private void renderWorld(Graphics2D g) {
 
-    	for (TileChunk chunk : chunks) {
-    		chunk.renderChunk(g,this);
-		}
-
+    	
     	for (int layer : WorldRenderLayers.keySet()) {
     	
     		//Loops through every tile in your view

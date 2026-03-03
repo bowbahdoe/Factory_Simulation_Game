@@ -186,6 +186,11 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		}
 		playerUI.mergeInventory(tempInventory);
 	}
+	/**
+	 * @param xOffset in pixel coordinates
+	 * @param yOffset in pixel coordinates
+	 * @return a reference to Tile instance
+	 */
 	private Tile getTile(int xOffset, int yOffset) {
 		int x = (int) ((GameGraphics.getOriginOffset()[0] + xOffset )/ GameGraphics.TILESIZE);
 		int y = (int) ((GameGraphics.getOriginOffset()[1] + yOffset ) / GameGraphics.TILESIZE);
@@ -209,10 +214,8 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 	public void onKeyPressed(int keyCode) {
 		switch (keyCode) {
 			case KeyEvent.VK_F:
-				collectItems();
+				collectItems();	
 		}
-	 	
-		
 	}
 	
 	private Tile getClickedTile(int x, int y) {

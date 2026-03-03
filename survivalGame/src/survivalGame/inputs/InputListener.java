@@ -40,6 +40,7 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	private EnumMap<GameState, List<MouseClickListener>> clickMap = new EnumMap<>(GameState.class);
 	private List<UIClickable> clickableUI = new ArrayList<>();
 	private List<GameKeyListener> keyListeners = new ArrayList<>();
+	private List<GameMouseReleaseListener> mouseReleaseListeners = new ArrayList<>();
 	
 	public void registerClickableUI(UIClickable clickableInterface) {
 		clickableUI.add(clickableInterface);
@@ -49,12 +50,14 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 	}
 	public void registerClickListener(GameState state, MouseClickListener c) {
 		clickMap.computeIfAbsent(state, k -> new ArrayList<>()).add(c);
-
 	}
 	public void registerKeyListener(GameKeyListener keyListener) {
 		keyListeners.add(keyListener);
 	}
-
+	public void registerReleaseListener(GameMouseReleaseListener releaseListener) {
+		mouseReleaseListeners.add(releaseListener);
+	}
+	
 	@Override
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
@@ -117,6 +120,9 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
         if (e.getButton() == MouseEvent.BUTTON1) {
             leftButtonHeld = false;
         }
+        for (GameMouseReleaseListener releaseListener : mouseReleaseListeners) {
+        	releaseListener.mouseReleased(e);
+        }
     }
     
 	@Override
@@ -128,8 +134,6 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
             } else {
             	GameGraphics.setCameraZoom(GameGraphics.getCameraZoom() / 1.1f); // zoom out
             }
-
-
         }
 	}
 

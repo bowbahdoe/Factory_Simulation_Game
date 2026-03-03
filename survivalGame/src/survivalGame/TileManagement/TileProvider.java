@@ -55,13 +55,14 @@ public class TileProvider {
 		if (x < 0 || y < 0 || x > GameGraphics.worldSize || y > GameGraphics.worldSize) return null;
 		int chunkSize = GameGraphics.chunkSize;
 		int chunkAmount = GameGraphics.worldSize / chunkSize;
-		int positionInArray = chunkAmount * (x / chunkSize) + (y / chunkSize);		
+		int positionInArray = chunkAmount * (x / chunkSize) + (y / chunkSize);	
+		if (positionInArray >= GameGraphics.chunks.length) return null;  //Out of bounds
 		TileChunk chunk = (TileChunk) GameGraphics.chunks[positionInArray];
 		
 		int chunkX = x - (chunk.getX() * chunkSize);
 		int chunkY = y - (chunk.getY() * chunkSize);
 	
-		if (chunkX * chunkSize + chunkY < 0 ) return null; //Out of bounds
+		if (chunkX * chunkSize + chunkY < 0 || chunkX * chunkSize + chunkY >= chunk.getTiles().size() ) return null; //Out of bounds
 		Tile tile = chunk.getTiles().get(chunkX * chunkSize + chunkY);
 
 		return tile;

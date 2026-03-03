@@ -54,6 +54,7 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		new HotbarUI(this, player);
 		allUI.add(craftingUI);
 		listeners.add(craftingUI);
+		new PauseMenu();
 	}
 	public void toggle() {
 		active = !active;
@@ -171,8 +172,6 @@ public class PlayerUI implements UIRenderable, GameKeyListener, InventoryListene
 		return player;
 	}
 	@Override
-	public void onKeyReleased(int keyCode) {
-		// TODO Auto-generated method stub
-		
+	public void onKeyReleased(int keyCode) {	
 	}
 }

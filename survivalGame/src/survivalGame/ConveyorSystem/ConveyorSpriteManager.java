@@ -71,7 +71,6 @@ public class ConveyorSpriteManager {
 	
 	public static void updateSprite(Conveyor conveyor) {
 		if ( !conveyorSpritemap.containsKey(conveyor.spriteMask) ) return;
-		System.out.println("ADDED TEXTURE----------");
 		conveyor.setTexture(conveyorSpritemap.get(conveyor.spriteMask), GameGraphics.getTextureManager());
 	}
 	

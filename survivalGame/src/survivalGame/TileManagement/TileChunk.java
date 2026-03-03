@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import graphics.GameGraphics;
+import graphics.WorldRenderable;
 
 /**
  * Contains a List of {@link Tile} (s) 
@@ -12,7 +13,7 @@ import graphics.GameGraphics;
  * 
  * List size is usually chunkSize * chunkSize
  */
-public class TileChunk {
+public class TileChunk implements WorldRenderable{
 
 	List<Tile> tiles = new ArrayList<>();
 
@@ -33,12 +34,20 @@ public class TileChunk {
 		pixelX = x * chunkSize * tileSize;
 		pixelY = y * chunkSize * tileSize;
 		chunkPixelSize = chunkSize * tileSize;
+		
+		GameGraphics.registerWorldObj(this, 1);
 	}
 	
 	public void add(Tile tile) {
 		getTiles().add(tile);
 	}
 
+	@Override
+	public void render(Graphics2D g, GameGraphics graphics) {
+		renderChunk(g,graphics);
+		
+	}
+	
 	public void renderChunk(Graphics2D g, GameGraphics graphics) {
 		//tile chunk works like gamegraphics, but groups tiles together avoiding repeated checks
 		int width = (int) (graphics.getWidth() / GameGraphics.getCameraZoom()); 
@@ -79,6 +88,14 @@ public class TileChunk {
 	public List<Tile> getTiles() {
 		return tiles;
 	}
+
+	@Override
+	public boolean isActive() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
 
 	
 }

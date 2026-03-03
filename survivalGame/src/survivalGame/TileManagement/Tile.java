@@ -101,4 +101,8 @@ public class Tile implements WorldRenderable{
 	public void setTileType(TileType tileType) {
 		this.tileType = tileType;
 	}
+	
+	public String toString() {
+		return "[" + x + ", " + y + "]";
+	}
 }

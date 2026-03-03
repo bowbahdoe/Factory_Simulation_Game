@@ -22,6 +22,7 @@ public enum Direction {
 		return ID;
 	}
 	
+	//Values() function returns an array of the enums. %4 keeps it within the range. 
 	public Direction rotatedClockwise() {
         return values()[(this.ID + 1) % 4];
     }

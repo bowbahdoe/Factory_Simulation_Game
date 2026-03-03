@@ -3,6 +3,7 @@ package survivalGame;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import survivalGame.ConveyorSystem.ConveyorManager;
 import survivalGame.ItemManagement.ItemFactory;
@@ -12,6 +13,7 @@ import survivalGame.ItemManagement.WorldItem;
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileProvider;
 import survivalGame.inputs.GameKeyListener;
+import survivalGame.inputs.GameMouseReleaseListener;
 import survivalGame.inputs.InputListener;
 import survivalGame.inputs.MouseClickListener;
 import survivalGame.tileObjects.Direction;
@@ -19,16 +21,18 @@ import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 import survivalGame.tileObjects.FactoryComponents.FactoryComponent;
 
-public class BuildingController implements GameKeyListener, MouseClickListener {
+public class BuildingController implements GameKeyListener, MouseClickListener, GameMouseReleaseListener  {
 	private BuildMode buildMode = BuildMode.BUILD;
 	
 	private Direction buildRotation = Direction.NORTH;
 	private Player player;
 	
+	private Tile lastClicked = null;
 	public BuildingController(Player player) {
 		this.player = player;
 		InputListener.getInstance().registerKeyListener(this);
 		InputListener.getInstance().registerClickListenerToWorld(this);
+		InputListener.getInstance().registerReleaseListener(this);
 	}
 	
 	
@@ -46,6 +50,7 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 		if (toPlace == null) return;
 		TileObject placedObject = toPlace.place(tile, buildRotation);
 	
+		//If it is a conveyor register it to conveyor manager.
 		if (placedObject instanceof Conveyor) {
 			Conveyor conv = ((Conveyor) placedObject);
 			ConveyorManager.getInstance().registerConveyor(conv);
@@ -99,14 +104,47 @@ public class BuildingController implements GameKeyListener, MouseClickListener {
 	@Override
 	public void onClick(MouseEvent e) {
 		//Select Tile and place build if buidling enabled.
-		Tile tile = TileProvider.pixel_AccessTile(e.getX(), e.getY());
-		if (buildMode == BuildMode.BUILD) {
-			
-			placeBuild(tile,player);
-			return;
-		}
+		lastClicked = TileProvider.pixel_AccessTile(e.getX(), e.getY());
+		
 		if (buildMode != BuildMode.DELETE) return;
 		
-		deleteBuild(tile);
+		deleteBuild(lastClicked);
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (lastClicked == null || buildMode != BuildMode.BUILD) return;
+		Tile target = TileProvider.pixel_AccessTile(e.getX(), e.getY());
+		if (target == null) return;
+		
+		if (lastClicked == target) {
+			
+			placeBuild(lastClicked,player);
+			return;
+		}
+
+		List<Tile> bestPath = new Pathfinding(lastClicked, target).bestPath();
+		
+		for (int i = 1; i < bestPath.size(); i++) {
+			Tile tile = bestPath.get(i);
+			
+			placeBuild(tile,player);
+			
+			if (i + 1 >= bestPath.size()) continue;
+			
+			if (bestPath.get(i+1).y == tile.y + 1) {
+				buildRotation = Direction.NORTH;
+			}
+			else if (bestPath.get(i+1).x == tile.x + 1) {
+				buildRotation = Direction.WEST;
+			}
+			else if (bestPath.get(i+1).y == tile.y - 1) {
+				buildRotation = Direction.SOUTH;
+			}
+			else if (bestPath.get(i+1).x == tile.x - 1) {
+				buildRotation = Direction.EAST;
+			}
+		}
 	}
 }
