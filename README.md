@@ -35,6 +35,7 @@ The project is implemented entirely in Java, with rendering handled using Java S
 - Click at item in inventory to select, Press 1-8  to asign it to the hotbar while selected.
 - Use 1-8 to select item on hotbar.
 - click and drag to place multiple conveyor belts
+- control + scroll to zoom in/out
 
 
 ## Installation & How to Run Locally
