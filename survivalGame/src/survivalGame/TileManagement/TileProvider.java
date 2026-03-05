@@ -31,6 +31,7 @@ public class TileProvider {
 		int chunkSize = GameGraphics.chunkSize;
 		int chunkAmount = GameGraphics.worldSize / chunkSize;
 		int positionInArray = chunkAmount * (x / chunkSize) + (y / chunkSize);		
+		if (positionInArray > GameGraphics.chunks.length) return null;
 		TileChunk chunk = (TileChunk) GameGraphics.chunks[positionInArray];
 		
 		//Chunk coordinates gives coordinates relative to the top left of the chunk (chunk origin).

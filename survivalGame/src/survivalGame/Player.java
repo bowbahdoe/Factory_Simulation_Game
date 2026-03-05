@@ -132,7 +132,7 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		
 		if (!(selectedHotbarSlot.getItem() instanceof PlaceableItem)) return;
 		Tile tile = TileProvider.pixel_AccessTile(InputListener.getInstance().getMouseX(), InputListener.getInstance().getMouseY());
-		if (!tile.isEmpty()) return;
+		if (tile == null || !tile.isEmpty()) return;
 		BufferedImage texture = null;
 		
 		switch (buildingTool.getBuildRotation()) {
