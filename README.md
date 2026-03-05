@@ -29,9 +29,12 @@ The project is implemented entirely in Java, with rendering handled using Java S
 - WASD keys to move around
 - [I] to open/close Inventory.
 - [F] to pickup nearby items from conveyor belts.
+- [V] to toggle delete mode
+- [B] to toggle build mode
 - [Q] & [E] to rotate placeable selected objects.
 - Click at item in inventory to select, Press 1-8  to asign it to the hotbar while selected.
 - Use 1-8 to select item on hotbar.
+- click and drag to place multiple conveyor belts
 
 
 ## Installation & How to Run Locally
