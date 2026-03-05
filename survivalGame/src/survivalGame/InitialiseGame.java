@@ -68,59 +68,59 @@ public class InitialiseGame {
 	
 	private static void loadTextures() {
 
-		textureManager.loadTexture("src/images/Stickman.png", "Player");
-		textureManager.loadTexture("src/images/grasy.jpg", "Grass");
-		textureManager.loadTexture("src/images/Tree.png", "Tree");
-		textureManager.loadTexture("src/images/Rock.png", "Rock");
+		textureManager.loadTexture("/images/Stickman.png", "Player");
+		textureManager.loadTexture("/images/grasy.jpg", "Grass");
+		textureManager.loadTexture("/images/Tree.png", "Tree");
+		textureManager.loadTexture("/images/Rock.png", "Rock");
 		
 		String[] directions = {"N", "E", "S", "W"};
 		for (String direction : directions) {
-		    textureManager.loadTexture("src/images/Conveyors/Conveyor" + direction + ".png", "Conveyor" + direction);
+		    textureManager.loadTexture("/images/Conveyors/Conveyor" + direction + ".png", "Conveyor" + direction);
 		}
 
 		String[] turns = {"NE", "SE", "SW", "NW", "EN", "ES", "WS", "WN"};
 		for (String turn : turns) {
-		    textureManager.loadTexture("src/images/Conveyors/ConveyorTurn" + turn + ".png", "Conveyor" + turn);
-		    textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
+		    textureManager.loadTexture("/images/Conveyors/ConveyorTurn" + turn + ".png", "Conveyor" + turn);
+		    textureManager.loadTexture("/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
 		}
 		turns = new String[]{"VE", "VW", "HN", "HS"};
 		for (String turn : turns) {
-			 textureManager.loadTexture("src/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
+			 textureManager.loadTexture("/images/Conveyors/Junctions/ConveyorT_" + turn + ".png", "ConveyorT_" + turn);
 		}
 		
-		textureManager.loadTexture("src/images/PlayerUI.png", "PlayerUI");
+		textureManager.loadTexture("/images/PlayerUI.png", "PlayerUI");
 
-		textureManager.loadTexture("src/images/InventorySquare.png", "InventorySlot");
-		textureManager.loadTexture("src/images/itemSelection.png", "SelectedSlot");
-		textureManager.loadTexture("src/images/CraftingSquareActive.png", "ButtonActive");
-		textureManager.loadTexture("src/images/CraftingSquareInactive.png", "ButtonInactive");
-		textureManager.loadTexture("src/images/Hotbar.png", "Hotbar");
+		textureManager.loadTexture("/images/InventorySquare.png", "InventorySlot");
+		textureManager.loadTexture("/images/itemSelection.png", "SelectedSlot");
+		textureManager.loadTexture("/images/CraftingSquareActive.png", "ButtonActive");
+		textureManager.loadTexture("/images/CraftingSquareInactive.png", "ButtonInactive");
+		textureManager.loadTexture("/images/Hotbar.png", "Hotbar");
 		
-		textureManager.loadTexture("src/images/factoryComponents/TreeHarvester.png", "TreeHarvester");
-		textureManager.loadTexture("src/images/factoryComponents/Planker.png", "Planker");
-		textureManager.loadTexture("src/images/factoryComponents/ConveyorSplitter.png", "ConveyorSplitterR");
+		textureManager.loadTexture("/images/FactoryComponents/TreeHarvester.png", "TreeHarvester");
+		textureManager.loadTexture("/images/FactoryComponents/Planker.png", "Planker");
+		textureManager.loadTexture("/images/FactoryComponents/ConveyorSplitter.png", "ConveyorSplitterR");
 		textureManager.addTexture(ImageFlipper.flipImageHorizontal(textureManager.getTexture("ConveyorSplitterR")), "ConveyorSplitterL");
-		textureManager.loadTexture("src/images/factoryComponents/RockDriller.png", "RockDriller");
+		textureManager.loadTexture("/images/FactoryComponents/RockDriller.png", "RockDriller");
 		
-		textureManager.loadTexture("src/images/Items/Item_Conveyor.png", "ConveyorItem");
-		textureManager.loadTexture("src/images/Items/Item_TreeHarvester.png", "TreeHarvesterItem");
-		textureManager.loadTexture("src/images/Items/Item_Wood.png", "WoodItem");
-		textureManager.loadTexture("src/images/Items/Item_Log.png", "LogItem");
-		textureManager.loadTexture("src/images/Items/Item_Rock.png", "RockItem");
-		textureManager.loadTexture("src/images/Items/Item_Planker.png", "PlankerItem");
-		textureManager.loadTexture("src/images/Items/Item_ConveyorSplitter.png", "ConveyorSplitterItemR");
+		textureManager.loadTexture("/images/Items/Item_Conveyor.png", "ConveyorItem");
+		textureManager.loadTexture("/images/Items/Item_TreeHarvester.png", "TreeHarvesterItem");
+		textureManager.loadTexture("/images/Items/Item_Wood.png", "WoodItem");
+		textureManager.loadTexture("/images/Items/Item_Log.png", "LogItem");
+		textureManager.loadTexture("/images/Items/Item_Rock.png", "RockItem");
+		textureManager.loadTexture("/images/Items/Item_Planker.png", "PlankerItem");
+		textureManager.loadTexture("/images/Items/Item_ConveyorSplitter.png", "ConveyorSplitterItemR");
 		textureManager.addTexture(ImageFlipper.flipImageHorizontal(textureManager.getTexture("ConveyorSplitterItemR")), "ConveyorSplitterItemL");
-		textureManager.loadTexture("src/images/Items/Item_RockDriller.png", "RockDrillerItem");
+		textureManager.loadTexture("/images/Items/Item_RockDriller.png", "RockDrillerItem");
 		
-		textureManager.loadTexture("src/images/BlueprintDirection.png", "Blueprint");
-		textureManager.loadTexture("src/images/BlueprintDelete.png", "DeleteBlueprint");
+		textureManager.loadTexture("/images/BlueprintDirection.png", "Blueprint");
+		textureManager.loadTexture("/images/BlueprintDelete.png", "DeleteBlueprint");
 		
-		textureManager.loadTexture("src/images/Button.png", "Button");
-		textureManager.loadTexture("src/images/Background.png", "Background");
-		textureManager.loadTexture("src/images/WorldSelection.png", "WorldSlot");
+		textureManager.loadTexture("/images/Button.png", "Button");
+		textureManager.loadTexture("/images/Background.png", "Background");
+		textureManager.loadTexture("/images/WorldSelection.png", "WorldSlot");
 		
-		textureManager.loadTexture("src/images/Icons/ExitIcon.png", "ExitIcon");
-		textureManager.loadTexture("src/images/Icons/PlayIcon.png", "PlayIcon");
-		textureManager.loadTexture("src/images/Icons/SettingsIcon.png", "SettingsIcon");
+		textureManager.loadTexture("/images/Icons/ExitIcon.png", "ExitIcon");
+		textureManager.loadTexture("/images/Icons/PlayIcon.png", "PlayIcon");
+		textureManager.loadTexture("/images/Icons/SettingsIcon.png", "SettingsIcon");
 	}
 }

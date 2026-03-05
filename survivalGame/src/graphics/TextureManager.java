@@ -3,6 +3,7 @@ package graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +18,11 @@ public class TextureManager {
     }
 	
     public void loadTexture(String filename, String textureName) {
-        try {
-            BufferedImage img = ImageIO.read(new File(filename));
+    	try (InputStream is = getClass().getResourceAsStream(filename)) {
+            if (is == null) {
+                throw new IllegalArgumentException("Missing resource: " + filename);
+            }
+            BufferedImage img = ImageIO.read(is);
             textures.put(textureName, img);
         } catch (IOException e) {
             e.printStackTrace();
