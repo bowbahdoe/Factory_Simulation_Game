@@ -49,7 +49,6 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		InputListener.getInstance().registerKeyListener(this);
 		InputListener.getInstance().registerClickListenerToWorld(this);
 		playerUI = new PlayerUI(this);
-		Updater.getInstance();
 		Updater.register(this);
 		GameGraphics.registerWorldObj(this, 3);
 		character = GameGraphics.getTextureManager().getTexture("Player");
@@ -57,11 +56,13 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		playerUI.addToInventory(ItemID.CONVEYOR,20);
 		playerUI.addToInventory(ItemID.TREEHARVESTER,20);
 		playerUI.addToInventory(ItemID.WOOD,20);
+		playerUI.addToInventory(ItemID.TREEHARVESTER,1);
 		
 		blueprints[0] = GameGraphics.getTextureManager().getTexture("Blueprint");
 		blueprints[1] = ImageRotater.rotateImage(blueprints[0], 90);
 		blueprints[2] = ImageRotater.rotateImage(blueprints[0], 180);
 		blueprints[3] = ImageRotater.rotateImage(blueprints[0], -90);
+		playerUI.onInventoryChanged();
 	}
 	@Override
 	public void update() {
@@ -122,6 +123,7 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 	private void renderDeleteBlueprint(Graphics2D g, GameGraphics graphics) {
 		if (buildingTool.getBuildMode() != BuildMode.DELETE) return;
 		Tile tile = TileProvider.pixel_AccessTile(InputListener.getInstance().getMouseX(), InputListener.getInstance().getMouseY());
+		if (tile == null ) return;
 		
 		BufferedImage texture = deleteBlueprint;
 		g.drawImage(texture, (int) (tile.pixelX), (int) (tile.pixelY), graphics);

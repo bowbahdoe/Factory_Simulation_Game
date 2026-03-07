@@ -1,15 +1,12 @@
 package survivalGame;
 
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import survivalGame.ConveyorSystem.ConveyorManager;
-import survivalGame.ItemManagement.ItemFactory;
-import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.PlaceableItem;
-import survivalGame.ItemManagement.WorldItem;
 import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileProvider;
 import survivalGame.inputs.GameKeyListener;
@@ -28,6 +25,8 @@ public class BuildingController implements GameKeyListener, MouseClickListener, 
 	private Player player;
 	
 	private Tile lastClicked = null;
+	private BuildDisplayer displayer = new BuildDisplayer(this);
+	
 	public BuildingController(Player player) {
 		this.player = player;
 		InputListener.getInstance().registerKeyListener(this);
@@ -54,7 +53,7 @@ public class BuildingController implements GameKeyListener, MouseClickListener, 
 		if (placedObject instanceof Conveyor) {
 			Conveyor conv = ((Conveyor) placedObject);
 			ConveyorManager.getInstance().registerConveyor(conv);
-			conv.recieveWorldItem(new WorldItem(ItemFactory.createItem(ItemID.WOOD), conv.getParentTile().pixelX, conv.getParentTile().pixelY));
+			
 		}
 	}
 
@@ -105,7 +104,7 @@ public class BuildingController implements GameKeyListener, MouseClickListener, 
 	public void onClick(MouseEvent e) {
 		//Select Tile and place build if buidling enabled.
 		lastClicked = TileProvider.pixel_AccessTile(e.getX(), e.getY());
-		
+		displayer.setLastClicked(lastClicked);
 		if (buildMode != BuildMode.DELETE) return;
 		
 		deleteBuild(lastClicked);
@@ -114,6 +113,24 @@ public class BuildingController implements GameKeyListener, MouseClickListener, 
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (buildMode == BuildMode.DELETE) {
+			
+			
+			Tile target = TileProvider.pixel_AccessTile(e.getX(), e.getY());
+			int tilesX = target.x - lastClicked.x;
+			int tilesY = target.y - lastClicked.y;
+			for (int x = 0; x < Math.abs(tilesX); x++) {
+				for (int y = 0; y <  Math.abs(tilesY); y++) {
+					Tile tile = TileProvider.world_AccessTile(
+							tilesX > 0 ? lastClicked.x + x : lastClicked.x - x,
+							tilesY > 0 ? lastClicked.y + y : lastClicked.y - y );
+					
+					if (tile == null || tile.isEmpty() || !(tile.getTileObject() instanceof FactoryComponent component)) continue;
+					component.removeObject();
+					tile.setTileObject(null);
+				}
+			}
+		}
 		if (lastClicked == null || buildMode != BuildMode.BUILD) return;
 		Tile target = TileProvider.pixel_AccessTile(e.getX(), e.getY());
 		if (target == null) return;

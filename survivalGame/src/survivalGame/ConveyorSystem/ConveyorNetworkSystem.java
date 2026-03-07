@@ -163,7 +163,7 @@ public class ConveyorNetworkSystem {
 			//Conveyor is isolated
 			keyToTail.remove(conveyor.beltSequence);
 			
-			System.out.println("Delete ISOLATED");
+			//System.out.println("Delete ISOLATED");
 		}
 		else if (keyToTail.containsValue(conveyor) && conveyor.targetConveyor.beltSequence == conveyor.beltSequence) {
 			//When removing last/tail conveyor, next conveyor is the new tail

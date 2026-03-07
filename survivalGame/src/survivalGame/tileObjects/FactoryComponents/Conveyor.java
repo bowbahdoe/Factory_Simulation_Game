@@ -94,10 +94,10 @@ public class Conveyor extends FactoryComponent implements IContainsConveyor, IIt
 		int x = this.getParentTile().pixelX;
 		int y = this.getParentTile().pixelY;
 		g.drawImage(super.texture ,x ,y , graphics);
-		g.setColor(Color.WHITE);
-		Font largeFont = new Font("Arial", Font.BOLD, 25);
-		g.setFont(largeFont);
-		g.drawString(beltSequence.getBeltKey() + "", x, y);
+		//g.setColor(Color.WHITE);
+		//Font largeFont = new Font("Arial", Font.BOLD, 25);
+		//g.setFont(largeFont);
+		//g.drawString(beltSequence.getBeltKey() + "", x, y);
 	}
 	
 	@Override

@@ -37,7 +37,7 @@ public class Pathfinding {
 				end = node;
 				break;
 			}
-			//if (discovered.size() > 500) return new ArrayList<>();
+			if (discovered.size() > 5200) return new ArrayList<>();
 			
 			for (Tile tile : getAdjacentTiles(node.tile)) {
 				

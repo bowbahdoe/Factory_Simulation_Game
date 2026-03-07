@@ -1,6 +1,5 @@
 package survivalGame.userInterface;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -15,7 +14,6 @@ import graphics.GameGraphics;
 import graphics.UIRenderable;
 import survivalGame.InventoryListener;
 import survivalGame.Player;
-import survivalGame.ItemManagement.Item;
 import survivalGame.ItemManagement.ItemFactory;
 import survivalGame.ItemManagement.ItemID;
 import survivalGame.ItemManagement.ItemStack;

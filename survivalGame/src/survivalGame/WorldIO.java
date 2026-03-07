@@ -18,7 +18,6 @@ import survivalGame.TileManagement.TileType;
 import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.PlacementInfo;
 import survivalGame.tileObjects.TileObject;
-import survivalGame.tileObjects.TileTree;
 
 public class WorldIO {
 

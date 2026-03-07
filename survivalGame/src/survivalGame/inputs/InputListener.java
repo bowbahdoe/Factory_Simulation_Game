@@ -139,12 +139,15 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+		mouseX = e.getX();
+        mouseY = e.getY();
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		
 		mouseX = e.getX();
-        mouseY = e.getY();
+		mouseY = e.getY();
+		 
 	}
 
 	public int getMouseX() {

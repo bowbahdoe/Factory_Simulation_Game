@@ -5,13 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JButton;
-
-import graphics.CurrentGameState;
 import graphics.GameGraphics;
 import graphics.UIRenderable;
 import survivalGame.GameState;
-import survivalGame.WorldIO;
 import survivalGame.inputs.GameKeyListener;
 import survivalGame.inputs.InputListener;
 import survivalGame.userInterface.Button.ButtonBuilder;
@@ -38,7 +34,7 @@ public class PauseMenu implements GameKeyListener, UIRenderable{
 				.setActive(false)
 				.build();
 		
-		buttons[1] = new ButtonBuilder(() -> CurrentGameState.gameState = GameState.MENU, GameState.GAME)
+		buttons[1] = new ButtonBuilder(() -> System.exit(0), GameState.GAME)
 				.setTexture(buttonTexture)
 				.centerTextureToPoint(UIAnchor.CENTER_BOTTOM_LEFT).offsetY(100)
 				.setDimensionToTexture()
