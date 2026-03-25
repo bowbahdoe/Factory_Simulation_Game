@@ -44,3 +44,4 @@ The project is implemented entirely in Java, with rendering handled using Java S
    git clone https://github.com/kaaroolM/Factory_Simulation_Game.git
 2. Save as project in IDE
 3. Find and Run "InitialiseGame":
+Or download the newest release
