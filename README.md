@@ -1,18 +1,19 @@
-# Factory Simulation / Automation Game  
+# Java Factory Simulation Game – Automation & Resource Management
 
 ![ConveyorPlacing](https://github.com/user-attachments/assets/3015b998-95a3-4852-8a4a-0f41227e1e82)
 
 (*demonstrating item generation and conveyor-based item movement.*)
 
 
-
-**A 2D factory simulation game implementing conveyor-based item flow, inventories, and crafting systems using structured, system-based game logic in Java.**
+**A 2D factory simulation and automation game built in Java, featuring conveyor-based item flow, inventory systems, and crafting mechanics.**
 
 ## Overview
 
-This project was developed as part of my A-Level Computer Science NEA. It is a 2D factory/resource management game inspired by Factorio, focused on simulating item flow through conveyor systems and managing inventories and crafting.
+This project is a 2D automation game inspired by Factorio, focused on simulating item flow through conveyor systems and managing inventories and crafting.
 
-The project is implemented entirely in Java, with rendering handled using Java Swing. The primary focus was on designing interacting game systems such as conveyors, inventories, crafting, and saving/loading game state. 
+The project is built entirely in Java, with rendering handled using Java Swing. The primary focus was on designing interacting game systems such as conveyors, inventory management and production chains. 
+
+The project is still in progress, saving/loading reliably work yet, and there aren't enough components to make the game complex enough at the moment. However, the core features such as conveyors do work. 
 
 
 ## Key Features
