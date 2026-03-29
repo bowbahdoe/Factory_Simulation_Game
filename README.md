@@ -1,4 +1,4 @@
-# Factory Simulation Game  (A-Level Computer Science NEA)
+# Factory Simulation / Automation Game  
 
 ![ConveyorPlacing](https://github.com/user-attachments/assets/3015b998-95a3-4852-8a4a-0f41227e1e82)
 
@@ -12,7 +12,7 @@
 
 This project was developed as part of my A-Level Computer Science NEA. It is a 2D factory/resource management game inspired by Factorio, focused on simulating item flow through conveyor systems and managing inventories and crafting.
 
-The project is implemented entirely in Java, with rendering handled using Java Swing. The primary focus was on designing interacting game systems such as conveyors, inventories, crafting, and saving/loading game state.
+The project is implemented entirely in Java, with rendering handled using Java Swing. The primary focus was on designing interacting game systems such as conveyors, inventories, crafting, and saving/loading game state. 
 
 
 ## Key Features
@@ -34,14 +34,16 @@ The project is implemented entirely in Java, with rendering handled using Java S
 - [Q] & [E] to rotate placeable selected objects.
 - Click at item in inventory to select, Press 1-8  to asign it to the hotbar while selected.
 - Use 1-8 to select item on hotbar.
-- click and drag to place multiple conveyor belts
+- click and drag to place multiple conveyor belts 
 - control + scroll to zoom in/out
 
 
 ## Installation & How to Run Locally
+download the newest release .jar file or: 
+
 1. Clone the repo:
    ```bash
    git clone https://github.com/kaaroolM/Factory_Simulation_Game.git
 2. Save as project in IDE
-3. Find and Run "InitialiseGame":
-Or download the newest release
+3. Find and Run "InitialiseGame"
+
