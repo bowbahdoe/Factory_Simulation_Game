@@ -3,7 +3,7 @@ package survivalGame.ItemManagement;
 import java.awt.image.BufferedImage;
 import graphics.GameGraphics;
 
-public abstract class Item  {
+public sealed abstract class Item permits PlaceableItem, ResourceItem {
 	
 	private ItemID id;
 	private BufferedImage texture;

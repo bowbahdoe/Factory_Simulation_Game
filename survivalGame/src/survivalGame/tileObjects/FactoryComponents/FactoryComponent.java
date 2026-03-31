@@ -5,7 +5,8 @@ import survivalGame.TileManagement.TileProvider;
 import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.TileObject;
 
-public abstract class FactoryComponent extends TileObject  {
+public sealed abstract class FactoryComponent extends TileObject
+		permits Conveyor, RockDriller, TreeHarvester {
 	
 	private Direction rotation;
 	
