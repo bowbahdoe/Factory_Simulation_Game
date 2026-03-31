@@ -15,16 +15,16 @@ import survivalGame.tileObjects.FactoryComponents.Conveyor;
 public class ConveyorNetworkSystem {
 	
 	//a hashmap linking the conveyor belt key to the end of the sequence in order to traverse backwards.
-	private static Map<BeltSequence, Conveyor> keyToTail = new HashMap<>();
+	private final Map<BeltSequence, Conveyor> keyToTail = new HashMap<>();
 
 	//Key counter that represent the beltSequence value. It is important that this value is unique.
-	private static int keyCounter = 1; 
+	private int keyCounter = 1;
 	
-	public static BeltSequence generateConveyorKey() {
+	public BeltSequence generateConveyorKey() {
 		return new BeltSequence(keyCounter++);
 	}
 	
-	public static void asignTail(BeltSequence key, Conveyor conv) {
+	public void assignTail(BeltSequence key, Conveyor conv) {
 		keyToTail.put(key, conv);
 	}
 	
@@ -73,7 +73,7 @@ public class ConveyorNetworkSystem {
 		//Else inherit from inputConveyor, and make the conveyor the new tail.
 		else {
 			currentConveyor.beltSequence = currentConveyor.inputConveyor.beltSequence;
-			asignTail(currentConveyor.beltSequence, currentConveyor);
+			assignTail(currentConveyor.beltSequence, currentConveyor);
 		}
 		
 
@@ -121,7 +121,7 @@ public class ConveyorNetworkSystem {
 	 */
 	private void becomeNewConveyorTail(Conveyor conveyor) {
 		conveyor.beltSequence = generateConveyorKey();
-		asignTail(conveyor.beltSequence, conveyor);
+		assignTail(conveyor.beltSequence, conveyor);
 	}
 	
 	/**

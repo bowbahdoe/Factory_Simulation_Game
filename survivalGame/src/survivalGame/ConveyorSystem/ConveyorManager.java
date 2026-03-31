@@ -31,8 +31,7 @@ public final class ConveyorManager implements ITickable{
     }
 	
 	public ConveyorManager() {
-		TickManager.getInstance().register(this); 
-	
+		TickManager.getInstance().register(this);
 	}
 	 
 	
