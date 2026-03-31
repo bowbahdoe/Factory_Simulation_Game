@@ -12,7 +12,7 @@ import survivalGame.ItemManagement.WorldItem;
 import survivalGame.TileManagement.Tile;
 import survivalGame.tileObjects.Direction;
 
-public class Planker extends Conveyor{
+public final class Planker extends Conveyor{
 	
 	private ActionTimer actionTimer;
 	public Planker(Tile parentTile, Direction rotation) {

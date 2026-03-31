@@ -18,7 +18,7 @@ import survivalGame.TileManagement.TileObjectID;
 import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.TileTree;
 
-public class TreeHarvester extends FactoryComponent implements ITickable {
+public final class TreeHarvester extends FactoryComponent implements ITickable {
 
 	public static final TileObjectID ID = TileObjectID.TREE_HARVESTER;
 	

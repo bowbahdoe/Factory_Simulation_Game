@@ -18,7 +18,7 @@ import survivalGame.tileObjects.TileObject;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 import survivalGame.tileObjects.FactoryComponents.FactoryComponent;
 
-public class BuildingController implements GameKeyListener, MouseClickListener, GameMouseReleaseListener  {
+public final class BuildingController implements GameKeyListener, MouseClickListener, GameMouseReleaseListener  {
 	private BuildMode buildMode = BuildMode.BUILD;
 	
 	private Direction buildRotation = Direction.NORTH;

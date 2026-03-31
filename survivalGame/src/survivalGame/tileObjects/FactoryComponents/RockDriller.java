@@ -18,7 +18,7 @@ import survivalGame.TileManagement.TileObjectID;
 import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.TileRock;
 
-public class RockDriller extends FactoryComponent implements ITickable {
+public final class RockDriller extends FactoryComponent implements ITickable {
 	
 	public static final TileObjectID ID = TileObjectID.ROCK_DRILLER;
 	

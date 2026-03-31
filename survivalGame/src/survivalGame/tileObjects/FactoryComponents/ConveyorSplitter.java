@@ -11,7 +11,7 @@ import survivalGame.TileManagement.Tile;
 import survivalGame.TileManagement.TileObjectID;
 import survivalGame.tileObjects.Direction;
 
-public class ConveyorSplitter extends Conveyor{
+public final class ConveyorSplitter extends Conveyor{
 	
 	public static final TileObjectID ID = TileObjectID.CONVEYOR_SPLITTER_L;
 	

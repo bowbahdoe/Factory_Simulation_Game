@@ -12,7 +12,7 @@ import survivalGame.TileManagement.TileProvider;
 import survivalGame.tileObjects.Direction;
 import survivalGame.tileObjects.FactoryComponents.Conveyor;
 
-public class ConveyorNetworkSystem {
+public final class ConveyorNetworkSystem {
 	
 	//a hashmap linking the conveyor belt key to the end of the sequence in order to traverse backwards.
 	private final Map<BeltSequence, Conveyor> keyToTail = new HashMap<>();

@@ -17,7 +17,7 @@ import graphics.GameGraphics;
 import graphics.UIClickable;
 import survivalGame.GameState;
 
-public class InputListener implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
+public final class InputListener implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener {
 
 	private static final InputListener InputListenerInstance = new InputListener();;
 	

@@ -25,7 +25,7 @@ import survivalGame.userInterface.HotbarSlot;
 import survivalGame.userInterface.InventorySlot;
 import survivalGame.userInterface.PlayerUI;
 
-public class Player implements Updatable, WorldRenderable, GameKeyListener, MouseClickListener{
+public final class Player implements Updatable, WorldRenderable, GameKeyListener, MouseClickListener{
 	
 	private MovementController movement = new MovementController();
 	private BuildingController buildingTool = new BuildingController(this);
@@ -144,7 +144,7 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 			blueprints[2];
 		case WEST ->
 			blueprints[3];
-		}
+		};
 		
 		if (texture == null) return;
 		g.drawImage(texture, (int) (tile.pixelX), (int) (tile.pixelY), graphics);

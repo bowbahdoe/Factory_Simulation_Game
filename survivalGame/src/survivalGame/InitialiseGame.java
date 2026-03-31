@@ -15,7 +15,7 @@ import graphics.TextureManager;
 import graphics.ImageManipulation.ImageFlipper;
 import survivalGame.inputs.InputListener;
 
-public class InitialiseGame {
+public final class InitialiseGame {
 	
 	
 	static TextureManager textureManager = new TextureManager();

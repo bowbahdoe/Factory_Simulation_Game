@@ -8,7 +8,7 @@ import survivalGame.Updatable;
 import survivalGame.Updater;
 import survivalGame.TileManagement.Tile;
 
-public class WorldItem implements WorldRenderable, Updatable {
+public final class WorldItem implements WorldRenderable, Updatable {
 
 	private int pixelX;
 	private int pixelY;
