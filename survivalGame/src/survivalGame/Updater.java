@@ -1,14 +1,14 @@
 package survivalGame;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 public final class Updater implements Runnable {
     private static final Updater instance = new Updater();
     private static List<Updatable> updatables = new ArrayList<>();
-    private static Queue<Updatable> toAdd = new LinkedList<>();
+    private static Queue<Updatable> toAdd = new ArrayDeque<>();
     
     final int fps = 70;
     final long frameTime = 1000 / fps; // 16 ms target
