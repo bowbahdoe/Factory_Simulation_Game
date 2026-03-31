@@ -38,12 +38,10 @@ public class TileObjectFactory {
 	 * @return The instantiated {@link TileObject}
 	 */
 	public static TileObject createTileObject(TileObjectID tileObjectID, PlacementInfo info) {
-		if (!IDtoInstance.containsKey(tileObjectID)) {
-			 throw new IllegalArgumentException("ItemID: " + tileObjectID.toString() + " is invalid! ");
-		}
-		
 		Function<PlacementInfo, TileObject> function = IDtoInstance.get(tileObjectID);
-
+		if (function == null) {
+			throw new IllegalArgumentException("ItemID: " + tileObjectID.toString() + " is invalid! ");
+		}
 		return function.apply(info);
 		
 	}
