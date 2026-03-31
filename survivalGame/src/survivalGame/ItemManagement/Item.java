@@ -36,8 +36,7 @@ public abstract class Item  {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof Item)) return false;
-		Item item = (Item) o;
+		if (!(o instanceof Item item)) return false;
 		
 		return this.getItemID().equals(item.getItemID());
 

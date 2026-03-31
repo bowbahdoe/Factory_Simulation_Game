@@ -177,9 +177,9 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		tiles[8] = getTile(-100,100);
 		Map<ItemID, Integer> tempInventory = new HashMap<>();
 		for (Tile tile : tiles) {
-			if ( !(tile.getTileObject() instanceof IContainsConveyor) ) continue;
+			if ( !(tile.getTileObject() instanceof IContainsConveyor containsConveyor) ) continue;
 			
-			Conveyor conv = ((IContainsConveyor) tile.getTileObject()).getConveyor();
+			Conveyor conv = containsConveyor.getConveyor();
 			if (!conv.isEmpty()) {
 				WorldItem worldItem = conv.collectItem();
 				tempInventory.merge(worldItem.getItem().getItemID(), 1, Integer::sum); 

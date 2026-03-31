@@ -129,8 +129,7 @@ public class ConveyorNetworkSystem {
 	 * @return any instance of conveyor on that tile. This function was made due to the interface: IContainsConveyor
 	 */
 	public static Conveyor getConveyorFromTile(Tile tile) {
-		if (!(tile.getTileObject() instanceof IContainsConveyor)) return null;
-		IContainsConveyor conv = ((IContainsConveyor) tile.getTileObject());
+		if (!(tile.getTileObject() instanceof IContainsConveyor conv)) return null;
 		return conv.getConveyor();
 	}
 	
