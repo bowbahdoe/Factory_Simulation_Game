@@ -7,8 +7,8 @@ import java.util.Queue;
 
 public final class Updater implements Runnable {
     private static final Updater instance = new Updater();
-    private static List<Updatable> updatables = new ArrayList<>();
-    private static Queue<Updatable> toAdd = new ArrayDeque<>();
+    private final List<Updatable> updatables = new ArrayList<>();
+    private final Queue<Updatable> toAdd = new ArrayDeque<>();
     
     final int fps = 70;
     final long frameTime = 1000 / fps; // 16 ms target
@@ -19,14 +19,14 @@ public final class Updater implements Runnable {
         return instance;
     }
 
-    public static void register(Updatable updatable) {
+    public void register(Updatable updatable) {
     	 if (updatable == null) {
     	        throw new IllegalArgumentException("Trying to register null!");
     	    }
         toAdd.add(updatable);
     }
     
-    public static void remove(Updatable updatable) {
+    public void remove(Updatable updatable) {
    	 if (updatable == null) {
    	        throw new IllegalArgumentException("Trying to remove null!");
    	    }

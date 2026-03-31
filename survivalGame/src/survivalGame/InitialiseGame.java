@@ -34,7 +34,7 @@ public class InitialiseGame {
 		gameGraphics.addOnTextureManager(textureManager);
 		gameGraphics.addMouseMotionListener(InputListener.getInstance());
 		
-		Updater.register(gameGraphics);
+		Updater.getInstance().register(gameGraphics);
 		gameGraphics.initialiseMenu(textureManager);
 
 		new MainScreen(gameGraphics);

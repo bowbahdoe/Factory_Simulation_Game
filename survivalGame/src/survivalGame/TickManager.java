@@ -9,7 +9,7 @@ public final class TickManager implements Updatable{
 	private static final TickManager TickManagerInstance;
 	static {
 		TickManagerInstance = new TickManager();
-		Updater.register(TickManagerInstance);
+		Updater.getInstance().register(TickManagerInstance);
 	}
 	private int tick = 0;
 	private static final int tickrate = 300;

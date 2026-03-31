@@ -49,7 +49,7 @@ public class Player implements Updatable, WorldRenderable, GameKeyListener, Mous
 		InputListener.getInstance().registerKeyListener(this);
 		InputListener.getInstance().registerClickListenerToWorld(this);
 		playerUI = new PlayerUI(this);
-		Updater.register(this);
+		Updater.getInstance().register(this);
 		GameGraphics.registerWorldObj(this, 3);
 		character = GameGraphics.getTextureManager().getTexture("Player");
 	
