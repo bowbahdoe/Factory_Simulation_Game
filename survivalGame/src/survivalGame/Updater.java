@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 public final class Updater implements Runnable {
-    private static Updater instance;
+    private static final Updater instance = new Updater();
     private static List<Updatable> updatables = new ArrayList<>();
     private static Queue<Updatable> toAdd = new LinkedList<>();
     
@@ -16,9 +16,6 @@ public final class Updater implements Runnable {
     private Updater() {}
 
     public static Updater getInstance() {
-        if (instance == null) {
-            instance = new Updater();
-        }
         return instance;
     }
 
